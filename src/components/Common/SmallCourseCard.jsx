@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import classnames from 'classnames';
 import './SmallCourseCard.scss';
 
 const calcDuration = (start, end) => moment.duration(moment(end).diff(moment(start))).asMinutes();
@@ -7,7 +8,16 @@ const calcDuration = (start, end) => moment.duration(moment(end).diff(moment(sta
 // startTime / endTime format: hh:mm
 // dayOfWeek format: [1,7]
 // datePrefix format: yyyy-mm-ddT
-const SmallCourseCard = ({ startTime, endTime, dayOfWeek, type, title, location, datePrefix = "2020-10-20T" }) => {
+const SmallCourseCard = ({
+  startTime,
+  endTime,
+  dayOfWeek,
+  type,
+  title,
+  location,
+  datePrefix = "2020-10-20T",
+  focused = true,
+ }) => {
 
   const calculateCardPosition = (startTime, endTime, dayOfWeek = 1) => {
     // height
@@ -32,7 +42,7 @@ const SmallCourseCard = ({ startTime, endTime, dayOfWeek, type, title, location,
   };
 
   return (
-    <div className="calendar-card" style={{ ...calculateCardPosition(startTime, endTime, dayOfWeek) }}>
+    <div className={classnames("calendar-card", { "calendar-card-focused": focused })} style={{ ...calculateCardPosition(startTime, endTime, dayOfWeek) }}>
     <div className="calendar-card-type">{type}</div>
     <div className="calendar-card-detail">
       <div className="calendar-card-title">{title}</div>
