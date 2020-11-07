@@ -1,4 +1,8 @@
-import { COLOR_GREY, COLOR_LIGHT_GREY } from './theme';
+import {
+  COLOR_GREY,
+  COLOR_LIGHT_GREY,
+  COLOR_SECONDARY,
+} from './theme';
 
 const {
   default: styled,
@@ -83,4 +87,42 @@ export const CalendarCourseContainer = styled.div`
   width: 100%;
   grid-template-rows: repeat(90, 1fr);
   grid-template-columns: repeat(7, 1fr);
+`;
+
+export const CalendarCardHeader = styled(FlexContainer)`
+  font-weight: bold;
+  font-size: 9px;
+  background-color: ${COLOR_SECONDARY};
+`;
+
+export const CalendarCardBody = styled(FlexContainer)`
+  flex-direction: column;
+  font-size: 8px;
+  height: 100%;
+  letter-spacing: -0.02em;
+`;
+
+export const CalendarCardTitle = styled(FlexContainer)`
+  font-size: 9px;
+  font-weight: bold;
+`;
+
+export const CalendarCard = styled.div`
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: 15px 1fr;
+  box-shadow: 1px 1px 2.5px rgba(0, 0, 0, 0.25), -1px 1px 2.5px rgba(0, 0, 0, 0.25);
+  border-radius: 2px;
+  background-color: white;
+  text-transform: uppercase;
+  overflow: hidden;
+
+  ${(props) => (
+    props.focused
+    && `border: 1px solid #034263;
+  ${CalendarCardHeader} {
+  border: 1px solid #034263;
+  }
+  `)}
 `;
