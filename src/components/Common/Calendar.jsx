@@ -63,6 +63,7 @@ const Calendar = () => (
             type="LE"
             title="CSE 120"
             location="PCYNH 112"
+            focused
           />
           <SmallCourseCard
             datePrefix="2020-06-06T"

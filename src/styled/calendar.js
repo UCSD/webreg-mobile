@@ -20,7 +20,6 @@ export const FlexContainer = styled.div`
   justify-content: center;
   height: 100%;
   width: 100%;
-  border-bottom: 1px solid ${COLOR_LIGHT_GREY};
 `;
 
 export const CalendarContainer = styled.div`
@@ -85,6 +84,7 @@ export const CalendarCourseContainer = styled.div`
   column-gap: 1px;
   padding: 0 1px;
   width: 100%;
+  height: 100%;
   grid-template-rows: repeat(90, 1fr);
   grid-template-columns: repeat(7, 1fr);
 `;
@@ -117,12 +117,13 @@ export const CalendarCard = styled.div`
   background-color: white;
   text-transform: uppercase;
   overflow: hidden;
+  box-sizing: border-box;
 
   ${(props) => (
     props.focused
-    && `border: 1px solid #034263;
+  && `border: 1px solid #034263;
   ${CalendarCardHeader} {
-  border: 1px solid #034263;
+  border-bottom: 1px solid #034263;
   }
   `)}
 `;
