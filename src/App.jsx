@@ -34,7 +34,7 @@ function App() {
           <Route path="/home" exact component={Home} />
         </Router>
         <Router>
-          <Route path="/scaffold" exact component={SearchResultCard} />
+          <Route path="/scaffold" exact component={Calendar} />
         </Router>
       </PersistGate>
     </Provider>

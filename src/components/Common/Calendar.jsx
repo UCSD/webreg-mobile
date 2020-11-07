@@ -62,7 +62,7 @@ class Calendar extends Component {
                 endTime="09:50"
                 dayOfWeek={4}
                 type="LE"
-                title="CSE 120"
+                title="CSE 121"
                 location="PCYNH 112"
               />
               <SmallCourseCard
@@ -71,7 +71,7 @@ class Calendar extends Component {
                 endTime="09:50"
                 dayOfWeek={6}
                 type="LE"
-                title="CSE 120"
+                title="CSE 122"
                 location="PCYNH 112"
               />
               <SmallCourseCard
@@ -89,7 +89,7 @@ class Calendar extends Component {
                 endTime="10:50:00"
                 dayOfWeek={1}
                 type="DI"
-                title="CSE 120"
+                title="CSE 123"
                 location="PCYNH 112"
               />
             </div>
