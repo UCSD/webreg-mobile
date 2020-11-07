@@ -1,0 +1,39 @@
+.status-bar-container {
+  width: 100%;
+  padding-bottom: 8px;
+
+  .status-bar-labels-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+    .status-bar-label {
+      font-size: 9px;
+      line-height: 11px;
+    }
+  }
+
+  .bar-container {
+    display: flex;
+    width: 100%;
+
+    .bar {
+      height: 2px;
+      border-radius: 1px;
+      background-color: #034263;
+    }
+
+    .left-bar {
+      height: 2px;
+      border-top-left-radius: 1px;
+      border-bottom-left-radius: 1px;
+      background-color: #034263;
+    }
+
+    .right-bar {
+      height: 2px;
+      border-top-right-radius: 1px;
+      border-bottom-right-radius: 1px;
+    }
+  }
+}

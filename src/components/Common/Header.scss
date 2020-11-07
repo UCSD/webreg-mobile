@@ -1,0 +1,26 @@
+@import 'constant';
+
+.header {
+  background-color: $primary-color;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  color: $white;
+
+  .left {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .center {
+    @include centerContent;
+    font-weight: 400;
+    font-size: 24px;
+  }
+
+  .right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+}
