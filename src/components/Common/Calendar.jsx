@@ -1,8 +1,15 @@
-import React, { Component } from 'react';
+import React from 'react';
 import SmallCourseCard from './SmallCourseCard';
-import './Calendar.scss';
 import {
-  CalendarBody, CalendarContainer, CalendarHeader, CalendarHeaderItem, CalendarTimeline, CalendarTimelineItem,
+  CalendarBody,
+  CalendarContainer,
+  CalendarHeader,
+  CalendarHeaderItem,
+  CalendarSchedule,
+  CalendarScheduleItem,
+  CalendarTimeline,
+  CalendarTimelineItem,
+  CalendarCourseContainer,
 } from '../../styled';
 
 const times = [
@@ -37,17 +44,17 @@ const Calendar = () => (
     </CalendarHeader>
     <CalendarBody>
       <CalendarTimeline>
-        {times.map((time, index) => (
-          <CalendarTimelineItem key={`course-time-${index}`}>
+        {times.map((time) => (
+          <CalendarTimelineItem key={`course-time-${time}`}>
             {time}
           </CalendarTimelineItem>
         ))}
       </CalendarTimeline>
-      <div className="course-schedule-grid">
-        {times.map((_, index) => (
-          <div key={`course-grid-row-${index}`} />
+      <CalendarSchedule>
+        {times.map((time) => (
+          <CalendarScheduleItem key={`course-grid-row-${time}`} />
         ))}
-        <div className="course-cards-overlay">
+        <CalendarCourseContainer>
           <SmallCourseCard
             datePrefix="2020-06-06T"
             startTime="09:00"
@@ -93,8 +100,8 @@ const Calendar = () => (
             title="CSE 123"
             location="PCYNH 112"
           />
-        </div>
-      </div>
+        </CalendarCourseContainer>
+      </CalendarSchedule>
     </CalendarBody>
   </CalendarContainer>
 );

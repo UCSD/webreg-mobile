@@ -52,6 +52,7 @@ $horizontal-padding: 10px;
   letter-spacing: -0.02em;
 }
 
+// done
 .scroll-container {
   overflow-y: scroll;
   height: 100%;
@@ -61,18 +62,20 @@ $horizontal-padding: 10px;
   grid-template-columns: $time-col-width 1fr;
 }
 
-
+// done
 .course-time-grid {
   font-size: 10px;
   @include schedule-grid;
   letter-spacing: -0.02em;
 }
 
+// done
 .course-schedule-grid {
   @include schedule-grid;
   position: relative;
 }
 
+// done
 .course-cards-overlay {
   position: absolute;
   // box-shadow: inset 0px 0px 0px 1px red;

@@ -57,15 +57,36 @@ export const CalendarBody = styled.div`
   grid-template-columns: ${CALENDAR_TIME_COL_WIDTH} 1fr;
 `;
 
-export const CalendarTimeline = styled.div`
-  font-size: 10px;
-  letter-spacing: -0.02em;
+export const CalendarGrid = styled.div`
   display: grid;
   grid-template-rows: repeat(15, ${CALENDAR_ROW_HEIGHT});
 `;
 
-export const CalendarTimelineItem = styled(FlexContainer)`
+export const CalendarGridItem = styled(FlexContainer)`
   height: 100%;
   width: 100%;
   border-bottom: 1px solid ${COLOR_LIGHT_GREY};
+`;
+
+export const CalendarTimeline = styled(CalendarGrid)`
+  font-size: 10px;
+  letter-spacing: -0.02em;
+`;
+
+export const CalendarTimelineItem = CalendarGridItem;
+
+export const CalendarSchedule = styled(CalendarGrid)`
+  position: relative;
+`;
+
+export const CalendarScheduleItem = CalendarGridItem;
+
+export const CalendarCourseContainer = styled.div`
+  position: absolute;
+  display: grid;
+  column-gap: 1px;
+  padding: 0 1px;
+  width: 100%;
+  grid-template-rows: repeat(90, 1fr);
+  grid-template-columns: repeat(7, 1fr);
 `;
