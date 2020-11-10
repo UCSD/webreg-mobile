@@ -1,0 +1,114 @@
+
+@mixin rotate($deg: 90deg) {
+  -moz-transform:rotate($deg);
+  -webkit-transform:rotate($deg);
+  transform:rotate($deg);
+}
+
+@mixin transition($sec: .2s) {
+  -moz-transition: all $sec linear !important;
+  -webkit-transition: all $sec linear !important;
+  transition: all $sec linear !important;
+}
+
+@mixin dottedBorder($color: #8f8f8f, $orientation: horizontal, $position: top, $spacing: 5px, $size: 1px) {
+  background-position: $position;
+  @if $orientation == horizontal {
+    background-image: linear-gradient(to right, $color $size/$spacing * 100%, rgba(255,255,255,0) 0%);
+    background-size: $spacing $size;
+    background-repeat: repeat-x;
+  }
+  @else {
+    background-image: linear-gradient($color $size/$spacing * 100%, rgba(255,255,255,0) 0%);
+    background-size: $size $spacing;
+    background-repeat: repeat-y;
+  }
+  .ie9 & {
+    border-#{$position}:1px dotted $color;      
+  }
+}
+
+.course-detail-table-main {
+  .table-cell-container {
+    margin: 6px 16px;
+    background-color: #FBFBFB;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: 32px 1fr 32px;
+    align-items: center;
+    justify-items: center;
+    min-height: 26px;
+
+    .navigate-icon {
+      transform: rotate(90deg);
+    }
+
+    .table-cell-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 10px;
+      border: 1px solid #034263;
+    } 
+
+    .table-cell-dotted-line {
+      height: 100%;
+      width: 0;
+      border-right: 2px dashed #034163bb;
+  } 
+
+    .table-cell-detail {
+      padding: 11px;
+      width: 100%;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      row-gap: 14px;
+    }
+
+    .rotate {
+      @include transition();
+    }
+    
+    .rotate.down {
+      @include rotate(180deg);
+    }
+
+    .cell-header {
+      width: 100%;
+      color: #034263;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .instructor-name {
+        font-size: 12px;
+        line-height: 14px;
+      }
+
+      .selections-container {
+        display: flex;
+        column-gap: 10px;
+
+        .selection {
+          width: 36px;
+          height: 14px;
+          border: 1px solid rgba(#034263, 0.6);
+          border-radius: 3px;
+          vertical-align: middle;
+          text-align: center;
+          font-size: 9px;
+        }
+      }
+    }
+  }
+
+  .cell-section {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 10px;
+    line-height: 12px;
+  }
+}

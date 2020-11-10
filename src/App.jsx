@@ -7,7 +7,7 @@ import { store, persistor } from './reducers';
 import Home from './components/Home';
 import Boilerplate from './components/Boilerplate';
 import Calendar from './components/Common/Calendar';
-import SearchResultCard from './components/Common/SearchResultCard';
+import CourseDetailTableComponent from './components/Common/CourseDetailTableComponent';
 import StatusBar from './components/Common/StatusBar';
 import './App.css';
 
@@ -34,7 +34,7 @@ function App() {
           <Route path="/home" exact component={Home} />
         </Router>
         <Router>
-          <Route path="/scaffold" exact component={SearchResultCard} />
+          <Route path="/scaffold" exact component={CourseDetailTableComponent} />
         </Router>
       </PersistGate>
     </Provider>
