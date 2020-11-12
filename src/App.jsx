@@ -8,7 +8,9 @@ import Home from './components/Home';
 import Boilerplate from './components/Boilerplate';
 import Calendar from './components/Common/Calendar';
 import SearchResultCard from './components/Common/SearchResultCard';
-import StatusBar from './components/Common/StatusBar';
+import CourseAvailabilityBar from './components/Common/CourseAvailabilityBar';
+import CourseDetailTableComponent from './components/Common/CourseDetailTableComponent';
+
 import './App.css';
 
 /** Private Route example */
@@ -34,7 +36,7 @@ function App() {
           <Route path="/home" exact component={Home} />
         </Router>
         <Router>
-          <Route path="/scaffold" exact component={Calendar} />
+          <Route path="/scaffold" exact component={CourseDetailTableComponent} />
         </Router>
       </PersistGate>
     </Provider>
