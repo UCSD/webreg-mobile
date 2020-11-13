@@ -1,22 +1,23 @@
-import React, { Component } from 'react';
-import classnames from 'classnames';
+import React, { Component, useState } from 'react';
+import { ChevronRight } from '@styled-icons/material';
+import { Collapse } from '@material-ui/core';
 import StatusBar from './CourseAvailabilityBar';
-import { ReactComponent as CollapseIcon } from '../../assets/collapse-filled.svg';
-import { ReactComponent as NavigationIcon } from '../../assets/collapse.svg';
+// import { ReactComponent as CollapseIcon } from '../../assets/collapse-filled.svg';
+// import { ReactComponent as NavigationIcon } from '../../assets/collapse.svg';
 // import './CourseDetailTableComponent.scss';
 import {
   TableCellContainer,
   TableCellDot,
   TableCellDottedLine,
   TableCellDetail,
-  Rotate,
-  Down,
   CellHeader,
   InstructorName,
   SelectionsContainer,
   Selection,
   CellSection,
   TableCellDotContainer,
+  ExpandIcon,
+  NavigationIcon,
 } from '../../styled';
 
 const Header = () => (
@@ -53,6 +54,23 @@ const Section = () => (
   </CellSection>
 );
 
+const Final = () => (
+  <CellSection>
+    <div style={{ color: '#7D7D7D' }}>
+      FINAL
+    </div>
+    <div style={{ color: '#034263' }}>
+      Mon 12/12
+    </div>
+    <div>
+      3:00p - 5:59p
+    </div>
+    <div>
+      TBA
+    </div>
+  </CellSection>
+);
+
 class CourseDetailTableComponent extends Component {
   constructor(props) {
     super(props);
@@ -69,6 +87,8 @@ class CourseDetailTableComponent extends Component {
   renderLecture = (section) => {
     const { expand } = this.state;
 
+    console.log('expand', expand);
+
     return (
       <div
         onClick={this.expandLecture}
@@ -76,15 +96,13 @@ class CourseDetailTableComponent extends Component {
         <TableCellContainer style={{ marginTop: 15 }}>
           <TableCellDotContainer>
             <TableCellDot />
-            <TableCellDottedLine halfHeight />
+            <TableCellDottedLine halfHeight hide={!expand} />
           </TableCellDotContainer>
           <TableCellDetail>
             <Header />
             <Section />
           </TableCellDetail>
-          <CollapseIcon
-            className={classnames('rotate', { down: expand })}
-          />
+          <ExpandIcon rotate={expand} />
         </TableCellContainer>
       </div>
     );
@@ -98,16 +116,33 @@ class CourseDetailTableComponent extends Component {
           <Section />
           <StatusBar />
         </TableCellDetail>
-        <NavigationIcon style={{ transform: 'rotate(90deg)' }} />
+        <NavigationIcon />
       </TableCellContainer>
     </div>
   )
 
+  renderFinal = () => (
+    <TableCellContainer>
+      <TableCellDotContainer reverse>
+        <TableCellDottedLine halfHeight />
+        <TableCellDot />
+      </TableCellDotContainer>
+      <TableCellDetail smallPadding>
+        <Final />
+      </TableCellDetail>
+    </TableCellContainer>
+  )
+
   render() {
+    const { expand } = this.state;
     return (
       <div className="course-detail-table-main">
         {this.renderLecture()}
-        {this.renderDiscussion()}
+        <Collapse in={expand}>
+          {/* <div id="test">testtet</div> */}
+          {this.renderDiscussion()}
+          {this.renderFinal()}
+        </Collapse>
       </div>
     );
   }
