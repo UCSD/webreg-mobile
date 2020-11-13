@@ -1,6 +1,6 @@
 import React, { Component, useState } from 'react';
 import { ChevronRight } from '@styled-icons/material';
-import { Collapse } from '@material-ui/core';
+import { Collapse, IconButton } from '@material-ui/core';
 import StatusBar from './CourseAvailabilityBar';
 // import { ReactComponent as CollapseIcon } from '../../assets/collapse-filled.svg';
 // import { ReactComponent as NavigationIcon } from '../../assets/collapse.svg';
@@ -102,7 +102,9 @@ class CourseDetailTableComponent extends Component {
             <Header />
             <Section />
           </TableCellDetail>
-          <ExpandIcon rotate={expand} />
+          <IconButton size="small">
+            <ExpandIcon rotate={expand} />
+          </IconButton>
         </TableCellContainer>
       </div>
     );

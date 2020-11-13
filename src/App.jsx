@@ -8,7 +8,7 @@ import Home from './components/Home';
 import Boilerplate from './components/Boilerplate';
 import Calendar from './components/Common/Calendar';
 import SearchResultCard from './components/Common/SearchResultCard';
-import CourseAvailabilityBar from './components/Common/CourseAvailabilityBar';
+import CourseDetailHeader from './components/Common/CourseDetailHeader';
 import CourseDetailTableComponent from './components/Common/CourseDetailTableComponent';
 
 import './App.css';

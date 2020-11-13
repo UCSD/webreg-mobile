@@ -1,27 +1,37 @@
 import React, { Component } from 'react';
-import './SearchResultCard.scss';
-import { ReactComponent as BookMarkIcon } from '../../assets/bookmark.svg';
-import { ReactComponent as FilledBookMarkIcon } from '../../assets/bookmark-filled.svg';
+// import './SearchResultCard.scss';
+import { IconButton } from '@material-ui/core';
+import {
+  SearchResultCardContainer,
+  CourseTitle,
+  CourseDescription,
+  CourseUnitIcon,
+  BookMarkUnfilled,
+  BookMarkFilled,
+  BookMarkIconContainer,
+} from '../../styled';
 
-const SearchResultCard = ({ 
+const SearchResultCard = ({
   units = 2,
   title = 'CSE 3',
   description = 'Fluency/Information Technology',
   bookmarked = false,
   onClick,
 }) => (
-  <div className="search-result-card">
-    <div className="course-unit-icon">
-      <div className="course-unit-text">{units}</div>
-    </div>
+  <SearchResultCardContainer>
+    <CourseUnitIcon>
+      <div>{units}</div>
+    </CourseUnitIcon>
     <div>
-      <div className="course-title">{title}</div>
-      <div className="course-description">{description}</div>
+      <CourseTitle>{title}</CourseTitle>
+      <CourseDescription>{description}</CourseDescription>
     </div>
-    <div className="course-favorite-icon" onClick={onClick}>
-      {bookmarked ? <FilledBookMarkIcon /> : <BookMarkIcon /> }
-    </div>
-  </div>
+    <BookMarkIconContainer onClick={onClick}>
+      <IconButton size="small">
+        {bookmarked ? <BookMarkFilled /> : <BookMarkUnfilled /> }
+      </IconButton>
+    </BookMarkIconContainer>
+  </SearchResultCardContainer>
 );
 
 export default SearchResultCard;
