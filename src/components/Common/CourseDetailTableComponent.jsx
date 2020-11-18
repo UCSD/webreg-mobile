@@ -1,5 +1,4 @@
 import React, { Component, useState } from 'react';
-import { ChevronRight } from '@styled-icons/material';
 import { Collapse, IconButton } from '@material-ui/core';
 import StatusBar from './CourseAvailabilityBar';
 // import { ReactComponent as CollapseIcon } from '../../assets/collapse-filled.svg';
@@ -12,22 +11,19 @@ import {
   TableCellDetail,
   CellHeader,
   InstructorName,
-  SelectionsContainer,
   Selection,
   CellSection,
   TableCellDotContainer,
   ExpandIcon,
   NavigationIcon,
+  DayOfWeek,
+  PrereqLabel,
 } from '../../styled';
 
 const Header = () => (
   <CellHeader>
     <InstructorName>Gillespie, Gary N</InstructorName>
-    <SelectionsContainer>
-      <Selection>Note</Selection>
-      <Selection>Prereq</Selection>
-      <Selection>Level</Selection>
-    </SelectionsContainer>
+    <Selection>Note</Selection>
   </CellHeader>
 );
 
@@ -39,11 +35,11 @@ const Section = () => (
       <span>LE</span>
     </div>
     <div>
-      <span style={{ color: '#EAEAEA' }}>M</span>
-      <span>T</span>
-      <span style={{ color: '#EAEAEA' }}>W</span>
-      <span>T</span>
-      <span style={{ color: '#EAEAEA' }}>F</span>
+      <DayOfWeek>M</DayOfWeek>
+      <DayOfWeek active>T</DayOfWeek>
+      <DayOfWeek>W</DayOfWeek>
+      <DayOfWeek active>T</DayOfWeek>
+      <DayOfWeek>F</DayOfWeek>
     </div>
     <div>
       3:30p - 4:50p
@@ -94,11 +90,11 @@ class CourseDetailTableComponent extends Component {
         onClick={this.expandLecture}
       >
         <TableCellContainer style={{ marginTop: 15 }}>
-          <TableCellDotContainer>
+          <TableCellDotContainer expand={expand}>
             <TableCellDot />
-            <TableCellDottedLine halfHeight hide={!expand} />
+            <TableCellDottedLine halfHeight />
           </TableCellDotContainer>
-          <TableCellDetail>
+          <TableCellDetail lecture>
             <Header />
             <Section />
           </TableCellDetail>
@@ -123,17 +119,36 @@ class CourseDetailTableComponent extends Component {
     </div>
   )
 
-  renderFinal = () => (
-    <TableCellContainer>
-      <TableCellDotContainer reverse>
-        <TableCellDottedLine halfHeight />
-        <TableCellDot />
-      </TableCellDotContainer>
-      <TableCellDetail smallPadding>
-        <Final />
-      </TableCellDetail>
-    </TableCellContainer>
-  )
+  renderFinal = () => {
+    const { expand } = this.state;
+    return (
+      <TableCellContainer>
+        <TableCellDotContainer reverse expand={expand}>
+          <TableCellDottedLine halfHeight />
+          <TableCellDot />
+        </TableCellDotContainer>
+        <TableCellDetail smallPadding>
+          <Final />
+        </TableCellDetail>
+      </TableCellContainer>
+    );
+  }
+
+  // renderPrereq = () => (
+  //   <TableCellContainer style={{ marginTop: 8 }}>
+  //     {/* <CellSection> */}
+  //     <div />
+  //     <TableCellDetail>
+  //       <PrereqLabel>
+  //         Course Prerequisites & Level Restrictions
+  //       </PrereqLabel>
+  //     </TableCellDetail>
+  //     <IconButton size="small">
+  //       <ExpandIcon />
+  //     </IconButton>
+  //     {/* </CellSection> */}
+  //   </TableCellContainer>
+  // )
 
   render() {
     const { expand } = this.state;
@@ -143,8 +158,8 @@ class CourseDetailTableComponent extends Component {
         <Collapse in={expand}>
           {/* <div id="test">testtet</div> */}
           {this.renderDiscussion()}
-          {this.renderFinal()}
         </Collapse>
+        {this.renderFinal()}
       </div>
     );
   }

@@ -13,7 +13,7 @@ export const StatusBarLabelsContainer = styled.div`
 `;
 
 export const StatusBarLabel = styled.div`
-  font-size: 9px;
+  font-size: 10px;
   line-height: 11px;
   ${(props) => (`color: ${props.color}`)}
 `;
