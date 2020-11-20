@@ -27,13 +27,14 @@ export const TableCellDot = styled.div`
 
 export const TableCellDottedLine = styled.div`
 height: ${
-  (props) => (props.halfHeight ? '50%;' : '100%;')
+  (props) => (props.halfHeight ? '50%;' : 'calc(100% + 5px);')
 }
+  margin-top: 0px;
   -moz-transition: all .2s linear;
   -webkit-transition: all .2s linear;
   transition: all .2s linear;
   width: 0;
-  border-right: 1px dotted #034163;
+  border-right: 1px dashed #034163;
 `;
 
 export const TableCellDetail = styled.div`
@@ -105,12 +106,12 @@ export const Selection = styled.div`
 export const CellSection = styled.div`
   width: 100%;
   display: grid;
-  grid-template-columns: 0.45fr 0.62fr 0.9fr 0.75fr;
+  grid-template-columns: 0.4fr 0.54fr 0.88fr 0.75fr;
   letter-spacing: -0.02em;
-  column-gap: 10px;
+  column-gap: 8px;
   align-items: center;
   justify-items: center;
-  font-size: 12px;
+  font-size: 11px;
 
   &>div {
     &:first-child {
@@ -140,6 +141,8 @@ ${
     margin-top: 8px;
   `)
 }
-  height: ${(props) => (props.expand ? '130%' : '112%')};
+  height: 100%;
   position: relative;
 `;
+  // height: ${(props) => (props.expand ? '130%' : '112%')};
+
