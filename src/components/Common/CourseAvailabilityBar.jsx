@@ -11,16 +11,19 @@ import {
 } from '../../styled';
 
 const DEFAULT_DATA = {
+  capacityQuantity: 180,
+  enrolledQuantity: 0,
   availableSeats: 0,
   waitlistCount: 10,
   total: 100,
 };
 
-const StatusBar = ({ data }) => {
-  const { availableSeats, waitlistCount, total } = data;
+const StatusBar = ({ availableSeats, capacityQuantity, waitlistCount }) => {
+  // const { enrolledQuantity, waitlistCount, capacityQuantity } = data;
+  // const availableSeats = capacityQuantity - enrolledQuantity;
 
   if (availableSeats > 0 || waitlistCount > 0) {
-    const percentage = availableSeats / total * 100;
+    const percentage = (availableSeats / capacityQuantity) * 100;
     const leftStyle = {
       width: `${percentage}%`,
       marginRight: 1,
@@ -47,7 +50,8 @@ const StatusBar = ({ data }) => {
 };
 
 const CourseAvailabilityBar = ({ data = DEFAULT_DATA, style }) => {
-  const { availableSeats, waitlistCount, total } = data;
+  const { enrolledQuantity, waitlistCount, capacityQuantity } = data;
+  const availableSeats = capacityQuantity - enrolledQuantity;
 
   return (
     <StatusBarContainer style={style}>
@@ -56,13 +60,17 @@ const CourseAvailabilityBar = ({ data = DEFAULT_DATA, style }) => {
           {`Available ${availableSeats}`}
         </StatusBarLabel>
         <StatusBarLabel color="#7D7D7D">
-          {`Total ${total}`}
+          {`Total ${capacityQuantity}`}
         </StatusBarLabel>
         <StatusBarLabel color={waitlistCount > 0 ? '#D27070' : '#C4C4C4'}>
-          {waitlistCount > 0 ? `Waitlist ${waitlistCount}` : `Enrolled ${total - availableSeats}`}
+          {waitlistCount > 0 ? `Waitlist ${waitlistCount}` : `Enrolled ${enrolledQuantity}`}
         </StatusBarLabel>
       </StatusBarLabelsContainer>
-      <StatusBar data={data} />
+      <StatusBar
+        availableSeats={availableSeats}
+        capacityQuantity={capacityQuantity}
+        waitlistCount={waitlistCount}
+      />
     </StatusBarContainer>
   );
 };

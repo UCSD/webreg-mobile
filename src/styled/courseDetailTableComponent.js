@@ -105,7 +105,7 @@ export const Selection = styled.div`
 export const CellSection = styled.div`
   width: 100%;
   display: grid;
-  grid-template-columns: 0.45fr 0.65fr 0.9fr 0.8fr;
+  grid-template-columns: 0.45fr 0.62fr 0.9fr 0.75fr;
   letter-spacing: -0.02em;
   column-gap: 10px;
   align-items: center;
