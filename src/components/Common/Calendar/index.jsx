@@ -10,7 +10,7 @@ import {
   CalendarTimeline,
   CalendarTimelineItem,
   CalendarCourseContainer,
-} from '../../styled';
+} from '../../../styled';
 
 const times = [
   '8am',

@@ -52,6 +52,11 @@ export const CalendarBody = styled.div`
   padding: 0 ${CALENDAR_HORIZONTAL_PADDING};
   display: grid;
   grid-template-columns: ${CALENDAR_TIME_COL_WIDTH} 1fr;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 `;
 
 export const CalendarGrid = styled.div`
@@ -102,9 +107,10 @@ export const CalendarCardBody = styled(FlexContainer)`
   letter-spacing: -0.02em;
 `;
 
-export const CalendarCardTitle = styled(FlexContainer)`
+export const CalendarCardTitle = styled.div`
   font-size: 9px;
   font-weight: bold;
+  line-height: 10px;
 `;
 
 export const CalendarCard = styled.div`
@@ -121,9 +127,6 @@ export const CalendarCard = styled.div`
 
   ${(props) => (
     props.focused
-  && `border: 1px solid #034263;
-  ${CalendarCardHeader} {
-  border-bottom: 1px solid #034263;
-  }
-  `)}
+  && 'border: 1px solid #034263;'
+  )}
 `;

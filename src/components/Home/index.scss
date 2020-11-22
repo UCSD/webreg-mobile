@@ -1,16 +1,27 @@
 @import 'constant';
 
-.quarter-container {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin: 10px 60px;
-  justify-content: space-between;
+.home {
+  background-color: white;
+  height: 100vh;
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
 }
 
-.icon-container {
-  width: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.quarter-container {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  margin: 10px 60px;
+
+  .icon-container {
+    width: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .quater-text-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }

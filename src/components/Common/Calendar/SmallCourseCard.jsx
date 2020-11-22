@@ -1,9 +1,9 @@
 import React from 'react';
-import './SmallCourseCard.scss';
+// import './SmallCourseCard.scss';
 import {
   CalendarCard, CalendarCardBody, CalendarCardHeader, CalendarCardTitle,
-} from '../../styled';
-import { calculateCardPosition } from '../../util';
+} from '../../../styled';
+import { calculateCardPosition } from '../../../util';
 
 // startTime / endTime format: hh:mm
 // dayOfWeek format: [1,7]
