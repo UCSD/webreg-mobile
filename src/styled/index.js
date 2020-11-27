@@ -4,3 +4,4 @@ export * from './courseAvailabilityBar';
 export * from './courseDetailTableComponent';
 export * from './searchResultCard';
 export * from './courseDetailHeader';
+export * from './listViewCard';

@@ -17,12 +17,14 @@ const SmallCourseCard = ({
   location,
   datePrefix = '2020-10-20T',
   focused = false,
+  onClick = () => {},
 }) => (
   <CalendarCard
     focused={focused}
     style={{
       ...calculateCardPosition(startTime, endTime, dayOfWeek, datePrefix),
     }}
+    onClick={onClick}
   >
     <CalendarCardHeader>{type}</CalendarCardHeader>
     <CalendarCardBody>

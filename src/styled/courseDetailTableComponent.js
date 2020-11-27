@@ -11,7 +11,7 @@ export const TableCellContainer = styled.div`
   background-color: #FBFBFB;
   border-radius: 10px;
   display: grid;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid ${rgba(0, 0, 0, 0.1)};
   grid-template-columns: 32px 1fr 32px;
   align-items: center;
   justify-items: center;
@@ -144,5 +144,3 @@ ${
   height: 100%;
   position: relative;
 `;
-  // height: ${(props) => (props.expand ? '130%' : '112%')};
-

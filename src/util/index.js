@@ -1,4 +1,5 @@
 import moment from 'moment';
+import _ from 'lodash';
 
 export const DATE_PREFIX = '2020-10-20T';
 
@@ -33,3 +34,19 @@ export const calculateCardPosition = (
   ),
   gridColumn: calcColSpan(dayOfWeek),
 });
+
+export const parseSections = (sections = []) => {
+  // organize sections by instruction type: LE, DI
+  const groupedSections = _.groupBy(sections, 'instructionType');
+  // lecture
+  const lecture = groupedSections.LE[0];
+  // di
+  const discussion = groupedSections.DI;
+  // finals
+  const final = _.groupBy(lecture.additionalMeetings, 'meetingType').FI[0];
+  return {
+    lecture,
+    discussion,
+    final,
+  };
+};

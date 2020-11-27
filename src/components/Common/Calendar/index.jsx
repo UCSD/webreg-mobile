@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import SmallCourseCard from './SmallCourseCard';
 import {
   CalendarBody,
@@ -30,32 +30,98 @@ const times = [
   '10pm',
 ];
 
-const Calendar = () => (
-  <CalendarContainer>
-    <CalendarHeader>
-      <CalendarHeaderItem time />
-      <CalendarHeaderItem>Sun</CalendarHeaderItem>
-      <CalendarHeaderItem>Mon</CalendarHeaderItem>
-      <CalendarHeaderItem>Tues</CalendarHeaderItem>
-      <CalendarHeaderItem>Wed</CalendarHeaderItem>
-      <CalendarHeaderItem>Thurs</CalendarHeaderItem>
-      <CalendarHeaderItem>Fri</CalendarHeaderItem>
-      <CalendarHeaderItem>Sat</CalendarHeaderItem>
-    </CalendarHeader>
-    <CalendarBody>
-      <CalendarTimeline>
-        {times.map((time) => (
-          <CalendarTimelineItem key={`course-time-${time}`}>
-            {time}
-          </CalendarTimelineItem>
-        ))}
-      </CalendarTimeline>
-      <CalendarSchedule>
-        {times.map((time) => (
-          <CalendarScheduleItem key={`course-grid-row-${time}`} />
-        ))}
-        <CalendarCourseContainer>
-          <SmallCourseCard
+const courses = [
+  {
+    datePrefix: '2020-06-06T',
+    startTime: '09:00',
+    endTime: '09:50',
+    dayOfWeek: 2,
+    type: 'LE',
+    title: 'CSE 120',
+    location: 'PCYNH 112',
+  },
+  {
+    datePrefix: '2020-06-06T',
+    startTime: '09:00',
+    endTime: '09:50',
+    dayOfWeek: 4,
+    type: 'LE',
+    title: 'CSE 120',
+    location: 'PCYNH 112',
+  },
+  {
+    datePrefix: '2020-06-06T',
+    startTime: '09:00',
+    endTime: '09:50',
+    dayOfWeek: 6,
+    type: 'LE',
+    title: 'CSE 120',
+    location: 'PCYNH 112',
+  },
+  {
+    datePrefix: '2020-06-06T',
+    startTime: '14:00',
+    endTime: '15:20',
+    dayOfWeek: 1,
+    type: 'LE',
+    title: 'COGS 10',
+    location: 'WLH 110',
+  },
+  {
+    datePrefix: '2020-06-06T',
+    startTime: '10:00',
+    endTime: '10:50',
+    dayOfWeek: 1,
+    type: 'DI',
+    title: 'CSE 123',
+    location: 'PCYNH 112',
+  },
+];
+
+const Calendar = () => {
+  const [focused, setFocused] = useState(-1);
+
+  return (
+    <CalendarContainer>
+      <CalendarHeader>
+        <CalendarHeaderItem time />
+        <CalendarHeaderItem>Sun</CalendarHeaderItem>
+        <CalendarHeaderItem>Mon</CalendarHeaderItem>
+        <CalendarHeaderItem>Tues</CalendarHeaderItem>
+        <CalendarHeaderItem>Wed</CalendarHeaderItem>
+        <CalendarHeaderItem>Thurs</CalendarHeaderItem>
+        <CalendarHeaderItem>Fri</CalendarHeaderItem>
+        <CalendarHeaderItem>Sat</CalendarHeaderItem>
+      </CalendarHeader>
+      <CalendarBody>
+        <CalendarTimeline>
+          {times.map((time) => (
+            <CalendarTimelineItem key={`course-time-${time}`}>
+              {time}
+            </CalendarTimelineItem>
+          ))}
+        </CalendarTimeline>
+        <CalendarSchedule>
+          {times.map((time) => (
+            <CalendarScheduleItem key={`course-grid-row-${time}`} />
+          ))}
+          <CalendarCourseContainer>
+            {courses.map(({
+              datePrefix, startTime, endTime, dayOfWeek, type, title, location,
+            }, index) => (
+              <SmallCourseCard
+                datePrefix={datePrefix}
+                startTime={startTime}
+                endTime={endTime}
+                dayOfWeek={dayOfWeek}
+                type={type}
+                title={title}
+                location={location}
+                focused={focused === index}
+                onClick={() => setFocused(index)}
+              />
+            ))}
+            {/* <SmallCourseCard
             datePrefix="2020-06-06T"
             startTime="09:00"
             endTime="09:50"
@@ -100,11 +166,12 @@ const Calendar = () => (
             type="DI"
             title="CSE 123"
             location="PCYNH 112"
-          />
-        </CalendarCourseContainer>
-      </CalendarSchedule>
-    </CalendarBody>
-  </CalendarContainer>
-);
+          /> */}
+          </CalendarCourseContainer>
+        </CalendarSchedule>
+      </CalendarBody>
+    </CalendarContainer>
+  );
+};
 
 export default Calendar;

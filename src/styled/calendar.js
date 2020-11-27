@@ -1,3 +1,4 @@
+import { rgba } from 'polished';
 import {
   COLOR_GREY,
   COLOR_LIGHT_GREY,
@@ -116,17 +117,27 @@ export const CalendarCardTitle = styled.div`
 export const CalendarCard = styled.div`
   width: 100%;
   height: 100%;
+  position: relative;
   display: grid;
-  grid-template-rows: 15px 1fr;
-  box-shadow: 1px 1px 2.5px rgba(0, 0, 0, 0.25), -1px 1px 2.5px rgba(0, 0, 0, 0.25);
+  grid-template-rows: 15px calc(100% - 15px);
+  box-shadow: 1px 1px 2.5px ${rgba(0, 0, 0, 0.25)}, -1px 1px 2.5px ${rgba(0, 0, 0, 0.25)};
   border-radius: 2px;
   background-color: white;
   text-transform: uppercase;
   overflow: hidden;
   box-sizing: border-box;
+  border-color: ${rgba(0, 0, 0, 0)};
 
   ${(props) => (
     props.focused
-  && 'border: 1px solid #034263;'
+  && `
+   border: 1px solid #034263;
+   border-radius: 3px;
+   grid-template-rows: 14px calc(100% - 13px);
+  `
   )}
+
+  -moz-transition: all .2s linear !important;
+  -webkit-transition: all .2s linear !important;
+  transition: all 0.2s linear !important;
 `;
