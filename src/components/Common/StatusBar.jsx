@@ -14,15 +14,15 @@ const DEFAULT_DATA = {
   capacityQuantity: 180,
   enrolledQuantity: 0,
   availableSeats: 0,
-  waitlistCount: 10,
+  waitlistQuantity: 10,
   total: 100,
 };
 
-const StatusBar = ({ availableSeats, capacityQuantity, waitlistCount }) => {
-  // const { enrolledQuantity, waitlistCount, capacityQuantity } = data;
+const StatusBar = ({ availableSeats, capacityQuantity, waitlistQuantity }) => {
+  // const { enrolledQuantity, waitlistQuantity, capacityQuantity } = data;
   // const availableSeats = capacityQuantity - enrolledQuantity;
 
-  if (availableSeats > 0 || waitlistCount > 0) {
+  if (availableSeats > 0 || waitlistQuantity > 0) {
     const percentage = (availableSeats / capacityQuantity) * 100;
     const leftStyle = {
       width: `${percentage}%`,
@@ -31,7 +31,7 @@ const StatusBar = ({ availableSeats, capacityQuantity, waitlistCount }) => {
 
     const rightStyle = {
       width: `${100 - percentage}%`,
-      backgroundColor: waitlistCount > 0 ? '#D27070' : '#C4C4C4',
+      backgroundColor: waitlistQuantity > 0 ? '#D27070' : '#C4C4C4',
     };
 
     return (
@@ -49,8 +49,12 @@ const StatusBar = ({ availableSeats, capacityQuantity, waitlistCount }) => {
   );
 };
 
-const CourseAvailabilityBar = ({ data = DEFAULT_DATA, style }) => {
-  const { enrolledQuantity, waitlistCount, capacityQuantity } = data;
+const CourseAvailabilityBar = ({
+  enrolledQuantity = 0,
+  waitlistQuantity = 0,
+  capacityQuantity = 0,
+  style,
+}) => {
   const availableSeats = capacityQuantity - enrolledQuantity;
 
   return (
@@ -62,14 +66,14 @@ const CourseAvailabilityBar = ({ data = DEFAULT_DATA, style }) => {
         <StatusBarLabel color="#7D7D7D">
           {`Total ${capacityQuantity}`}
         </StatusBarLabel>
-        <StatusBarLabel color={waitlistCount > 0 ? '#D27070' : '#C4C4C4'}>
-          {waitlistCount > 0 ? `Waitlist ${waitlistCount}` : `Enrolled ${enrolledQuantity}`}
+        <StatusBarLabel color={waitlistQuantity > 0 ? '#D27070' : '#C4C4C4'}>
+          {waitlistQuantity > 0 ? `Waitlist ${waitlistQuantity}` : `Enrolled ${enrolledQuantity}`}
         </StatusBarLabel>
       </StatusBarLabelsContainer>
       <StatusBar
         availableSeats={availableSeats}
         capacityQuantity={capacityQuantity}
-        waitlistCount={waitlistCount}
+        waitlistQuantity={waitlistQuantity}
       />
     </StatusBarContainer>
   );

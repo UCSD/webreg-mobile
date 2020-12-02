@@ -59,7 +59,6 @@ export const CourseHeaderContainer = styled(SearchResultCardContainer)`
 `;
 
 export const CourseDetailContainer = styled.div`
-  padding-left: 8px;
   padding-top: 8px;
 `;
 
@@ -69,7 +68,16 @@ export const EnrollStatus = styled.div`
   right: 0;
   font-size: 12px;
   line-heigth: 14px;
-  color: #034263;
+  color: ${(props) => {
+    switch (props.status) {
+      case 'planned':
+        return '#979797';
+      case 'waitlist':
+        return '#D27070';
+      default:
+        return '#034263';
+    }
+  }};
 `;
 
 export const IconsContainer = styled.div`

@@ -109,7 +109,7 @@ export const CellSection = styled.div`
   grid-template-columns: 0.4fr 0.54fr 0.88fr 0.75fr;
   letter-spacing: -0.02em;
   column-gap: 8px;
-  align-items: center;
+  align-items: start;
   justify-items: center;
   font-size: 11px;
 

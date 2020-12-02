@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { IconButton } from '@material-ui/core';
 
 import {
   SecondaryText,
@@ -18,356 +19,394 @@ import {
   RowContainer,
   CourseDetailContainer,
 } from '../../styled';
-import { Section, Final } from './CourseDetailTableComponent';
+import { Section, Final, DAYS_OF_WEEK } from './CourseDetailTableComponent';
 import { parseSections } from '../../util';
 
-const MOCK_COURSE2 = {
-  subjectCode: 'CSE',
-  courseCode: '105',
-  departmentCode: 'CSE',
-  courseTitle: 'Theory of Computation',
-  unitsMin: 4,
-  unitsMax: 4,
-  unitsInc: 0,
-  academicLevel: 'UD',
-  sections: [
+const MOCK_DATA = {
+  lecture: {
+    subjectCode: 'COGS',
+    courseCode: '187B',
+    instructionType: 'LE',
+    sectionNumber: '960510',
+    sectionCode: 'A00',
+    specialMeetingCode: '',
+    longDescription: '',
+    sectionStatus: null,
+    enrollmentStatus: 'EN',
+    gradeOption: 'L',
+    creditHours: 4,
+    gradeOptionPlus: true,
+    creditHoursPlus: false,
+    courseTitle: 'Practicum in Pro Web Design',
+    enrollmentCapacity: 60,
+    enrollmentQuantity: 64,
+    countOnWaitlist: 2,
+    stopEnrollmentFlag: true,
+    classTimes: [
+      {
+        dayCode: '2',
+        startDate: '2019-01-07',
+        beginHHTime: '14',
+        beginMMTime: '0',
+        endHHTime: '15',
+        endMMTime: '20',
+        buildingCode: 'HSS',
+        roomCode: '1346',
+        endDate: '2019-03-15',
+      },
+      {
+        dayCode: '4',
+        startDate: '2019-01-07',
+        beginHHTime: '14',
+        beginMMTime: '0',
+        endHHTime: '15',
+        endMMTime: '20',
+        buildingCode: 'HSS',
+        roomCode: '1346',
+        endDate: '2019-03-15',
+      },
+    ],
+    instructors: [
+      'Kirsh, David Joel',
+    ],
+  },
+  final: {
+    subjectCode: 'COGS',
+    courseCode: '187B',
+    instructionType: 'LE',
+    sectionNumber: '960510',
+    sectionCode: 'A00',
+    specialMeetingCode: 'FI',
+    longDescription: '',
+    sectionStatus: null,
+    enrollmentStatus: null,
+    gradeOption: null,
+    creditHours: null,
+    gradeOptionPlus: false,
+    creditHoursPlus: false,
+    courseTitle: null,
+    enrollmentCapacity: null,
+    enrollmentQuantity: null,
+    countOnWaitlist: null,
+    stopEnrollmentFlag: false,
+    classTimes: [
+      {
+        dayCode: '4',
+        startDate: '2019-03-21',
+        beginHHTime: '15',
+        beginMMTime: '0',
+        endHHTime: '17',
+        endMMTime: '59',
+        buildingCode: 'HSS',
+        roomCode: '1346',
+        endDate: null,
+      },
+    ],
+    instructors: [
+      'Kirsh, David Joel',
+    ],
+  },
+  discussion: {
+    subjectCode: 'COGS',
+    courseCode: '187B',
+    instructionType: 'DI',
+    sectionNumber: '960510',
+    sectionCode: 'A00',
+    specialMeetingCode: '',
+    longDescription: '',
+    sectionStatus: null,
+    enrollmentStatus: null,
+    gradeOption: null,
+    creditHours: null,
+    gradeOptionPlus: false,
+    creditHoursPlus: false,
+    courseTitle: null,
+    enrollmentCapacity: null,
+    enrollmentQuantity: null,
+    countOnWaitlist: null,
+    stopEnrollmentFlag: false,
+    classTimes: [
+      {
+        dayCode: '2',
+        startDate: '2019-03-21',
+        beginHHTime: '11',
+        beginMMTime: '0',
+        endHHTime: '11',
+        endMMTime: '50',
+        buildingCode: 'HSS',
+        roomCode: '1346',
+        endDate: null,
+      },
+    ],
+    instructors: [
+      'Kirsh, David Joel',
+    ],
+  },
+};
+
+const ENROLLED_COURSES = [{
+  subjectCode: 'COGS',
+  courseCode: '187B',
+  instructionType: 'DI',
+  sectionNumber: '960510',
+  sectionCode: 'A00',
+  specialMeetingCode: '',
+  longDescription: '',
+  sectionStatus: null,
+  enrollmentStatus: 'EN',
+  gradeOption: 'L',
+  creditHours: 4,
+  gradeOptionPlus: true,
+  creditHoursPlus: false,
+  courseTitle: 'Practicum in Pro Web Design',
+  enrollmentCapacity: 60,
+  enrollmentQuantity: 64,
+  countOnWaitlist: 2,
+  stopEnrollmentFlag: true,
+  classTimes: [
     {
-      sectionId: '947977',
-      termCode: 'FA18',
-      sectionCode: 'A00',
-      instructionType: 'LE',
-      sectionStatus: 'NC',
-      subtitle: '',
-      startDate: '2018-09-27',
-      endDate: '2018-12-07',
-      enrolledQuantity: 0,
-      capacityQuantity: 158,
-      stopEnrollmentFlag: false,
-      printFlag: '',
-      subterm: '01',
-      planCode: 'ST',
-      recurringMeetings: [
-        {
-          dayCode: 'MO',
-          dayCodeIsis: 'M',
-          startTime: '1200',
-          endTime: '1250',
-          buildingCode: 'MANDE',
-          roomCode: 'B-210',
-        },
-        {
-          dayCode: 'WE',
-          dayCodeIsis: 'W',
-          startTime: '800',
-          endTime: '850',
-          buildingCode: 'MANDE',
-          roomCode: 'B-210',
-        },
-        {
-          dayCode: 'FR',
-          dayCodeIsis: 'F',
-          startTime: '800',
-          endTime: '850',
-          buildingCode: 'MANDE',
-          roomCode: 'B-210',
-        },
-      ],
-      additionalMeetings: [
-        {
-          meetingType: 'RE',
-          meetingDate: '2018-10-22',
-          dayCode: 'MO',
-          dayCodeIsis: 'M',
-          startTime: '1900',
-          endTime: '2050',
-          buildingCode: 'PCYNH',
-          roomCode: '106',
-        },
-        {
-          meetingType: 'FI',
-          meetingDate: '2018-12-10',
-          dayCode: 'MO',
-          dayCodeIsis: 'M',
-          startTime: '800',
-          endTime: '1059',
-          buildingCode: 'MANDE',
-          roomCode: 'B-210',
-        },
-        {
-          meetingType: 'RE',
-          meetingDate: '2018-11-18',
-          dayCode: 'SU',
-          dayCodeIsis: 'U',
-          startTime: '1300',
-          endTime: '1450',
-          buildingCode: 'PCYNH',
-          roomCode: '106',
-        },
-        {
-          meetingType: 'RE',
-          meetingDate: '2018-12-09',
-          dayCode: 'SU',
-          dayCodeIsis: 'U',
-          startTime: '1200',
-          endTime: '1350',
-          buildingCode: 'LEDDN',
-          roomCode: 'AUD',
-        },
-      ],
-      instructors: [
-        {
-          pid: 'A08066291',
-          instructorName: 'Jones, Miles E',
-          primaryInstructor: true,
-          instructorEmailAddress: 'mej016@ucsd.edu',
-          workLoadUnitQty: 1,
-          percentOfLoad: 100,
-        },
-      ],
+      dayCode: '2',
+      startDate: '2019-01-07',
+      beginHHTime: '14',
+      beginMMTime: '0',
+      endHHTime: '15',
+      endMMTime: '20',
+      buildingCode: 'HSS',
+      roomCode: '1346',
+      endDate: '2019-03-15',
     },
     {
-      sectionId: '947978',
-      termCode: 'FA18',
-      sectionCode: 'A01',
-      instructionType: 'DI',
-      sectionStatus: 'AC',
-      subtitle: '',
-      startDate: '2018-09-27',
-      endDate: '2018-12-07',
-      enrolledQuantity: 47,
-      capacityQuantity: 80,
-      stopEnrollmentFlag: false,
-      printFlag: '',
-      subterm: '01',
-      planCode: 'ST',
-      recurringMeetings: [
-        {
-          dayCode: 'MO',
-          dayCodeIsis: 'M',
-          startTime: '1400',
-          endTime: '1450',
-          buildingCode: 'CENTR',
-          roomCode: '212',
-        },
-      ],
-      additionalMeetings: [],
-      instructors: [
-        {
-          pid: 'A08066291',
-          instructorName: 'Jones, Miles E',
-          primaryInstructor: true,
-          instructorEmailAddress: 'mej016@ucsd.edu',
-          workLoadUnitQty: 1,
-          percentOfLoad: 100,
-        },
-      ],
-    },
-    {
-      sectionId: '947979',
-      termCode: 'FA18',
-      sectionCode: 'A02',
-      instructionType: 'DI',
-      sectionStatus: 'AC',
-      subtitle: '',
-      startDate: '2018-09-27',
-      endDate: '2018-12-07',
-      enrolledQuantity: 38,
-      capacityQuantity: 80,
-      stopEnrollmentFlag: false,
-      printFlag: '',
-      subterm: '01',
-      planCode: 'ST',
-      recurringMeetings: [
-        {
-          dayCode: 'MO',
-          dayCodeIsis: 'M',
-          startTime: '1500',
-          endTime: '1550',
-          buildingCode: 'CENTR',
-          roomCode: '212',
-        },
-      ],
-      additionalMeetings: [],
-      instructors: [
-        {
-          pid: 'A08066291',
-          instructorName: 'Jones, Miles E',
-          primaryInstructor: true,
-          instructorEmailAddress: 'mej016@ucsd.edu',
-          workLoadUnitQty: 1,
-          percentOfLoad: 100,
-        },
-      ],
-    },
-    {
-      sectionId: '947980',
-      termCode: 'FA18',
-      sectionCode: 'B00',
-      instructionType: 'LE',
-      sectionStatus: 'NC',
-      subtitle: '',
-      startDate: '2018-09-27',
-      endDate: '2018-12-07',
-      enrolledQuantity: 0,
-      capacityQuantity: 158,
-      stopEnrollmentFlag: false,
-      printFlag: '',
-      subterm: '01',
-      planCode: 'ST',
-      recurringMeetings: [
-        {
-          dayCode: 'MO',
-          dayCodeIsis: 'M',
-          startTime: '900',
-          endTime: '950',
-          buildingCode: 'MANDE',
-          roomCode: 'B-210',
-        },
-        {
-          dayCode: 'WE',
-          dayCodeIsis: 'W',
-          startTime: '900',
-          endTime: '950',
-          buildingCode: 'MANDE',
-          roomCode: 'B-210',
-        },
-        {
-          dayCode: 'FR',
-          dayCodeIsis: 'F',
-          startTime: '900',
-          endTime: '950',
-          buildingCode: 'MANDE',
-          roomCode: 'B-210',
-        },
-      ],
-      additionalMeetings: [
-        {
-          meetingType: 'RE',
-          meetingDate: '2018-10-22',
-          dayCode: 'MO',
-          dayCodeIsis: 'M',
-          startTime: '1900',
-          endTime: '2050',
-          buildingCode: '',
-          roomCode: '',
-        },
-        {
-          meetingType: 'FI',
-          meetingDate: '2018-12-12',
-          dayCode: 'WE',
-          dayCodeIsis: 'W',
-          startTime: '800',
-          endTime: '1059',
-          buildingCode: 'MANDE',
-          roomCode: 'B-210',
-        },
-        {
-          meetingType: 'RE',
-          meetingDate: '2018-11-18',
-          dayCode: 'SU',
-          dayCodeIsis: 'U',
-          startTime: '1300',
-          endTime: '1450',
-          buildingCode: '',
-          roomCode: '',
-        },
-        {
-          meetingType: 'RE',
-          meetingDate: '2018-12-09',
-          dayCode: 'SU',
-          dayCodeIsis: 'U',
-          startTime: '1200',
-          endTime: '1350',
-          buildingCode: '',
-          roomCode: '',
-        },
-      ],
-      instructors: [
-        {
-          pid: 'A08066291',
-          instructorName: 'Jones, Miles E',
-          primaryInstructor: true,
-          instructorEmailAddress: 'mej016@ucsd.edu',
-          workLoadUnitQty: 1,
-          percentOfLoad: 100,
-        },
-      ],
-    },
-    {
-      sectionId: '947981',
-      termCode: 'FA18',
-      sectionCode: 'B01',
-      instructionType: 'DI',
-      sectionStatus: 'AC',
-      subtitle: '',
-      startDate: '2018-09-27',
-      endDate: '2018-12-07',
-      enrolledQuantity: 74,
-      capacityQuantity: 80,
-      stopEnrollmentFlag: false,
-      printFlag: '',
-      subterm: '01',
-      planCode: 'ST',
-      recurringMeetings: [
-        {
-          dayCode: 'FR',
-          dayCodeIsis: 'F',
-          startTime: '1500',
-          endTime: '1550',
-          buildingCode: 'CENTR',
-          roomCode: '212',
-        },
-      ],
-      additionalMeetings: [],
-      instructors: [
-        {
-          pid: 'A08066291',
-          instructorName: 'Jones, Miles E',
-          primaryInstructor: true,
-          instructorEmailAddress: 'mej016@ucsd.edu',
-          workLoadUnitQty: 1,
-          percentOfLoad: 100,
-        },
-      ],
-    },
-    {
-      sectionId: '947982',
-      termCode: 'FA18',
-      sectionCode: 'B02',
-      instructionType: 'DI',
-      sectionStatus: 'AC',
-      subtitle: '',
-      startDate: '2018-09-27',
-      endDate: '2018-12-07',
-      enrolledQuantity: 66,
-      capacityQuantity: 80,
-      stopEnrollmentFlag: false,
-      printFlag: '',
-      subterm: '01',
-      planCode: 'ST',
-      recurringMeetings: [
-        {
-          dayCode: 'FR',
-          dayCodeIsis: 'F',
-          startTime: '1600',
-          endTime: '1650',
-          buildingCode: 'CENTR',
-          roomCode: '212',
-        },
-      ],
-      additionalMeetings: [],
-      instructors: [
-        {
-          pid: 'A08066291',
-          instructorName: 'Jones, Miles E',
-          primaryInstructor: true,
-          instructorEmailAddress: 'mej016@ucsd.edu',
-          workLoadUnitQty: 1,
-          percentOfLoad: 100,
-        },
-      ],
+      dayCode: '4',
+      startDate: '2019-01-07',
+      beginHHTime: '14',
+      beginMMTime: '0',
+      endHHTime: '15',
+      endMMTime: '20',
+      buildingCode: 'HSS',
+      roomCode: '1346',
+      endDate: '2019-03-15',
     },
   ],
+  instructors: [
+    'Kirsh, David Joel',
+  ],
+},
+{
+  subjectCode: 'COGS',
+  courseCode: '187B',
+  instructionType: 'LE',
+  sectionNumber: '960510',
+  sectionCode: 'A00',
+  specialMeetingCode: 'FI',
+  longDescription: '',
+  sectionStatus: null,
+  enrollmentStatus: null,
+  gradeOption: null,
+  creditHours: null,
+  gradeOptionPlus: false,
+  creditHoursPlus: false,
+  courseTitle: null,
+  enrollmentCapacity: null,
+  enrollmentQuantity: null,
+  countOnWaitlist: null,
+  stopEnrollmentFlag: false,
+  classTimes: [
+    {
+      dayCode: '4',
+      startDate: '2019-03-21',
+      beginHHTime: '15',
+      beginMMTime: '0',
+      endHHTime: '17',
+      endMMTime: '59',
+      buildingCode: 'HSS',
+      roomCode: '1346',
+      endDate: null,
+    },
+  ],
+  instructors: [
+    'Kirsh, David Joel',
+  ],
+},
+{
+  subjectCode: 'MUS',
+  courseCode: '127',
+  instructionType: 'LE',
+  sectionNumber: '954672',
+  sectionCode: 'A00',
+  specialMeetingCode: '',
+  longDescription: '',
+  sectionStatus: null,
+  enrollmentStatus: 'EN',
+  gradeOption: 'L',
+  creditHours: 4,
+  gradeOptionPlus: true,
+  creditHoursPlus: false,
+  courseTitle: 'Discover Jazz',
+  enrollmentCapacity: 114,
+  enrollmentQuantity: 91,
+  countOnWaitlist: 0,
+  stopEnrollmentFlag: false,
+  classTimes: [
+    {
+      dayCode: '2',
+      startDate: '2019-01-07',
+      beginHHTime: '11',
+      beginMMTime: '0',
+      endHHTime: '12',
+      endMMTime: '20',
+      buildingCode: 'CPMC',
+      roomCode: '136',
+      endDate: '2019-03-15',
+    },
+    {
+      dayCode: '4',
+      startDate: '2019-01-07',
+      beginHHTime: '11',
+      beginMMTime: '0',
+      endHHTime: '12',
+      endMMTime: '20',
+      buildingCode: 'CPMC',
+      roomCode: '136',
+      endDate: '2019-03-15',
+    },
+  ],
+  instructors: [
+    'Davis, Anthony Curtis',
+  ],
+},
+{
+  subjectCode: 'MUS',
+  courseCode: '127',
+  instructionType: 'LE',
+  sectionNumber: '954672',
+  sectionCode: 'A00',
+  specialMeetingCode: 'FI',
+  longDescription: '',
+  sectionStatus: null,
+  enrollmentStatus: null,
+  gradeOption: null,
+  creditHours: null,
+  gradeOptionPlus: false,
+  creditHoursPlus: false,
+  courseTitle: null,
+  enrollmentCapacity: null,
+  enrollmentQuantity: null,
+  countOnWaitlist: null,
+  stopEnrollmentFlag: false,
+  classTimes: [
+    {
+      dayCode: '4',
+      startDate: '2019-03-21',
+      beginHHTime: '11',
+      beginMMTime: '30',
+      endHHTime: '14',
+      endMMTime: '29',
+      buildingCode: 'CPMC',
+      roomCode: '136',
+      endDate: null,
+    },
+  ],
+  instructors: [
+    'Davis, Anthony Curtis',
+  ],
+},
+{
+  subjectCode: 'PSYC',
+  courseCode: '106',
+  instructionType: 'LE',
+  sectionNumber: '956892',
+  sectionCode: 'A00',
+  specialMeetingCode: '',
+  longDescription: '',
+  sectionStatus: null,
+  enrollmentStatus: 'EN',
+  gradeOption: 'L',
+  creditHours: 4,
+  gradeOptionPlus: true,
+  creditHoursPlus: false,
+  courseTitle: 'Behavioral Neuroscience',
+  enrollmentCapacity: 328,
+  enrollmentQuantity: 295,
+  countOnWaitlist: 5,
+  stopEnrollmentFlag: true,
+  classTimes: [
+    {
+      dayCode: '2',
+      startDate: '2019-01-07',
+      beginHHTime: '9',
+      beginMMTime: '30',
+      endHHTime: '10',
+      endMMTime: '50',
+      buildingCode: 'PETER',
+      roomCode: '110',
+      endDate: '2019-03-15',
+    },
+    {
+      dayCode: '4',
+      startDate: '2019-01-07',
+      beginHHTime: '9',
+      beginMMTime: '30',
+      endHHTime: '10',
+      endMMTime: '50',
+      buildingCode: 'PETER',
+      roomCode: '110',
+      endDate: '2019-03-15',
+    },
+  ],
+  instructors: [
+    'Dobkins, Karen R.',
+  ],
+},
+{
+  subjectCode: 'PSYC',
+  courseCode: '106',
+  instructionType: 'LE',
+  sectionNumber: '956892',
+  sectionCode: 'A00',
+  specialMeetingCode: 'FI',
+  longDescription: '',
+  sectionStatus: null,
+  enrollmentStatus: null,
+  gradeOption: null,
+  creditHours: null,
+  gradeOptionPlus: false,
+  creditHoursPlus: false,
+  courseTitle: null,
+  enrollmentCapacity: null,
+  enrollmentQuantity: null,
+  countOnWaitlist: null,
+  stopEnrollmentFlag: false,
+  classTimes: [
+    {
+      dayCode: '2',
+      startDate: '2019-03-19',
+      beginHHTime: '8',
+      beginMMTime: '0',
+      endHHTime: '10',
+      endMMTime: '59',
+      buildingCode: 'PETER',
+      roomCode: '110',
+      endDate: null,
+    },
+  ],
+  instructors: [
+    'Dobkins, Karen R.',
+  ],
+}];
+
+const formatDayCodeText = (dayCode) => Object.keys(DAYS_OF_WEEK)[parseInt(dayCode, 10)];
+
+const formatTime = (start, end) => `${start}${end}`.padEnd(4, '0');
+
+const ENROLMENT_STATUS = {
+  EN: 'ENROLLED',
+  WL: 'WAITLIST',
+  PL: 'PLANNED',
+};
+
+const GRADE_OPTIONS = {
+  L: 'Letter',
+  'P/NP': 'P/NP',
 };
 
 class ListViewCard extends Component {
@@ -377,54 +416,153 @@ class ListViewCard extends Component {
     };
   }
 
+  renderFinal = (final) => {
+    const {
+      startDate,
+      dayCode,
+      beginHHTime,
+      beginMMTime,
+      endHHTime,
+      endMMTime,
+      buildingCode,
+      roomCode,
+    } = final.classTimes[0];
+
+    const dayCodeText = formatDayCodeText(dayCode);
+
+    return (
+      <Final
+        meetingDate={startDate}
+        dayCode={dayCodeText}
+        startTime={formatTime(beginHHTime, beginMMTime)}
+        endTime={formatTime(endHHTime, endMMTime)}
+        buildingCode={buildingCode}
+        roomCode={roomCode}
+        style={{ paddingTop: '3px' }}
+      />
+    );
+  }
+
+  renderCourseSection = (di) => {
+    const {
+      sectionCode,
+      instructionType,
+      classTimes = [],
+    } = di;
+
+    const {
+      beginHHTime,
+      beginMMTime,
+      endHHTime,
+      endMMTime,
+      buildingCode,
+      roomCode,
+    } = classTimes[0];
+
+    return (
+      <Section
+        sectionCode={sectionCode}
+        instructionType={instructionType}
+        startTime={formatTime(beginHHTime, beginMMTime)}
+        endTime={formatTime(endHHTime, endMMTime)}
+        buildingCode={buildingCode}
+        roomCode={roomCode}
+        dayCodes={classTimes.map((m) => formatDayCodeText(m.dayCode))}
+        style={{ padding: '1px 0' }}
+      />
+    );
+  }
+
+  renderEnrollmentStatus = (lecture) => {
+    const {
+      enrollmentStatus,
+      gradeOption,
+      countOnWaitlist,
+    } = lecture;
+
+    switch (enrollmentStatus) {
+      case 'EN':
+        return (
+          <EnrollStatus status="enrolled">
+            {`Enrolled - ${GRADE_OPTIONS[gradeOption]}`}
+          </EnrollStatus>
+        );
+      case 'WL':
+        return (
+          <EnrollStatus status="waitlist">
+            {`Waitlist - ${countOnWaitlist}`}
+          </EnrollStatus>
+        );
+      default:
+        return (
+          <EnrollStatus status="planned">
+            Planned
+          </EnrollStatus>
+        );
+    }
+  }
+
   render() {
+    const {
+      lecture = MOCK_DATA.lecture,
+      discussion = MOCK_DATA.discussion,
+      final = MOCK_DATA.final,
+    } = this.props;
+
     const {
       subjectCode,
       courseCode,
       courseTitle,
-      unitsMax,
-      sections,
-    } = MOCK_COURSE2;
-    const {
-      lecture,
-      discussion,
-      final,
-    } = parseSections(sections);
+      creditHours,
+      instructors,
+      sectionNumber,
+      enrollmentStatus,
+      gradeOption,
+    } = lecture;
 
-    console.log('lecture', lecture);
-    console.log('discussion', discussion);
-    console.log('final', final);
+    // const {
+    //   lecture,
+    //   discussion,
+    //   final,
+    // } = parseSections(sections);
 
     return (
       <CardContainer>
         <CourseInfoContainer>
           <CourseHeaderContainer>
             <CourseUnitIcon>
-              <div>{unitsMax}</div>
+              <div>{creditHours}</div>
             </CourseUnitIcon>
             <div>
               <CourseTitle>{`${subjectCode} ${courseCode}`}</CourseTitle>
               <CourseDescription>{courseTitle}</CourseDescription>
             </div>
-            <EnrollStatus>Enrolled - Letter</EnrollStatus>
+            {this.renderEnrollmentStatus(lecture)}
           </CourseHeaderContainer>
           <CourseDetailContainer>
             <CourseDetailHeader>
-              <PrimaryText>{lecture.instructors[0].instructorName}</PrimaryText>
+              <PrimaryText>{instructors[0]}</PrimaryText>
               <div>
                 <SecondaryText>Section ID</SecondaryText>
                 {' '}
-                {lecture.sectionId}
+                {sectionNumber}
               </div>
             </CourseDetailHeader>
-            {discussion.map((di) => <Section data={di} style={{ padding: '1px 0' }} />)}
-            <Final data={final} style={{ paddingTop: '3px' }} />
+            {this.renderCourseSection(lecture)}
+            {this.renderCourseSection(discussion)}
+            {this.renderFinal(final)}
           </CourseDetailContainer>
         </CourseInfoContainer>
         <IconsContainer>
-          <RepeatIcon />
-          <TrashIcon />
-          <AddIcon />
+          <IconButton size="small">
+            <RepeatIcon />
+          </IconButton>
+          <IconButton size="small">
+            <TrashIcon />
+          </IconButton>
+          <IconButton size="small">
+            <AddIcon />
+          </IconButton>
         </IconsContainer>
       </CardContainer>
     );

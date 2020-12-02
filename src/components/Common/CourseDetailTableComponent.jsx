@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Collapse, IconButton } from '@material-ui/core';
 import _ from 'lodash';
 import { parseSections } from '../../util';
-import StatusBar from './CourseAvailabilityBar';
+import StatusBar from './StatusBar';
 
 import {
   TableCellContainer,
@@ -496,7 +496,7 @@ const MOCK_COURSE = {
 
 // TODO: where is waitlist count in data??
 
-const DAYS_OF_WEEK = {
+export const DAYS_OF_WEEK = {
   MO: {
     elip: 'M',
     full: 'Mon',
@@ -538,30 +538,41 @@ const formatDate = (unformatedDate, day) => {
   return `${DAYS_OF_WEEK[day].full} ${date[1]}/${date[2]}`;
 };
 
-const Header = ({ data: { instructors } }) => (
+const Header = ({
+  instructorName,
+  note,
+}) => (
   <CellHeader>
-    <InstructorName>{instructors[0].instructorName}</InstructorName>
+    <InstructorName>{instructorName}</InstructorName>
     <Selection>Note</Selection>
   </CellHeader>
 );
 
-export const Section = ({ data = {}, style }) => {
-  const {
-    sectionCode,
-    instructionType,
-    recurringMeetings = [],
-  } = data;
+export const Section = ({
+  sectionCode,
+  instructionType,
+  startTime,
+  endTime,
+  buildingCode,
+  roomCode,
+  dayCodes,
+  style,
+}) =>
+// const {
+//   sectionCode,
+//   instructionType,
+//   recurringMeetings = [],
+// } = data;
+// const {
+//   startTime,
+//   endTime,
+//   buildingCode,
+//   roomCode,
+// } = recurringMeetings[0];
 
-  const {
-    startTime,
-    endTime,
-    buildingCode,
-    roomCode,
-  } = recurringMeetings[0];
+// const dayCodes = recurringMeetings.map((m) => m.dayCode);
 
-  const dayCodes = recurringMeetings.map((m) => m.dayCode);
-
-  return (
+  (
     <CellSection style={style}>
       <div>
         <span style={{ color: '#7D7D7D' }}>{sectionCode}</span>
@@ -584,35 +595,31 @@ export const Section = ({ data = {}, style }) => {
       </div>
     </CellSection>
   );
-};
 
-export const Final = ({ data = {}, style }) => {
-  const {
-    meetingDate,
-    dayCode,
-    startTime,
-    endTime,
-    buildingCode,
-    roomCode,
-  } = data;
-
-  return (
-    <CellSection style={style}>
-      <div style={{ color: '#7D7D7D' }}>
-        FINAL
-      </div>
-      <div style={{ color: '#034263' }}>
-        {formatDate(meetingDate, dayCode)}
-      </div>
-      <div>
-        {`${formatTime(startTime)} - ${formatTime(endTime)}`}
-      </div>
-      <div>
-        {`${buildingCode} ${roomCode}`}
-      </div>
-    </CellSection>
-  );
-};
+export const Final = ({
+  meetingDate,
+  dayCode,
+  startTime,
+  endTime,
+  buildingCode,
+  roomCode,
+  style,
+}) => (
+  <CellSection style={style}>
+    <div style={{ color: '#7D7D7D' }}>
+      FINAL
+    </div>
+    <div style={{ color: '#034263' }}>
+      {formatDate(meetingDate, dayCode)}
+    </div>
+    <div>
+      {`${formatTime(startTime)} - ${formatTime(endTime)}`}
+    </div>
+    <div>
+      {`${buildingCode} ${roomCode}`}
+    </div>
+  </CellSection>
+);
 
 const CourseDetailTableComponent = ({ sections = MOCK_COURSE2.sections }) => {
   const [expand, setExpand] = useState(false);
@@ -621,50 +628,121 @@ const CourseDetailTableComponent = ({ sections = MOCK_COURSE2.sections }) => {
     setExpand(!expand);
   };
 
-  const renderLecture = (lecture) => (
-    <div
-      onClick={expandLecture}
-    >
-      <TableCellContainer style={{ marginTop: 15 }}>
-        <TableCellDotContainer expand={expand}>
-          <TableCellDot />
-          <TableCellDottedLine halfHeight />
-        </TableCellDotContainer>
-        <TableCellDetail lecture>
-          <Header data={lecture} />
-          <Section data={lecture} />
-        </TableCellDetail>
-        <IconButton size="small">
-          <ExpandIcon rotate={expand} />
-        </IconButton>
-      </TableCellContainer>
-    </div>
-  );
+  const renderLecture = (lecture) => {
+    const {
+      sectionCode,
+      instructionType,
+      recurringMeetings = [],
+    } = lecture;
 
-  const renderDiscussion = (di) => (
-    <div>
+    const {
+      startTime,
+      endTime,
+      buildingCode,
+      roomCode,
+    } = recurringMeetings[0];
+
+    return (
+      <div
+        onClick={expandLecture}
+      >
+        <TableCellContainer style={{ marginTop: 15 }}>
+          <TableCellDotContainer expand={expand}>
+            <TableCellDot />
+            <TableCellDottedLine halfHeight />
+          </TableCellDotContainer>
+          <TableCellDetail lecture>
+            <Header
+              instructorName={lecture.instructors[0].instructorName}
+            />
+            <Section
+              sectionCode={sectionCode}
+              instructionType={instructionType}
+              startTime={startTime}
+              endTime={endTime}
+              buildingCode={buildingCode}
+              roomCode={roomCode}
+              dayCodes={recurringMeetings.map((m) => m.dayCode)}
+            />
+          </TableCellDetail>
+          <IconButton size="small">
+            <ExpandIcon rotate={expand} />
+          </IconButton>
+        </TableCellContainer>
+      </div>
+    );
+  };
+
+  const renderDiscussion = (di) => {
+    const {
+      sectionCode,
+      instructionType,
+      recurringMeetings = [],
+      enrolledQuantity,
+      capacityQuantity,
+    } = di;
+
+    const {
+      startTime,
+      endTime,
+      buildingCode,
+      roomCode,
+    } = recurringMeetings[0];
+
+    return (
+      <div>
+        <TableCellContainer>
+          <TableCellDottedLine />
+          <TableCellDetail>
+            <Section
+              sectionCode={sectionCode}
+              instructionType={instructionType}
+              startTime={startTime}
+              endTime={endTime}
+              buildingCode={buildingCode}
+              roomCode={roomCode}
+              dayCodes={recurringMeetings.map((m) => m.dayCode)}
+            />
+            <StatusBar
+              enrolledQuantity={enrolledQuantity}
+              capacityQuantity={capacityQuantity}
+            />
+          </TableCellDetail>
+          <NavigationIcon />
+        </TableCellContainer>
+      </div>
+    );
+  };
+
+  const renderFinal = (final) => {
+    const {
+      meetingDate,
+      dayCode,
+      startTime,
+      endTime,
+      buildingCode,
+      roomCode,
+    } = final;
+
+    return (
       <TableCellContainer>
-        <TableCellDottedLine />
-        <TableCellDetail>
-          <Section data={di} />
-          <StatusBar data={di} />
+        <TableCellDotContainer reverse expand={expand}>
+          <TableCellDottedLine halfHeight />
+          <TableCellDot />
+        </TableCellDotContainer>
+        <TableCellDetail smallPadding>
+          <Final
+            meetingDate={meetingDate}
+            dayCode={dayCode}
+            startTime={startTime}
+            endTime={endTime}
+            buildingCode={buildingCode}
+            roomCode={roomCode}
+          />
         </TableCellDetail>
-        <NavigationIcon />
       </TableCellContainer>
-    </div>
-  );
-
-  const renderFinal = (final) => (
-    <TableCellContainer>
-      <TableCellDotContainer reverse expand={expand}>
-        <TableCellDottedLine halfHeight />
-        <TableCellDot />
-      </TableCellDotContainer>
-      <TableCellDetail smallPadding>
-        <Final data={final} />
-      </TableCellDetail>
-    </TableCellContainer>
-  );
+    );
+  };
 
   // KEEP: TODO use this when creating the course detail view
   // renderPrereq = () => (
