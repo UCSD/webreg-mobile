@@ -30,6 +30,8 @@ export const CardContainer = styled.div`
   border-radius: 10px;
   overflow: hidden;
   font-size: 12px;
+  height: fit-content;
+  padding-bottom: 5px;
 `;
 
 export const CourseInfoContainer = styled.div`

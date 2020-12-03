@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { IconButton } from '@material-ui/core';
+import moment from 'moment';
 
 import {
   SecondaryText,
@@ -394,9 +395,10 @@ const ENROLLED_COURSES = [{
   ],
 }];
 
-const formatDayCodeText = (dayCode) => Object.keys(DAYS_OF_WEEK)[parseInt(dayCode, 10)];
+const formatDayCodeText = (dayCode) => Object.keys(DAYS_OF_WEEK)[parseInt(dayCode, 10) - 1];
 
 const formatTime = (start, end) => `${start}${end}`.padEnd(4, '0');
+const formatDate = (sec) => moment(sec).format('yyyy-MM-DD');
 
 const ENROLMENT_STATUS = {
   EN: 'ENROLLED',
@@ -406,7 +408,7 @@ const ENROLMENT_STATUS = {
 
 const GRADE_OPTIONS = {
   L: 'Letter',
-  'P/NP': 'P/NP',
+  P: 'P/NP',
 };
 
 class ListViewCard extends Component {
@@ -429,14 +431,15 @@ class ListViewCard extends Component {
     } = final.classTimes[0];
 
     const dayCodeText = formatDayCodeText(dayCode);
+    console.log({ startDate, formated: formatDate(startDate) });
 
     return (
       <Final
-        meetingDate={startDate}
+        meetingDate={formatDate(startDate)}
         dayCode={dayCodeText}
         startTime={formatTime(beginHHTime, beginMMTime)}
         endTime={formatTime(endHHTime, endMMTime)}
-        buildingCode={buildingCode}
+        buildingCode={buildingCode || 'TBA'}
         roomCode={roomCode}
         style={{ paddingTop: '3px' }}
       />
@@ -465,7 +468,7 @@ class ListViewCard extends Component {
         instructionType={instructionType}
         startTime={formatTime(beginHHTime, beginMMTime)}
         endTime={formatTime(endHHTime, endMMTime)}
-        buildingCode={buildingCode}
+        buildingCode={buildingCode || 'TBA'}
         roomCode={roomCode}
         dayCodes={classTimes.map((m) => formatDayCodeText(m.dayCode))}
         style={{ padding: '1px 0' }}
@@ -504,15 +507,16 @@ class ListViewCard extends Component {
 
   render() {
     const {
-      lecture = MOCK_DATA.lecture,
-      discussion = MOCK_DATA.discussion,
-      final = MOCK_DATA.final,
+      lecture,
+      discussion,
+      final,
     } = this.props;
 
     const {
       subjectCode,
       courseCode,
       courseTitle,
+      longDescription,
       creditHours,
       instructors,
       sectionNumber,
@@ -548,9 +552,9 @@ class ListViewCard extends Component {
                 {sectionNumber}
               </div>
             </CourseDetailHeader>
-            {this.renderCourseSection(lecture)}
-            {this.renderCourseSection(discussion)}
-            {this.renderFinal(final)}
+            {lecture && this.renderCourseSection(lecture)}
+            {discussion && this.renderCourseSection(discussion)}
+            {final && this.renderFinal(final)}
           </CourseDetailContainer>
         </CourseInfoContainer>
         <IconsContainer>

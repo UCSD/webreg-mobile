@@ -17,6 +17,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
+    .expand-icon {
+      -moz-transition: all .2s linear !important;
+      -webkit-transition: all .2s linear !important;
+      transition: all .2s linear !important;
+      font-size: 30px;
+    }
+
+    .rotate {
+      transform: rotate(-180deg);
+    }
   }
 
   .quater-text-container {

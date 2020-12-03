@@ -1,12 +1,13 @@
 import React from 'react';
 import {
-  AccessAlarm, Search, ExpandMore, ExpandLess,
+  AccessAlarm, Search, ExpandLess,
 } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
 import {
-  IconButton, BottomNavigationAction, BottomNavigation, Menu, MenuItem,
+  IconButton, BottomNavigationAction, BottomNavigation, Menu, MenuItem, Button,
 } from '@material-ui/core';
 import { Calendar, Header } from '../Common';
+import ListView from '../ListView';
 import './index.scss';
 
 const styles = {
@@ -57,6 +58,7 @@ const styles = {
     },
   },
   menuItem: {
+    minHeight: 42,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -82,14 +84,7 @@ class Home extends React.Component {
       case 'calendar':
         return <Calendar />;
       case 'list':
-        return (
-          <div style={{
-            height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center',
-          }}
-          >
-            <p>List</p>
-          </div>
-        );
+        return <ListView />;
       case 'final':
         return (
           <div style={{
@@ -133,36 +128,39 @@ class Home extends React.Component {
             <AccessAlarm style={{ fontSize: 22 }} />
           </IconButton>
         </div>
-        <div ref={this.selectorRef} className="quater-text-container">
+        <div
+          ref={this.selectorRef}
+          className="quater-text-container"
+          aria-controls="term"
+          aria-haspopup="true"
+          onClick={this.handleClick}
+        >
           <p style={{ margin: 0, fontWeight: 500 }}>{term}</p>
         </div>
         <div className="icon-container">
           <IconButton
-            aria-controls="term"
-            aria-haspopup="true"
             style={iconStyle}
-            disableRipple
             onClick={this.handleClick}
           >
-            {expandSelector
-              ? <ExpandLess style={{ fontSize: 30 }} />
-              : <ExpandMore style={{ fontSize: 30 }} />}
+            <ExpandLess className={`expand-icon ${expandSelector && 'rotate'}`} />
           </IconButton>
           <Menu
-              id="term"
-              anchorEl={this.selectorRef.current}
-              keepMounted
-              open={expandSelector}
-              onClose={this.handleClose}
-              getContentAnchorEl={null}
-              anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-              transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+            id="term"
+            anchorEl={this.selectorRef.current}
+            keepMounted
+            open={expandSelector}
+            onClose={this.handleClose}
+            selected={term}
+            getContentAnchorEl={null}
+            // anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            // transformOrigin={{ vertical: 'top', horizontal: 'center' }}
           >
             {TERMS.map((t) => (
               <MenuItem
                 classes={{ root: classes.menuItem }}
                 key={t}
                 onClick={() => this.handleSelect(t)}
+                selected={t === term}
               >
                 {t}
               </MenuItem>
