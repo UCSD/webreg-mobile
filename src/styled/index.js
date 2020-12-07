@@ -5,3 +5,5 @@ export * from './courseDetailTableComponent';
 export * from './searchResultCard';
 export * from './courseDetailHeader';
 export * from './listViewCard';
+export * from './home';
+export * from './header';

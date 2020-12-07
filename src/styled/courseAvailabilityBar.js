@@ -1,3 +1,5 @@
+import { COLOR_PRIMARY } from './theme';
+
 const {
   default: styled,
 } = require('styled-components');
@@ -26,14 +28,14 @@ export const BarContainer = styled.div`
 export const Bar = styled.div`
   height: 2px;
   border-radius: 1px;
-  background-color: #034263;
+  background-color: ${COLOR_PRIMARY};
 `;
 
 export const LeftBar = styled.div`
   height: 2px;
   border-top-left-radius: 1px;
   border-bottom-left-radius: 1px;
-  background-color: #034263;
+  background-color: ${COLOR_PRIMARY};
 `;
 
 export const RightBar = styled.div`

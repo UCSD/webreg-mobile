@@ -3,6 +3,7 @@ import {
   COLOR_GREY,
   COLOR_LIGHT_GREY,
   COLOR_SECONDARY,
+  COLOR_PRIMARY,
 } from './theme';
 
 const {
@@ -131,7 +132,7 @@ export const CalendarCard = styled.div`
   ${(props) => (
     props.focused
   && `
-   border: 1px solid #034263;
+   border: 1px solid ${COLOR_PRIMARY};
    border-radius: 3px;
    grid-template-rows: 14px calc(100% - 13px);
   `

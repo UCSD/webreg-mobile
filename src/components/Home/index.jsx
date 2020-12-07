@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-  AccessAlarm, Search, ExpandLess,
+  AccessAlarm, Search, ExpandLess, ArrowForwardIos,
 } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
 import {
-  IconButton, BottomNavigationAction, BottomNavigation, Menu, MenuItem, Button,
+  IconButton, BottomNavigationAction, BottomNavigation, Menu, MenuItem,
 } from '@material-ui/core';
+import { Sliders } from 'react-bootstrap-icons';
 import { Calendar, Header } from '../Common';
 import ListView from '../ListView';
+import { SearchTab } from '../../styled';
 import './index.scss';
 
 const styles = {
@@ -28,15 +30,22 @@ const styles = {
   searchIconStyle: {
     color: 'black',
     fontSize: 26,
-    marginTop: 3,
-    marginBottom: 3,
-    marginRight: 10,
-    marginLeft: 28,
   },
   iconStyle: {
     margin: 0,
     padding: 0,
     color: 'black',
+  },
+  headerIconStyle: {
+    fontSize: 24,
+    color: 'white',
+    alignSelf: 'center',
+    justifySelf: 'center',
+  },
+  headerIconContainerStyle: {
+    display: 'flex',
+    justifyContent: 'center',
+    width: '100%',
   },
   root: {
     backgroundColor: '#FAFAFA',
@@ -67,6 +76,41 @@ const styles = {
 
 const TERMS = ['Spring 2019', 'Summer I 2019', 'Summer II 2019', 'Special Summer 2019', 'Fall 2019'];
 
+const AnimationHeader = () => {
+  const {
+    headerIconStyle, headerIconContainerStyle, searchIconStyle,
+  } = styles;
+
+  const [animate, setAnimate] = useState(false);
+
+  useEffect(() => {
+    setAnimate(true);
+  });
+
+  return (
+    <Header
+      left={(
+        <div style={headerIconContainerStyle}>
+          <ArrowForwardIos style={headerIconStyle} />
+        </div>
+      )}
+      center={(
+        <SearchTab
+          expand={animate}
+        >
+          <Search style={searchIconStyle} />
+        </SearchTab>
+      )}
+      right={(
+        <div style={headerIconContainerStyle}>
+          <Sliders style={headerIconStyle} />
+        </div>
+      )}
+      expand
+    />
+  );
+};
+
 class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -74,6 +118,7 @@ class Home extends React.Component {
       term: 'Spring 2019',
       expandSelector: false,
       bottomTab: 'calendar',
+      expandSearchbar: false,
     };
     this.selectorRef = React.createRef();
   }
@@ -174,20 +219,58 @@ class Home extends React.Component {
   render() {
     const { classes } = this.props;
     const {
-      headerTextStyle, rightContainerStyle, searchIconStyle,
+      headerTextStyle, searchIconStyle, headerIconStyle, headerIconContainerStyle,
     } = styles;
-    const { bottomTab } = this.state;
+    const { bottomTab, expandSearchbar } = this.state;
 
     const webRegText = <p style={headerTextStyle}>Webreg</p>;
     const searchTab = (
-      <div style={rightContainerStyle}>
+      <SearchTab
+        // expand={expandSearchbar}
+        onClick={() => {
+          this.setState({ expandSearchbar: true });
+          console.log('search bar clicked!');
+        }}
+      >
         <Search style={searchIconStyle} />
+      </SearchTab>
+    );
+
+    const leftHeader = expandSearchbar && (
+      <div style={headerIconContainerStyle}>
+        <ArrowForwardIos style={headerIconStyle} />
       </div>
     );
 
+    const centerHeader = expandSearchbar ? searchTab : webRegText;
+
+    const rightHeader = expandSearchbar ? (
+      <div style={headerIconContainerStyle}>
+        <Sliders style={headerIconStyle} />
+      </div>
+    ) : searchTab;
+
     return (
       <div className="home">
-        <Header center={webRegText} right={searchTab} />
+        {/* <Header
+          left={expandSearchbar && leftHeader}
+          center={centerHeader}
+          right={rightHeader}
+          expand={expandSearchbar}
+        /> */}
+        {
+          expandSearchbar
+            ? (
+              <AnimationHeader />
+            )
+            : (
+              <Header
+                center={webRegText}
+                right={searchTab}
+                expand={false}
+              />
+            )
+        }
         {this.renderQuarter()}
         {this.renderContent()}
         <BottomNavigation

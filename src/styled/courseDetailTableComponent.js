@@ -1,5 +1,6 @@
 import { rgba } from 'polished';
 import { CaretLeftFill, ChevronRight } from '@styled-icons/bootstrap';
+import { COLOR_PRIMARY } from './theme';
 
 const {
   default: styled,
@@ -22,7 +23,7 @@ export const TableCellDot = styled.div`
   width: 5px;
   height: 5px;
   border-radius: 10px;
-  border: 1px solid #034263;
+  border: 1px solid ${COLOR_PRIMARY};
 `;
 
 export const TableCellDottedLine = styled.div`
@@ -53,7 +54,7 @@ export const TableCellDetail = styled.div`
 export const PrereqLabel = styled.div`
   font-weight: bold;
   font-size: 13px;
-  color: #034263;
+  color: ${COLOR_PRIMARY};
 `;
 
 // TODO: how to use styled component on icons
@@ -72,7 +73,7 @@ export const ExpandIcon = styled(CaretLeftFill)`
   -moz-transition: all .2s linear !important;
   -webkit-transition: all .2s linear !important;
   transition: all .2s linear !important;
-  fill: #034263;
+  fill: ${COLOR_PRIMARY};
   align-self: end !important;
   transform: ${
   (props) => (props.rotate ? 'rotate(-90deg);' : 'none;')
@@ -81,7 +82,7 @@ export const ExpandIcon = styled(CaretLeftFill)`
 
 export const CellHeader = styled.div`
   width: 100%;
-  color: #034263;
+  color: ${COLOR_PRIMARY};
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -97,7 +98,7 @@ export const Selection = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid ${rgba('#034263', 0.6)};
+  border: 1px solid ${rgba(COLOR_PRIMARY, 0.6)};
   border-radius: 3px;
   overflow: hidden;
   font-size: 10px;
@@ -124,7 +125,7 @@ export const CellSection = styled.div`
 `;
 
 export const DayOfWeek = styled.span`
-  color: ${(props) => (props.active ? '#034263;' : '#BABABA;')}
+  color: ${(props) => (props.active ? COLOR_PRIMARY : '#BABABA')};
   margin-right: 2px;
 `;
 

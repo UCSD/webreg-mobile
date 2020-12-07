@@ -1,6 +1,7 @@
 import { rgba } from 'polished';
 import { ArrowRepeat, TrashFill, PlusCircleFill } from '@styled-icons/bootstrap';
 import { SearchResultCardContainer } from './searchResultCard';
+import { COLOR_PRIMARY } from './theme';
 
 const {
   default: styled,
@@ -9,7 +10,7 @@ const {
 const IconStyle = `
   width: 20px;
   height: 20px;
-  fill: #034263;
+  fill: ${COLOR_PRIMARY};
 `;
 
 const Text = styled.span`
@@ -22,9 +23,9 @@ export const CardContainer = styled.div`
   grid-template-columns: 1fr 45px;
   border: ${(props) => {
     switch (props.status) {
-      case 'waitlist': return '2px dashed #034263;';
+      case 'waitlist': return `2px dashed ${COLOR_PRIMARY};`;
       case 'planned': return `2px solid ${rgba(151, 151, 151, 0.5)};`;
-      default: return '2px solid #034263;';
+      default: return `2px solid ${COLOR_PRIMARY};`;
     }
   }}
   border-radius: 10px;
@@ -45,7 +46,7 @@ export const CourseDetailHeader = styled.div`
 `;
 
 export const PrimaryText = styled(Text)`
-  color: #034263;
+  color: ${COLOR_PRIMARY};
 `;
 
 export const SecondaryText = styled(Text)`
@@ -77,7 +78,7 @@ export const EnrollStatus = styled.div`
       case 'waitlist':
         return '#D27070';
       default:
-        return '#034263';
+        return COLOR_PRIMARY;
     }
   }};
 `;
@@ -103,6 +104,6 @@ export const TrashIcon = styled(TrashFill)`
 export const AddIcon = styled(PlusCircleFill)`
   width: 18px;
   height: 18px;
-  fill: #034263;
+  fill: ${COLOR_PRIMARY};
   opacity: ${(props) => (props.disabled ? '20%' : '100%')};
 `;
