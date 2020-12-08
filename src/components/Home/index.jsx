@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
   AccessAlarm, Search, ExpandLess, ArrowForwardIos,
 } from '@material-ui/icons';
@@ -9,7 +9,15 @@ import {
 import { Sliders } from 'react-bootstrap-icons';
 import { Calendar, Header } from '../Common';
 import ListView from '../ListView';
-import { SearchTab } from '../../styled';
+import {
+  SearchTab,
+  AnimatedHeaderContainer,
+  SearchInput,
+  TermSelect,
+  SearchTabExpanded,
+  TermText,
+  UnfoldIcon,
+} from '../../styled';
 import './index.scss';
 
 const styles = {
@@ -76,38 +84,31 @@ const styles = {
 
 const TERMS = ['Spring 2019', 'Summer I 2019', 'Summer II 2019', 'Special Summer 2019', 'Fall 2019'];
 
-const AnimationHeader = () => {
+const AnimationHeader = ({ expand, setExpand }) => {
   const {
     headerIconStyle, headerIconContainerStyle, searchIconStyle,
   } = styles;
 
-  const [animate, setAnimate] = useState(false);
-
-  useEffect(() => {
-    setAnimate(true);
-  });
-
   return (
-    <Header
-      left={(
-        <div style={headerIconContainerStyle}>
-          <ArrowForwardIos style={headerIconStyle} />
-        </div>
-      )}
-      center={(
-        <SearchTab
-          expand={animate}
-        >
-          <Search style={searchIconStyle} />
-        </SearchTab>
-      )}
-      right={(
-        <div style={headerIconContainerStyle}>
-          <Sliders style={headerIconStyle} />
-        </div>
-      )}
-      expand
-    />
+    <AnimatedHeaderContainer expand={expand}>
+      <div style={headerIconContainerStyle}>
+        <ArrowForwardIos
+          style={headerIconStyle}
+          onClick={() => { setExpand(false); }}
+        />
+      </div>
+      <SearchTabExpanded style={{ paddingLeft: 0 }}>
+        <TermSelect>
+          <TermText>FA 19</TermText>
+          <UnfoldIcon />
+        </TermSelect>
+        <SearchInput />
+        <Search style={searchIconStyle} />
+      </SearchTabExpanded>
+      <div style={headerIconContainerStyle}>
+        <Sliders style={headerIconStyle} />
+      </div>
+    </AnimatedHeaderContainer>
   );
 };
 
@@ -142,6 +143,10 @@ class Home extends React.Component {
       default:
         return <Calendar />;
     }
+  }
+
+  setExpandSearchbar = (expand) => {
+    this.setState({ expandSearchbar: expand });
   }
 
   handleClick = () => {
@@ -219,63 +224,41 @@ class Home extends React.Component {
   render() {
     const { classes } = this.props;
     const {
-      headerTextStyle, searchIconStyle, headerIconStyle, headerIconContainerStyle,
+      headerTextStyle, searchIconStyle,
     } = styles;
     const { bottomTab, expandSearchbar } = this.state;
 
     const webRegText = <p style={headerTextStyle}>Webreg</p>;
     const searchTab = (
       <SearchTab
-        // expand={expandSearchbar}
         onClick={() => {
-          this.setState({ expandSearchbar: true });
-          console.log('search bar clicked!');
+          this.setExpandSearchbar(true);
         }}
       >
         <Search style={searchIconStyle} />
       </SearchTab>
     );
 
-    const leftHeader = expandSearchbar && (
-      <div style={headerIconContainerStyle}>
-        <ArrowForwardIos style={headerIconStyle} />
-      </div>
-    );
-
-    const centerHeader = expandSearchbar ? searchTab : webRegText;
-
-    const rightHeader = expandSearchbar ? (
-      <div style={headerIconContainerStyle}>
-        <Sliders style={headerIconStyle} />
-      </div>
-    ) : searchTab;
+    console.log({ expandSearchbar });
 
     return (
       <div className="home">
-        {/* <Header
-          left={expandSearchbar && leftHeader}
-          center={centerHeader}
-          right={rightHeader}
-          expand={expandSearchbar}
-        /> */}
-        {
-          expandSearchbar
-            ? (
-              <AnimationHeader />
-            )
-            : (
-              <Header
-                center={webRegText}
-                right={searchTab}
-                expand={false}
-              />
-            )
-        }
+        <div className="header-container">
+          <AnimationHeader
+            expand={expandSearchbar}
+            setExpand={this.setExpandSearchbar}
+          />
+          <Header
+            center={webRegText}
+            right={searchTab}
+            expand={expandSearchbar}
+          />
+        </div>
         {this.renderQuarter()}
         {this.renderContent()}
         <BottomNavigation
           value={bottomTab}
-          onChange={(event, newValue) => {
+          onChange={(_, newValue) => {
             this.setState({ bottomTab: newValue });
           }}
           showLabels

@@ -8,11 +8,14 @@ export const HeaderContainer = styled.div`
   background-color: ${COLOR_PRIMARY};
   display: grid;
   height: 48px;
-  grid-template-columns: ${((props) => (props.expand ? '50px 1fr 50px' : 'repeat(3, 1fr)'))};
+  grid-template-columns: repeat(3, 1fr);
   color: white;
-  -webkit-transition: all .5s;
-  -moz-transition: all .5s;
-  transition: all .5s;
+  width: 100%;
+  -webkit-transition: all .3s;
+  -moz-transition: all .3s;
+  transition: all .3s;
+  opacity: ${(props) => (props.expand ? 0 : 1)};
+  z-index: ${(props) => (props.expand ? -1 : 0)};
 `;
 
 export const Left = styled.div`
