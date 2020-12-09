@@ -6,6 +6,19 @@
   display: grid;
   grid-template-rows: auto auto 1fr auto;
 
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  .animated-container {
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  // .MuiCollapse-wrapper, .MuiCollapse-wrapperInner, .MuiCollapse-container {
+  //   width: 100%;
+  // }
+
   .header-container {
     width: 100%;
     display: flex;
@@ -22,6 +35,31 @@
       font-size: 16px;
       letter-spacing: 2%;
       background-color: #F1F1F1;
+    }
+  }
+
+  .filter-dropdown {
+    background-color: #034263;
+    width: 100%;
+    z-index: 1000;
+
+    .filter-container {
+      display: flex;
+      flex-direction: column;
+      padding-top: 8px;
+      padding-bottom: 4px;
+      align-items: center;
+
+      .filter-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 4px 35px;
+        font-size: 16px;
+        color: white;
+      }
     }
   }
     

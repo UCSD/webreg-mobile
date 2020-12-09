@@ -1,23 +1,27 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   AccessAlarm, Search, ExpandLess, ArrowForwardIos,
 } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
 import {
-  IconButton, BottomNavigationAction, BottomNavigation, Menu, MenuItem,
+  IconButton, BottomNavigationAction, BottomNavigation, Menu, MenuItem, Collapse, Switch,
 } from '@material-ui/core';
 import { Sliders } from 'react-bootstrap-icons';
+import Draggable from 'react-draggable';
 import { Calendar, Header } from '../Common';
 import ListView from '../ListView';
 import {
   SearchTab,
-  AnimatedHeaderContainer,
   SearchInput,
   TermSelect,
   SearchTabExpanded,
   TermText,
   UnfoldIcon,
+  AnimatedContainer,
+  AnimatedHeaderContainer,
+  SearchContainer,
 } from '../../styled';
+import { ReactComponent as CollapseIcon } from '../../assets/collapse-icon.svg';
 import './index.scss';
 
 const styles = {
@@ -84,33 +88,190 @@ const styles = {
 
 const TERMS = ['Spring 2019', 'Summer I 2019', 'Summer II 2019', 'Special Summer 2019', 'Fall 2019'];
 
+const SwitchButton = withStyles((theme) => ({
+  // the background
+  root: {
+    width: 38,
+    height: 23,
+    padding: 0,
+  },
+  switchBase: {
+    padding: 1,
+    '&$checked': {
+      transform: 'translateX(16px)',
+      color: theme.palette.common.white,
+      '& + $track': {
+        backgroundColor: '#52d869',
+        opacity: 1,
+        border: 'none',
+      },
+    },
+    boxShadow: '0px 1.5px 1.5px rgba(0, 0, 0, 0.5)',
+  },
+  // the round button
+  thumb: {
+    width: 21,
+    height: 21,
+  },
+  // deselected state
+  track: {
+    borderRadius: 26 / 2,
+    backgroundColor: '#D7D7D7',
+    opacity: 1,
+    border: 'none',
+  },
+  checked: {},
+  focusVisible: {},
+}))(({ classes, ...props }) => (
+  <Switch
+    focusVisibleClassName={classes.focusVisible}
+    disableRipple
+    classes={{
+      root: classes.root,
+      switchBase: classes.switchBase,
+      thumb: classes.thumb,
+      track: classes.track,
+      checked: classes.checked,
+    }}
+    {...props}
+  />
+));
+
+const UseFocus = () => {
+  const htmlElRef = useRef(null);
+  const setFocus = () => {
+    console.log('set focus', htmlElRef.current);
+    if (htmlElRef.current) htmlElRef.current.focus();
+  };
+
+  return [htmlElRef, setFocus];
+};
+
 const AnimationHeader = ({ expand, setExpand }) => {
   const {
     headerIconStyle, headerIconContainerStyle, searchIconStyle,
   } = styles;
 
+  const [expandFilters, setExpandFilters] = useState(false);
+  const [inputRef, setInputFocus] = UseFocus();
+
+  useEffect(() => { setInputFocus(); });
+
   return (
-    <AnimatedHeaderContainer expand={expand}>
-      <div style={headerIconContainerStyle}>
-        <ArrowForwardIos
-          style={headerIconStyle}
-          onClick={() => { setExpand(false); }}
-        />
-      </div>
-      <SearchTabExpanded style={{ paddingLeft: 0 }}>
-        <TermSelect>
-          <TermText>FA 19</TermText>
-          <UnfoldIcon />
-        </TermSelect>
-        <SearchInput />
-        <Search style={searchIconStyle} />
-      </SearchTabExpanded>
-      <div style={headerIconContainerStyle}>
-        <Sliders style={headerIconStyle} />
-      </div>
-    </AnimatedHeaderContainer>
+    <div className="animated-container">
+      <AnimatedContainer expand={expand}>
+        <AnimatedHeaderContainer>
+          <div style={headerIconContainerStyle}>
+            <ArrowForwardIos
+              style={headerIconStyle}
+              onClick={() => {
+                setExpand(false);
+                setExpandFilters(false);
+              }}
+            />
+          </div>
+          <SearchTabExpanded style={{ paddingLeft: 0 }}>
+            <TermSelect>
+              <TermText>FA 19</TermText>
+              <UnfoldIcon />
+            </TermSelect>
+            {/* <input ref={inputRef} /> */}
+            <SearchInput autoFocus ref={inputRef} />
+            <Search style={searchIconStyle} />
+          </SearchTabExpanded>
+          <IconButton style={headerIconContainerStyle} aria-expanded={expandFilters}>
+            <Sliders
+              style={headerIconStyle}
+              onClick={() => { setExpandFilters(!expandFilters); }}
+            />
+          </IconButton>
+        </AnimatedHeaderContainer>
+      </AnimatedContainer>
+      {expand && (
+        <SearchContainer>
+          Search by course code
+          <br />
+          eg. ANTH 23
+        </SearchContainer>
+      )}
+      <Collapse
+        in={expandFilters}
+        // timeout="auto"
+        className="filter-dropdown"
+        unmountOnExit
+        style={{ position: 'absolute', top: 48, left: 0 }}
+      >
+        <div className="filter-container">
+          <div className="filter-item">
+            Show lower division
+            <SwitchButton />
+          </div>
+          <div className="filter-item">
+            Show upper division
+            <SwitchButton />
+          </div>
+          <div className="filter-item">
+            Show graduate division
+            <SwitchButton />
+          </div>
+          <Draggable
+            onDrag={() => {
+              console.log('dargged');
+              setExpandFilters(false);
+            }}
+          >
+            <CollapseIcon style={{ marginTop: 8 }} />
+          </Draggable>
+        </div>
+      </Collapse>
+    </div>
   );
 };
+
+const NavigationProvider = ({
+  classes, updateBottomTab, quarter, content, bottomTab,
+}) => (
+  <>
+    {quarter}
+    {content}
+    <BottomNavigation
+      value={bottomTab}
+      onChange={(_, newValue) => {
+        updateBottomTab(newValue);
+      }}
+      showLabels
+      className={classes.root}
+    >
+      <BottomNavigationAction
+        classes={{
+          root: classes.actionItemStyle,
+          selected: classes.selected,
+          label: classes.label,
+        }}
+        label="Calendar"
+        value="calendar"
+      />
+      <BottomNavigationAction
+        classes={{
+          root: classes.actionItemStyle,
+          selected: classes.selected,
+          label: classes.label,
+        }}
+        label="List"
+        value="list"
+      />
+      <BottomNavigationAction
+        classes={{
+          root: classes.actionItemStyle,
+          selected: classes.selected,
+          label: classes.label,
+        }}
+        label="Final"
+        value="final"
+      />
+    </BottomNavigation>
+  </>
+);
 
 class Home extends React.Component {
   constructor(props) {
@@ -239,59 +400,36 @@ class Home extends React.Component {
       </SearchTab>
     );
 
-    console.log({ expandSearchbar });
-
     return (
       <div className="home">
         <div className="header-container">
-          <AnimationHeader
-            expand={expandSearchbar}
-            setExpand={this.setExpandSearchbar}
-          />
           <Header
             center={webRegText}
             right={searchTab}
             expand={expandSearchbar}
           />
         </div>
-        {this.renderQuarter()}
-        {this.renderContent()}
-        <BottomNavigation
-          value={bottomTab}
-          onChange={(_, newValue) => {
-            this.setState({ bottomTab: newValue });
-          }}
-          showLabels
-          className={classes.root}
-        >
-          <BottomNavigationAction
-            classes={{
-              root: classes.actionItemStyle,
-              selected: classes.selected,
-              label: classes.label,
-            }}
-            label="Calendar"
-            value="calendar"
-          />
-          <BottomNavigationAction
-            classes={{
-              root: classes.actionItemStyle,
-              selected: classes.selected,
-              label: classes.label,
-            }}
-            label="List"
-            value="list"
-          />
-          <BottomNavigationAction
-            classes={{
-              root: classes.actionItemStyle,
-              selected: classes.selected,
-              label: classes.label,
-            }}
-            label="Final"
-            value="final"
-          />
-        </BottomNavigation>
+        {expandSearchbar
+          ? (
+            <SearchContainer>
+              Search by course code
+              <br />
+              eg. ANTH 23
+            </SearchContainer>
+          )
+          : (
+            <NavigationProvider
+              classes={classes}
+              updateBottomTab={(tab) => { this.setState({ bottomTab: tab }); }}
+              quarter={this.renderQuarter()}
+              content={this.renderContent()}
+              bottomTab={bottomTab}
+            />
+          )}
+        <AnimationHeader
+          expand={expandSearchbar}
+          setExpand={this.setExpandSearchbar}
+        />
       </div>
     );
   }

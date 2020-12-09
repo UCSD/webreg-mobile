@@ -57,18 +57,41 @@ export const UnfoldIcon = styled(UnfoldMore)`
   color: #7D7D7D;
 `;
 
-export const AnimatedHeaderContainer = styled.div`
+export const AnimatedContainer = styled.div`
   position: absolute;
   top: 0;
   right: 0;
-  background-color: ${COLOR_PRIMARY};
-  display: grid;
-  height: 48px;
-  grid-template-columns: 50px 1fr 50px;
   color: white;
   -webkit-transition: width .5s;
   -moz-transition: width .5s;
   transition: width .5s;
-  width: ${(props) => (props.expand ? '100%' : '10px')};
+  height: 48px;
+  width: ${(props) => (props.expand ? '100%' : '0')};
   // opacity: ${(props) => (props.expand ? 1 : 0)};
+  overflow: hidden;
+`;
+
+export const AnimatedHeaderContainer = styled.div`
+  background-color: ${COLOR_PRIMARY};
+  display: grid;
+  grid-template-columns: 50px 1fr 50px;
+  height: 48px;
+`;
+
+export const SearchContainer = styled.div`
+  background-color: white;
+  width: 100vw;
+  height: calc(100vh - 48px);
+  // height: 100vh;
+  z-index: 10;
+  position: absolute;
+  top: 48px;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 18px;
+  line-height: 21px;
+  text-align: center;
 `;
