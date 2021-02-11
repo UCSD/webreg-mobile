@@ -1,0 +1,88 @@
+@import '../../../scss/constant';
+
+$time-col-width: 35px;
+$row-height: 56px;
+$horizontal-padding: 10px;
+
+@mixin schedule-grid {
+  display: grid;
+  grid-template-rows: repeat(15, $row-height);
+  /* assume time is from 8am to 10pm*/
+
+  >* {
+    @include centerContent;
+    height: 100%;
+    width: 100%;
+    border-bottom: 1px solid $light-grey;
+  }
+}
+
+// done
+.calendar-main {
+  height: 100%;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: 50px 1fr;
+}
+
+// done
+.calendar-header {
+  display: flex;
+  margin: 0 $horizontal-padding;
+  padding: 20px 0 15px 0;
+  border-bottom: 1px solid $grey;
+}
+
+
+// done
+.header-item {
+  font-size: 10px;
+  text-align: center;
+  vertical-align: center;
+  letter-spacing: -0.02em;
+  flex: 1;
+}
+
+// done
+.time-column {
+  width: $time-col-width;
+  font-size: 10px;
+  text-align: center;
+  vertical-align: center;
+  letter-spacing: -0.02em;
+}
+
+// done
+.scroll-container {
+  overflow-y: scroll;
+  height: 100%;
+  padding: 0 $horizontal-padding;
+
+  display: grid;
+  grid-template-columns: $time-col-width 1fr;
+}
+
+// done
+.course-time-grid {
+  font-size: 10px;
+  @include schedule-grid;
+  letter-spacing: -0.02em;
+}
+
+// done
+.course-schedule-grid {
+  @include schedule-grid;
+  position: relative;
+}
+
+// done
+.course-cards-overlay {
+  position: absolute;
+  // box-shadow: inset 0px 0px 0px 1px red;
+  display: grid;
+  column-gap: 1px;
+  padding: 0 1px;
+  grid-template-rows: repeat(90, 1fr);
+  /* divide 8am to 10pm into 10min intervals */
+  grid-template-columns: repeat(7, 1fr);
+}

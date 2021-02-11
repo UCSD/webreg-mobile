@@ -3,6 +3,7 @@
 .header {
   background-color: $primary-color;
   display: grid;
+  height: 48px;
   grid-template-columns: repeat(3, 1fr);
   color: $white;
 
