@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:webreg_mobile_flutter/app_constants.dart';
 import 'package:webreg_mobile_flutter/app_styles.dart';
-import 'dart:math' as math;
 
 class SearchBar extends StatelessWidget {
+  final VoidCallback setOpenFilters;
+
+  SearchBar(this.setOpenFilters);
+
   @override
   Widget build(BuildContext context) {
     return MediaQuery.removePadding(
@@ -39,12 +42,119 @@ class SearchBar extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 9),
             alignment: Alignment.centerLeft,
             iconSize: 25,
+            onPressed: this.setOpenFilters,
           ),
         ]
       )
     );
   }
 }
+
+// class Filters extends StatefulWidget {
+//   Widget child;
+//   bool expand;
+//   Filters({this.expand = false, this.child});
+
+//   @override
+//   _FiltersState createState() => _FiltersState();
+// }
+
+// class _FiltersState extends State<Filters> with SingleTickerProviderStateMixin {
+//   bool expand = false;
+//   Widget child;
+//   List<bool> _selectedFilters = List<bool>.filled(3, false);
+
+//   AnimationController expandController;
+//   Animation<double> animation; 
+
+//   void prepareAnimations() {
+//     expandController = AnimationController(
+//       vsync: this,
+//       duration: Duration(milliseconds: 500)
+//     );
+//     animation = CurvedAnimation(
+//       parent: expandController,
+//       curve: Curves.fastOutSlowIn,
+//     );
+//   }
+
+//   void _runExpandCheck() {
+//     if(widget.expand) {
+//       expandController.forward();
+//     }
+//     else {
+//       expandController.reverse();
+//     }
+//   }
+
+//   // void handleBottomSheet(BuildContext context) {
+//   //   _openBottomSheet = !_openBottomSheet;
+
+//   //   if(_openBottomSheet) {
+//   //     showBottomSheet(
+//   //       context: context,
+//   //       builder: (context) => Wrap(
+//   //         children: <Widget>[
+//   //           Container(
+//   //             color: ColorPrimary, 
+//   //             height: 100,
+//   //             child: ListView(
+//   //               children: <Widget>[
+//   //                 ListTile(
+//   //                   title: Text('Show lower division', style: TextStyle(color: Colors.white)),
+//   //                   selected: _selectedFilters[0],
+//   //                   onTap: () => _selectedFilters[0] = true,
+//   //                 ),
+//   //                 ListTile(
+//   //                   leading: Icon(Icons.favorite),
+//   //                   title: Text('Show upper division'),
+//   //                   selected: _selectedFilters[1],
+//   //                   onTap: () => _selectedFilters[1] = true,
+//   //                 ),
+//   //                 ListTile(
+//   //                   leading: Icon(Icons.favorite),
+//   //                   title: Text('Show graduate division'),
+//   //                   selected: _selectedFilters[2],
+//   //                   onTap: () => _selectedFilters[2] = true,
+//   //                 ),
+//   //               ]
+//   //             )
+//   //           )
+//   //         ]
+//   //     ));
+//   //   } else {
+//   //     Navigator.pop(context);
+//   //   }
+//   // }
+//   //
+//   @override
+//   void didUpdateWidget(Filters oldWidget) {
+//     super.didUpdateWidget(oldWidget);
+//     _runExpandCheck();
+//   }
+
+//   @override
+//   void dispose() {
+//     expandController.dispose();
+//     super.dispose();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return SizeTransition(
+//       axisAlignment: 1.0,
+//       sizeFactor: animation,
+//       child: widget.child
+//     );
+//     // return IconButton(
+//     //   icon: Icon(Icons.filter_list, color: Colors.white),
+//     //   padding: EdgeInsets.symmetric(horizontal: 9),
+//     //   alignment: Alignment.centerLeft,
+//     //   iconSize: 25,
+//     //   onPressed: () { handleBottomSheet(context); },
+//     // );
+//   }
+// }
 
 class TermDropdown extends StatefulWidget {
   @override
@@ -137,20 +247,9 @@ class _SearchState extends State<Search> {
         Container(
           margin: const EdgeInsets.only(right: 10.0),
           child: _icon,
-        )
+        ),
       ],
       )
     );
   }
 }
-
-
-//ListView.builder(
-    //   itemCount: 10,
-    //   itemBuilder: (BuildContext cont, int index) {
-    //     return new ListTile(
-    //       title: Text("text" + index.toString()),
-    //       onTap: () => print("text" + index.toString()),
-    //     );
-    //   }
-    // );

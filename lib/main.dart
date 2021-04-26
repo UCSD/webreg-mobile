@@ -14,30 +14,30 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: ColorPrimary,
-          primaryColor: lightPrimaryColor,
-          accentColor: darkAccentColor,
-          brightness: Brightness.light,
-          buttonColor: lightButtonColor,
-          textTheme: lightThemeText,
-          iconTheme: lightIconTheme,
-          appBarTheme: lightAppBarTheme,
-        ),
-        home: Scaffold(
-          appBar: AppBar(
-            centerTitle: true,
-            title: Text("Webreg", style: TextStyle(
-              fontWeight: FontWeight.normal,
-            )),
-            actions: <Widget>[
-              SearchPlaceholder()
-            ]
-          ),
-        ),
-        initialRoute: RoutePaths.Home,
-        onGenerateRoute: webregMobileRouter.Router.generateRoute,
-      );
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: ColorPrimary,
+        primaryColor: lightPrimaryColor,
+        accentColor: darkAccentColor,
+        brightness: Brightness.light,
+        buttonColor: lightButtonColor,
+        textTheme: lightThemeText,
+        iconTheme: lightIconTheme,
+        appBarTheme: lightAppBarTheme,
+      ),
+      // home: Scaffold(
+      //   appBar: AppBar(
+      //     centerTitle: true,
+      //     title: Text("Webreg", style: TextStyle(
+      //       fontWeight: FontWeight.normal,
+      //     )),
+      //     actions: <Widget>[
+      //       SearchPlaceholder()
+      //     ]
+      //   ),
+      // ),
+      initialRoute: RoutePaths.Home,
+      onGenerateRoute: webregMobileRouter.Router.generateRoute,
+    );
   }
 }

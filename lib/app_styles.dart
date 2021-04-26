@@ -97,6 +97,7 @@ const Color lightTextColor = Color(0xFFFFFFFF);
 const Color darkTextColor = Color(0xFF006A96);
 const Color lightGray = Color(0xFFF1F1F1);
 const Color darkGray = Color(0xFF7D7D7D);
+const Color vWhite = Color(0xFFFAFAFA);
 
 //Text Field colors for themes
 const Color lightTextFieldBorderColor = Color(0xFFFFFFFF);
