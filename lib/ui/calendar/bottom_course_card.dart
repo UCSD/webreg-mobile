@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:webreg_mobile_flutter/app_styles.dart';
 
 class BottomCourseCard extends StatefulWidget {
+  final BuildContext context;
+
+  BottomCourseCard(this.context);
+  
   @override
   _BottomCourseCardState createState() => _BottomCourseCardState();
 }
@@ -63,109 +67,225 @@ class _BottomCourseCardState extends State<BottomCourseCard> {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      child: const Text('showBottomSheet'),
-      onPressed: () { 
-        Scaffold.of(context).showBottomSheet<void>(
-          (BuildContext context) {
-            return Container(
-              width: double.infinity,
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              child: Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0)
+    return Container(
+      color: Colors.transparent,
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      child: Container(
+        // shape: RoundedRectangleBorder(
+        //   borderRadius: BorderRadius.circular(10.0)
+        // ),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          // border: Border.all(width: 1, color: )
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.25),
+              spreadRadius: 0,
+              blurRadius: 2.5,
+              offset: Offset(1, 1),
+            ),
+            BoxShadow(
+              color: Colors.black.withOpacity(0.25),
+              spreadRadius: 0,
+              blurRadius: 2.5,
+              offset: Offset(-1, 1),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            // card title
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(10.0),
+                  topLeft: Radius.circular(10.0),
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    // card title
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(10.0),
-                          topLeft: Radius.circular(10.0),
-                        ),
-                        color: lightBlue,
-                      ),
-                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      child: Row(
-                        children: <Widget>[
-                          // units icon
-                          Container(
-                            height: 35,
-                            width: 35,
-                            decoration: new BoxDecoration(
-                              color: lightGray,
-                              shape: BoxShape.circle,
-                            ),
-                            margin: EdgeInsets.only(right: 10),
-                            child: Center(
-                              child: Text(
-                                '4',// TODO
-                                style: TextStyle(fontSize: 18),
-                              )
-                            )
-                          ),
-                          // course info
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Text('CSE 12', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)), // TODO
-                                    GestureDetector(
-                                      child: Icon(Icons.close, size: 20, color: darkGray),
-                                      onTap: () {
-                                        Navigator.pop(context);
-                                      }
-                                    )
-                                  ],
-                                ),
-                                Text('Basic Data Struct & OO design', style: TextStyle(fontSize: 16)) // TODO
-                              ],
-                            )
-                          )
-                        ]
-                      )
+                color: lightBlue,
+              ),
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Row(
+                children: <Widget>[
+                  // units icon
+                  Container(
+                    height: 35,
+                    width: 35,
+                    decoration: new BoxDecoration(
+                      color: lightGray,
+                      shape: BoxShape.circle,
                     ),
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      child: Column(
-                        children: <Widget>[
-                          // instructor andd section id
-                          Container(
-                            margin: EdgeInsets.only(top: 4, bottom: 8),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Text('Gillespie, Gary N', style: TextStyle(color: ColorPrimary, fontSize: 12)), // TODO
-                                Row(
-                                  children: <Widget>[
-                                    Text('Section ID', style: TextStyle(color: darkGray, fontSize: 12)), // TODO
-                                    Text('  983761', style: TextStyle(fontSize: 12)), // TODO
-                                  ]
-                                )
-                              ]
-                            ),
-                          ),
-                          // course sections: di, final
-                          renderSection(),
-                          renderSection(),
-                        ],
+                    margin: EdgeInsets.only(right: 10),
+                    child: Center(
+                      child: Text(
+                        '4',// TODO
+                        style: TextStyle(fontSize: 18),
                       )
                     )
-                  ],
-                ),
-              ),
-            );
-          },
-        ); 
-      },
+                  ),
+                  // course info
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text('CSE 12', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)), // TODO
+                            GestureDetector(
+                              child: Icon(Icons.close, size: 20, color: darkGray),
+                              onTap: () {
+                                Navigator.pop(widget.context);
+                              }
+                            )
+                          ],
+                        ),
+                        Text('Basic Data Struct & OO design', style: TextStyle(fontSize: 16)) // TODO
+                      ],
+                    )
+                  )
+                ]
+              )
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Column(
+                children: <Widget>[
+                  // instructor andd section id
+                  Container(
+                    margin: EdgeInsets.only(top: 4, bottom: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text('Gillespie, Gary N', style: TextStyle(color: ColorPrimary, fontSize: 12)), // TODO
+                        Row(
+                          children: <Widget>[
+                            Text('Section ID', style: TextStyle(color: darkGray, fontSize: 12)), // TODO
+                            Text('  983761', style: TextStyle(fontSize: 12)), // TODO
+                          ]
+                        )
+                      ]
+                    ),
+                  ),
+                  // course sections: di, final
+                  renderSection(),
+                  renderSection(),
+                ],
+              )
+            )
+          ],
+        ),
+      ),
     );
+            
+    // return ElevatedButton(
+    //   child: const Text('showBottomSheet'),
+    //   onPressed: () { 
+    //     Scaffold.of(context).showBottomSheet<void>(
+    //       (BuildContext context) {
+    //         return Container(
+    //           color: Colors.transparent,
+    //           width: double.infinity,
+    //           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+    //           child: Card(
+    //             shape: RoundedRectangleBorder(
+    //               borderRadius: BorderRadius.circular(10.0)
+    //             ),
+    //             child: Column(
+    //               mainAxisAlignment: MainAxisAlignment.start,
+    //               crossAxisAlignment: CrossAxisAlignment.start,
+    //               mainAxisSize: MainAxisSize.min,
+    //               children: <Widget>[
+    //                 // card title
+    //                 Container(
+    //                   decoration: BoxDecoration(
+    //                     borderRadius: BorderRadius.only(
+    //                       topRight: Radius.circular(10.0),
+    //                       topLeft: Radius.circular(10.0),
+    //                     ),
+    //                     color: lightBlue,
+    //                   ),
+    //                   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+    //                   child: Row(
+    //                     children: <Widget>[
+    //                       // units icon
+    //                       Container(
+    //                         height: 35,
+    //                         width: 35,
+    //                         decoration: new BoxDecoration(
+    //                           color: lightGray,
+    //                           shape: BoxShape.circle,
+    //                         ),
+    //                         margin: EdgeInsets.only(right: 10),
+    //                         child: Center(
+    //                           child: Text(
+    //                             '4',// TODO
+    //                             style: TextStyle(fontSize: 18),
+    //                           )
+    //                         )
+    //                       ),
+    //                       // course info
+    //                       Expanded(
+    //                         child: Column(
+    //                           crossAxisAlignment: CrossAxisAlignment.start,
+    //                           children: <Widget>[
+    //                             Row(
+    //                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //                               children: <Widget>[
+    //                                 Text('CSE 12', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)), // TODO
+    //                                 GestureDetector(
+    //                                   child: Icon(Icons.close, size: 20, color: darkGray),
+    //                                   onTap: () {
+    //                                     Navigator.pop(context);
+    //                                   }
+    //                                 )
+    //                               ],
+    //                             ),
+    //                             Text('Basic Data Struct & OO design', style: TextStyle(fontSize: 16)) // TODO
+    //                           ],
+    //                         )
+    //                       )
+    //                     ]
+    //                   )
+    //                 ),
+    //                 Container(
+    //                   margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+    //                   child: Column(
+    //                     children: <Widget>[
+    //                       // instructor andd section id
+    //                       Container(
+    //                         margin: EdgeInsets.only(top: 4, bottom: 8),
+    //                         child: Row(
+    //                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //                           children: <Widget>[
+    //                             Text('Gillespie, Gary N', style: TextStyle(color: ColorPrimary, fontSize: 12)), // TODO
+    //                             Row(
+    //                               children: <Widget>[
+    //                                 Text('Section ID', style: TextStyle(color: darkGray, fontSize: 12)), // TODO
+    //                                 Text('  983761', style: TextStyle(fontSize: 12)), // TODO
+    //                               ]
+    //                             )
+    //                           ]
+    //                         ),
+    //                       ),
+    //                       // course sections: di, final
+    //                       renderSection(),
+    //                       renderSection(),
+    //                     ],
+    //                   )
+    //                 )
+    //               ],
+    //             ),
+    //           ),
+    //         );
+    //       },
+    //     ); 
+    //   },
+    // );
   }
 }
 

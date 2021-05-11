@@ -24,6 +24,9 @@ class MyApp extends StatelessWidget {
         textTheme: lightThemeText,
         iconTheme: lightIconTheme,
         appBarTheme: lightAppBarTheme,
+        bottomSheetTheme: BottomSheetThemeData(
+            backgroundColor: Colors.black.withOpacity(0)
+        ),
       ),
       initialRoute: RoutePaths.Home,
       onGenerateRoute: webregMobileRouter.Router.generateRoute,

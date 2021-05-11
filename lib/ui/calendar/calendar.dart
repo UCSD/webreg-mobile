@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:webreg_mobile_flutter/app_styles.dart';
 import 'package:webreg_mobile_flutter/app_constants.dart';
+import 'package:webreg_mobile_flutter/ui/calendar/calendar_card.dart';
 import 'package:webreg_mobile_flutter/ui/calendar/bottom_course_card.dart';
 
 class Calendar extends StatelessWidget {
@@ -86,19 +87,11 @@ class Calendar extends StatelessWidget {
     },
   ];
 
-  double calculateRowPosition(String startTime, String endTime, String datePrefix) {
-    return 0;
-  } 
-
   double getTimeDifference(String start, String end, String prefix) {
     double diff = DateTime.parse(prefix + end).difference(DateTime.parse(prefix + start)).inMinutes.toDouble();
     print(diff.toString());
     return diff;
   }
-
-  double calculateColPosition(int dayOfWeek) {
-    return 0;
-  } 
 
   @override
   Widget build(BuildContext context) {
@@ -180,272 +173,51 @@ class Calendar extends StatelessWidget {
                   }
                 ),
 
-                // courses
-                Positioned(
-                  top: getTimeDifference(earliestClass, '10:00', '2020-06-06T'),
-                  left: CalendarStyles.calendarTimeWidth + 0 * calendarCardWidth,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(2.0)),
-                      // border: Border.all(width: 1, color: )
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.25),
-                          spreadRadius: 0,
-                          blurRadius: 2.5,
-                          offset: Offset(1, 1),
-                        ),
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.25),
-                          spreadRadius: 0,
-                          blurRadius: 2.5,
-                          offset: Offset(-1, 1),
-                        ),
-                      ],
-                    ),
-                    height: getTimeDifference('10:00', '10:50', '2020-06-06T'),
-                    width: calendarCardWidth,
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          height: 12,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(2.0),
-                              topLeft: Radius.circular(2.0),
-                            ),
-                            color: lightBlue,
-                          ),
-                          child: Center(
-                            child: Text('LE', style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)), // TODO, replace with real data
-                          )
-                        ),
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Text('CSE 100', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: -0.3)),
-                              Text('Center 101', style: TextStyle(fontSize: 9, letterSpacing: -0.3)),
-                            ]
-                          )
-                        )
-                      ]
-                    )
-                  )
+                CalendarCard(
+                  '10:00', 
+                  '10:50',
+                  '2020-06-06T',
+                  0,
+                  'LE',
+                  'CSE 110',
+                  'Center 109'
+                ),
+                CalendarCard(
+                  '10:00', 
+                  '10:50',
+                  '2020-06-06T',
+                  2,
+                  'LE',
+                  'CSE 110',
+                  'Center 109'
+                ),
+                CalendarCard(
+                  '10:00', 
+                  '10:50',
+                  '2020-06-06T',
+                  4,
+                  'LE',
+                  'CSE 110',
+                  'Center 109'
                 ),
 
-                Positioned(
-                  top: getTimeDifference(earliestClass, '10:00', '2020-06-06T'),
-                  left: CalendarStyles.calendarTimeWidth + 2 * calendarCardWidth,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(2.0)),
-                      // border: Border.all(width: 1, color: )
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.25),
-                          spreadRadius: 0,
-                          blurRadius: 2.5,
-                          offset: Offset(1, 1),
-                        ),
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.25),
-                          spreadRadius: 0,
-                          blurRadius: 2.5,
-                          offset: Offset(-1, 1),
-                        ),
-                      ],
-                    ),
-                    height: getTimeDifference('10:00', '10:50', '2020-06-06T'),
-                    width: calendarCardWidth,
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          height: 12,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(2.0),
-                              topLeft: Radius.circular(2.0),
-                            ),
-                            color: lightBlue,
-                          ),
-                          child: Center(
-                            child: Text('LE', style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)), // TODO, replace with real data
-                          )
-                        ),
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Text('CSE 100', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: -0.3)),
-                              Text('Center 101', style: TextStyle(fontSize: 9, letterSpacing: -0.3)),
-                            ]
-                          )
-                        )
-                      ]
-                    )
-                  )
+                CalendarCard(
+                  '11:00', 
+                  '12:20',
+                  '2020-06-06T',
+                  1,
+                  'DI',
+                  'CSE 100',
+                  'WLH 109'
                 ),
-                Positioned(
-                  top: getTimeDifference(earliestClass, '10:00', '2020-06-06T'),
-                  left: CalendarStyles.calendarTimeWidth + 4 * calendarCardWidth,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(2.0)),
-                      // border: Border.all(width: 1, color: )
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.25),
-                          spreadRadius: 0,
-                          blurRadius: 2.5,
-                          offset: Offset(1, 1),
-                        ),
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.25),
-                          spreadRadius: 0,
-                          blurRadius: 2.5,
-                          offset: Offset(-1, 1),
-                        ),
-                      ],
-                    ),
-                    height: getTimeDifference('10:00', '10:50', '2020-06-06T'),
-                    width: calendarCardWidth,
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          height: 12,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(2.0),
-                              topLeft: Radius.circular(2.0),
-                            ),
-                            color: lightBlue,
-                          ),
-                          child: Center(
-                            child: Text('LE', style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)), // TODO, replace with real data
-                          )
-                        ),
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Text('CSE 100', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: -0.3)),
-                              Text('Center 101', style: TextStyle(fontSize: 9, letterSpacing: -0.3)),
-                            ]
-                          )
-                        )
-                      ]
-                    )
-                  )
-                ),
-                Positioned(
-                  top: getTimeDifference(earliestClass, '11:00', '2020-06-06T'),
-                  left: CalendarStyles.calendarTimeWidth + 1 * calendarCardWidth,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(2.0)),
-                      // border: Border.all(width: 1, color: )
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.25),
-                          spreadRadius: 0,
-                          blurRadius: 2.5,
-                          offset: Offset(1, 1),
-                        ),
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.25),
-                          spreadRadius: 0,
-                          blurRadius: 2.5,
-                          offset: Offset(-1, 1),
-                        ),
-                      ],
-                    ),
-                    height: getTimeDifference('11:00', '12:20', '2020-06-06T'),
-                    width: calendarCardWidth,
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          height: 12,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(2.0),
-                              topLeft: Radius.circular(2.0),
-                            ),
-                            color: lightBlue,
-                          ),
-                          child: Center(
-                            child: Text('LE', style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)), // TODO, replace with real data
-                          )
-                        ),
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Text('CSE 100', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: -0.3)),
-                              Text('Center 101', style: TextStyle(fontSize: 9, letterSpacing: -0.3)),
-                            ]
-                          )
-                        )
-                      ]
-                    )
-                  )
-                ),
-                Positioned(
-                  top: getTimeDifference(earliestClass, '11:00', '2020-06-06T'),
-                  left: CalendarStyles.calendarTimeWidth + 3 * calendarCardWidth,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(2.0)),
-                      // border: Border.all(width: 1, color: )
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.25),
-                          spreadRadius: 0,
-                          blurRadius: 2.5,
-                          offset: Offset(1, 1),
-                        ),
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.25),
-                          spreadRadius: 0,
-                          blurRadius: 2.5,
-                          offset: Offset(-1, 1),
-                        ),
-                      ],
-                    ),
-                    height: getTimeDifference('11:00', '12:20', '2020-06-06T'),
-                    width: calendarCardWidth,
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          height: 12,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(2.0),
-                              topLeft: Radius.circular(2.0),
-                            ),
-                            color: lightBlue,
-                          ),
-                          child: Center(
-                            child: Text('LE', style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)), // TODO, replace with real data
-                          )
-                        ),
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Text('CSE 100', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: -0.3)),
-                              Text('Center 101', style: TextStyle(fontSize: 9, letterSpacing: -0.3)),
-                            ]
-                          )
-                        )
-                      ]
-                    )
-                  )
+                CalendarCard(
+                  '11:00', 
+                  '12:20',
+                  '2020-06-06T',
+                  3,
+                  'DI',
+                  'CSE 100',
+                  'WLH 109'
                 ),
               ]
             )

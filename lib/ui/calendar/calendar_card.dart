@@ -1,172 +1,96 @@
-// import 'package:flutter/material.dart';
-// import 'package:webreg_mobile_flutter/app_styles.dart';
+import 'package:flutter/material.dart';
+import 'package:webreg_mobile_flutter/app_constants.dart';
+import 'package:webreg_mobile_flutter/app_styles.dart';
+import 'package:webreg_mobile_flutter/ui/calendar/bottom_course_card.dart';
 
-// class CalendarCard extends StatefulWidget {
-//   @override
-//   _BottomCourseCardState createState() => _BottomCourseCardState();
-// }
 
-// class _BottomCourseCardState extends State<BottomCourseCard> {
-//   void onClick(BuildContext context) {
-//     showModalBottomSheet<void>(context: context, builder: (BuildContext context) {
-//       return Container(
-//         child: Padding(
-//           padding: const EdgeInsets.all(32.0),
-//           child: Text('This is the modal bottom sheet. Tap anywhere to dismiss.',
-//             textAlign: TextAlign.center,
-//             style: TextStyle(
-//               color: Theme.of(context).accentColor,
-//               fontSize: 24.0
-//             )
-//           )
-//         )
-//       );
-//     });
-//   }
+class CalendarCard extends StatefulWidget {
+  final String startTime, endTime, datePrefix, type, title, location;
+  final int dayOfWeek;
 
-//     Widget renderSection() {
-//     return Row(
-//       // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//       children: <Widget>[
-//         Expanded(
-//           flex: 3,
-//           child: Row(
-//             children: <Widget>[
-//               Text('A00', style: TextStyle(fontSize: 11, color: darkGray)), // TODO
-//               Text(' LE', style: TextStyle(fontSize: 11, color: darkGray)) // TODO
-//             ],
-//           )
-//         ),
-//         Expanded(
-//           flex: 3,
-//           child: Row(
-//             children: <Widget>[
-//               Text('M', style: TextStyle(fontSize: 11, color: ColorPrimary)), // TODO
-//               Text('T', style: TextStyle(fontSize: 11, color: lightGray)), // TODO
-//               Text('W', style: TextStyle(fontSize: 11, color: ColorPrimary)), // TODO
-//               Text('T', style: TextStyle(fontSize: 11, color: lightGray)), // TODO
-//               Text('F', style: TextStyle(fontSize: 11, color: ColorPrimary)), // TODO
-//             ],
-//           )
-//         ),
-//         Expanded(
-//           flex: 5,
-//           child: Text('3:30p - 4:50p', style: TextStyle(fontSize: 11, color: ColorPrimary)), // TODO
-//         ),
-//         Expanded(
-//           flex: 5,
-//           child: Text('PCYHN 106', style: TextStyle(fontSize: 11)), // TODO
-//         )
-//       ],
-//     );
-//   }
+  const CalendarCard(this.startTime, this.endTime, this.datePrefix, this.dayOfWeek, this.type, this.title, this.location);
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return ElevatedButton(
-//       child: const Text('showBottomSheet'),
-//       onPressed: () { 
-//         Scaffold.of(context).showBottomSheet<void>(
-//           (BuildContext context) {
-//             return Container(
-//               width: double.infinity,
-//               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-//               child: Card(
-//                 shape: RoundedRectangleBorder(
-//                   borderRadius: BorderRadius.circular(10.0)
-//                 ),
-//                 child: Column(
-//                   mainAxisAlignment: MainAxisAlignment.start,
-//                   crossAxisAlignment: CrossAxisAlignment.start,
-//                   mainAxisSize: MainAxisSize.min,
-//                   children: <Widget>[
-//                     // card title
-//                     Container(
-//                       decoration: BoxDecoration(
-//                         borderRadius: BorderRadius.only(
-//                           topRight: Radius.circular(10.0),
-//                           topLeft: Radius.circular(10.0),
-//                         ),
-//                         color: lightBlue,
-//                       ),
-//                       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-//                       child: Row(
-//                         children: <Widget>[
-//                           // units icon
-//                           Container(
-//                             height: 35,
-//                             width: 35,
-//                             decoration: new BoxDecoration(
-//                               color: lightGray,
-//                               shape: BoxShape.circle,
-//                             ),
-//                             margin: EdgeInsets.only(right: 10),
-//                             child: Center(
-//                               child: Text(
-//                                 '4',// TODO
-//                                 style: TextStyle(fontSize: 18),
-//                               )
-//                             )
-//                           ),
-//                           // course info
-//                           Expanded(
-//                             child: Column(
-//                               crossAxisAlignment: CrossAxisAlignment.start,
-//                               children: <Widget>[
-//                                 Row(
-//                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                                   children: <Widget>[
-//                                     Text('CSE 12', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)), // TODO
-//                                     GestureDetector(
-//                                       child: Icon(Icons.close, size: 20, color: darkGray),
-//                                       onTap: () {
-//                                         Navigator.pop(context);
-//                                       }
-//                                     )
-//                                   ],
-//                                 ),
-//                                 Text('Basic Data Struct & OO design', style: TextStyle(fontSize: 16)) // TODO
-//                               ],
-//                             )
-//                           )
-//                         ]
-//                       )
-//                     ),
-//                     Container(
-//                       margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-//                       child: Column(
-//                         children: <Widget>[
-//                           // instructor andd section id
-//                           Container(
-//                             margin: EdgeInsets.only(top: 4, bottom: 8),
-//                             child: Row(
-//                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                               children: <Widget>[
-//                                 Text('Gillespie, Gary N', style: TextStyle(color: ColorPrimary, fontSize: 12)), // TODO
-//                                 Row(
-//                                   children: <Widget>[
-//                                     Text('Section ID', style: TextStyle(color: darkGray, fontSize: 12)), // TODO
-//                                     Text('  983761', style: TextStyle(fontSize: 12)), // TODO
-//                                   ]
-//                                 )
-//                               ]
-//                             ),
-//                           ),
-//                           // course sections: di, final
-//                           renderSection(),
-//                           renderSection(),
-//                         ],
-//                       )
-//                     )
-//                   ],
-//                 ),
-//               ),
-//             );
-//           },
-//         ); 
-//       },
-//     );
-//   }
-// }
+  @override
+  _CalendarCardState createState() => _CalendarCardState();
+}
+
+class _CalendarCardState extends State<CalendarCard> {
+  static const earliestClass = '08:00';
+
+  double getTimeDifference(String start, String end, String prefix) {
+    double diff = DateTime.parse(prefix + end).difference(DateTime.parse(prefix + start)).inMinutes.toDouble();
+    print(diff.toString());
+    return diff;
+  }
+  
+  @override
+  Widget build(BuildContext context) {
+    double calendarCardWidth = (MediaQuery.of(context).size.width - CalendarStyles.calendarTimeWidth - 20) / 7;
+    bool _showModal = false;
+
+    return Positioned(
+      top: getTimeDifference(earliestClass, widget.startTime, widget.datePrefix),
+      left: CalendarStyles.calendarTimeWidth + widget.dayOfWeek * calendarCardWidth,
+      child: GestureDetector(
+        onTap: () {
+          Scaffold.of(context).showBottomSheet<void>(
+            (BuildContext context) {
+              return BottomCourseCard(context);
+            }
+          );
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(Radius.circular(2.0)),
+            // border: Border.all(width: 1, color: )
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.25),
+                spreadRadius: 0,
+                blurRadius: 2.5,
+                offset: Offset(1, 1),
+              ),
+              BoxShadow(
+                color: Colors.black.withOpacity(0.25),
+                spreadRadius: 0,
+                blurRadius: 2.5,
+                offset: Offset(-1, 1),
+              ),
+            ],
+          ),
+          height: getTimeDifference(widget.startTime, widget.endTime, widget.datePrefix),
+          width: calendarCardWidth,
+          child: Column(
+            children: <Widget>[
+              Container(
+                height: 12,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(2.0),
+                    topLeft: Radius.circular(2.0),
+                  ),
+                  color: lightBlue,
+                ),
+                child: Center(
+                  child: Text(widget.type, style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold)), // TODO, replace with real data
+                )
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(widget.title, style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: -0.3)),
+                    Text(widget.location, style: TextStyle(fontSize: 9, letterSpacing: -0.3)),
+                  ]
+                )
+              )
+            ]
+          )
+        )
+      )
+    );
+  }
+}
 
 
