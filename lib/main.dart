@@ -25,17 +25,6 @@ class MyApp extends StatelessWidget {
         iconTheme: lightIconTheme,
         appBarTheme: lightAppBarTheme,
       ),
-      // home: Scaffold(
-      //   appBar: AppBar(
-      //     centerTitle: true,
-      //     title: Text("Webreg", style: TextStyle(
-      //       fontWeight: FontWeight.normal,
-      //     )),
-      //     actions: <Widget>[
-      //       SearchPlaceholder()
-      //     ]
-      //   ),
-      // ),
       initialRoute: RoutePaths.Home,
       onGenerateRoute: webregMobileRouter.Router.generateRoute,
     );
