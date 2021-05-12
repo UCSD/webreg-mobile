@@ -60,7 +60,7 @@ const buildNotify = async () => {
 		console.log('saveArtifactWebSuccess: ' + saveArtifactWebSuccess)
 
 		// Construct build notifier message
-		let teamsMessage = '#### Campus Mobile Build Notifier\n\n'
+		let teamsMessage = '#### Webreg Build Notifier\n\n'
 		teamsMessage += '<table border="0" style="margin:16px">'
 		teamsMessage += '<tr style="border-bottom: 1px solid grey"><td align="right"><b>Version:</b></td><td>' + ENV_VARS.appVersion + ' (' + finalBuildNumber + ')</td></tr>'
 		teamsMessage += '<tr style="border-bottom: 1px solid grey"><td align="right"><b>Environment:</b></td><td>' + ENV_VARS.buildEnv + '</td></tr>'
