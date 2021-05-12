@@ -11,7 +11,7 @@ const SP_CONFIG = require('./sp-config.json')
 
 const INTERNAL_ERROR = { 'error': 'An error occurred.' }
 const INTERNAL_TIMEOUT = 20000
-const finalBuildNumber = parseInt(ENV_VARS.buildNumber) + 1000
+const finalBuildNumber = parseInt(ENV_VARS.buildNumber)
 const buildApkFile = 'app-release.apk'
 const buildIpaFile = 'UC_San_Diego.ipa'
 const buildWebFile = 'web-web.zip'
