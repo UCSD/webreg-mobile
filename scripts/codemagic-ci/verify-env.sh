@@ -8,8 +8,9 @@ if [ "$1" == "PROD" ]; then
 	qa_dash=$(grep -rio "https.*-qa" lib | wc -l | sed -e "s/^[ \t]*//")
 	dev_slash=$(grep -rio "https.*\/dev" lib | wc -l | sed -e "s/^[ \t]*//")
 	dev_dash=$(grep -rio "https.*-dev" lib | wc -l | sed -e "s/^[ \t]*//")
+	base_href=$(grep -rio "##BASE_HREF##" web | wc -l | sed -e "s/^[ \t]*//")
 
-	invalid_count=$((qa_slash + qa_dash + dev_slash + dev_dash))
+	invalid_count=$((qa_slash + qa_dash + dev_slash + dev_dash + base_href))
 
 	if [ "$invalid_count" -eq 0 ]; then
 		echo "\nverify-env.sh PROD: PASS"
@@ -19,13 +20,15 @@ if [ "$1" == "PROD" ]; then
 		grep -rin "https.*-qa" lib
 		grep -rin "https.*\/dev" lib
 		grep -rin "https.*-dev" lib
+		grep -rin "##BASE_HREF##" web
 		exit 1
 	fi
 elif [ "$1" == "QA" ]; then
 	prod_slash=$(grep -rio "https.*\/prod" lib | wc -l | sed -e "s/^[ \t]*//")
 	prod_dash=$(grep -rio "https.*-prod" lib | wc -l | sed -e "s/^[ \t]*//")
+	base_href=$(grep -rio "##BASE_HREF##" web | wc -l | sed -e "s/^[ \t]*//")
 
-	invalid_count=$((prod_slash + prod_dash))
+	invalid_count=$((prod_slash + prod_dash + base_href))
 
 	if [ "$invalid_count" -eq 0 ]; then
 		echo "\nset-env-qa: PASS"
@@ -33,6 +36,7 @@ elif [ "$1" == "QA" ]; then
 		echo "\nset-env-qa: FAIL (erors: ${invalid_count})"
 		grep -rin "https.*\/prod" lib
 		grep -rin "https.*-prod" lib
+		grep -rin "##BASE_HREF##" web
 		exit 1
 	fi
 else
