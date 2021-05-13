@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:webreg_mobile_flutter/app_styles.dart';
 import 'package:webreg_mobile_flutter/app_constants.dart';
+import 'package:webreg_mobile_flutter/app_styles.dart';
 import 'package:webreg_mobile_flutter/ui/calendar/calendar_card.dart';
-import 'package:webreg_mobile_flutter/ui/calendar/bottom_course_card.dart';
+import 'package:webreg_mobile_flutter/ui/common/build_info.dart';
 
 class Calendar extends StatelessWidget {
   Calendar(this.color);
@@ -88,142 +88,108 @@ class Calendar extends StatelessWidget {
   ];
 
   double getTimeDifference(String start, String end, String prefix) {
-    double diff = DateTime.parse(prefix + end).difference(DateTime.parse(prefix + start)).inMinutes.toDouble();
+    double diff = DateTime.parse(prefix + end)
+        .difference(DateTime.parse(prefix + start))
+        .inMinutes
+        .toDouble();
     print(diff.toString());
     return diff;
   }
 
   @override
   Widget build(BuildContext context) {
-    double calendarCardWidth = (MediaQuery.of(context).size.width - CalendarStyles.calendarTimeWidth - 20) / 7;
+    double calendarCardWidth = (MediaQuery.of(context).size.width -
+            CalendarStyles.calendarTimeWidth -
+            20) /
+        7;
 
     return Container(
-      color: Colors.white,
-      padding: EdgeInsets.symmetric(horizontal: 10),
-      child: Column(
-        children: <Widget>[
-          // calendar header
-          Container(
-            height: CalendarStyles.calendarHeaderHeight,
-            padding: EdgeInsets.only(top: 20, bottom: 15),
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(color: lightGray),
-              ),
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.05),
-                  spreadRadius: 1,
-                  blurRadius: 2,
-                  offset: Offset(0, 1), // changes position of shadow
+        color: Colors.white,
+        padding: EdgeInsets.symmetric(horizontal: 10),
+        child: Column(
+          children: <Widget>[
+            // calendar header
+            Container(
+                height: CalendarStyles.calendarHeaderHeight,
+                padding: EdgeInsets.only(top: 20, bottom: 15),
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(color: lightGray),
+                  ),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.05),
+                      spreadRadius: 1,
+                      blurRadius: 2,
+                      offset: Offset(0, 1), // changes position of shadow
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            child: Row(
-              children: <Widget>[
-                SizedBox(
-                  width: CalendarStyles.calendarTimeWidth,
-                ),
-                Expanded(
-                  child: Row(
-                    children: dayOfWeek.map((day) => Expanded(
-                      flex: 1,
-                      child: Container(
-                        child: Center(
-                          child: Text(day, style: TextStyle(fontSize: 10, letterSpacing: -0.1))
-                        )
-                      ),
-                    )).toList(),
-                  )
-                )
-              ],
-            )
-          ),
-          
-          Expanded( 
-            child: Stack(
-              children: <Widget>[
-                // calendar body
-                ListView.builder(
+                child: Row(
+                  children: <Widget>[
+                    SizedBox(
+                      width: CalendarStyles.calendarTimeWidth,
+                    ),
+                    Expanded(
+                        child: Row(
+                      children: dayOfWeek
+                          .map((day) => Expanded(
+                                flex: 1,
+                                child: Container(
+                                    child: Center(
+                                        child: Text(day,
+                                            style: TextStyle(
+                                                fontSize: 10,
+                                                letterSpacing: -0.1)))),
+                              ))
+                          .toList(),
+                    ))
+                  ],
+                )),
+
+            Expanded(
+                child: Stack(children: <Widget>[
+              // calendar body
+              ListView.builder(
                   itemCount: times.length,
                   // padding: EdgeInsets.symmetric(vertical: 8),
                   itemBuilder: (BuildContext context, int index) {
                     return Container(
-                      height: CalendarStyles.calendarRowHeight,
-                      margin: EdgeInsets.all(0),
-                      padding: EdgeInsets.all(0),
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(color: lightGray),
+                        height: CalendarStyles.calendarRowHeight,
+                        margin: EdgeInsets.all(0),
+                        padding: EdgeInsets.all(0),
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(color: lightGray),
+                          ),
                         ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          SizedBox(
-                            width: CalendarStyles.calendarTimeWidth,
-                            child: Center(
-                              child: Text(times[index], style: TextStyle(fontSize: 10)),
-                            )
-                          )
-                        ]
-                      )
-                    );
-                  }
-                ),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              SizedBox(
+                                  width: CalendarStyles.calendarTimeWidth,
+                                  child: Center(
+                                    child: Text(times[index],
+                                        style: TextStyle(fontSize: 10)),
+                                  ))
+                            ]));
+                  }),
 
-                CalendarCard(
-                  '10:00', 
-                  '10:50',
-                  '2020-06-06T',
-                  0,
-                  'LE',
-                  'CSE 110',
-                  'Center 109'
-                ),
-                CalendarCard(
-                  '10:00', 
-                  '10:50',
-                  '2020-06-06T',
-                  2,
-                  'LE',
-                  'CSE 110',
-                  'Center 109'
-                ),
-                CalendarCard(
-                  '10:00', 
-                  '10:50',
-                  '2020-06-06T',
-                  4,
-                  'LE',
-                  'CSE 110',
-                  'Center 109'
-                ),
+              CalendarCard('10:00', '10:50', '2020-06-06T', 0, 'LE', 'CSE 110',
+                  'Center 109'),
+              CalendarCard('10:00', '10:50', '2020-06-06T', 2, 'LE', 'CSE 110',
+                  'Center 109'),
+              CalendarCard('10:00', '10:50', '2020-06-06T', 4, 'LE', 'CSE 110',
+                  'Center 109'),
 
-                CalendarCard(
-                  '11:00', 
-                  '12:20',
-                  '2020-06-06T',
-                  1,
-                  'DI',
-                  'CSE 100',
-                  'WLH 109'
-                ),
-                CalendarCard(
-                  '11:00', 
-                  '12:20',
-                  '2020-06-06T',
-                  3,
-                  'DI',
-                  'CSE 100',
-                  'WLH 109'
-                ),
-              ]
-            )
-          )
-        ],
-      )
-    );
+              CalendarCard('11:00', '12:20', '2020-06-06T', 1, 'DI', 'CSE 100',
+                  'WLH 109'),
+              CalendarCard('11:00', '12:20', '2020-06-06T', 3, 'DI', 'CSE 100',
+                  'WLH 109'),
+            ])),
+            BuildInfo(),
+          ],
+        ));
   }
 }

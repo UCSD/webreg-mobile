@@ -19,8 +19,8 @@ const prodEnvReplacements = async (targetEnv) => {
 				envItem.QA.forEach((replacement, index) => {
 					if (replacement === '"##BUILD_ENV##"') {
 						data = data.replace(replacement, '"' + targetEnv + '"')
-					} else if (replacement === '##BASE_HREF##') {
-						data = data.replace(replacement, '/webreg-mobile/' + appVersion + '-' + buildNumber + '/')
+					} else if (replacement === '<base href="/">') {
+						data = data.replace(replacement, '<base href="/webreg-mobile/' + appVersion + '-' + buildNumber + '/">')
 					} else {
 						data = data.replace(replacement, envItem.PROD[index])
 					}
@@ -43,8 +43,8 @@ const qaEnvReplacements = async (targetEnv) => {
 				envItem.QA.forEach((replacement, index) => {
 					if (replacement === '"##BUILD_ENV##"') {
 						data = data.replace(replacement, '"' + targetEnv + '"')
-					} else if (replacement === '##BASE_HREF##') {
-						data = data.replace(replacement, '/webreg-mobile/' + appVersion + '-' + buildNumber + '/')
+					} else if (replacement === '<base href="/">') {
+						data = data.replace(replacement, '<base href="/webreg-mobile/' + appVersion + '-' + buildNumber + '/">')
 					} else {
 						data = data.replace(replacement, envItem.PROD[index])
 					}
