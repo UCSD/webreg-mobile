@@ -89,15 +89,20 @@ const buildNotify = async () => {
 			}
 		} else if (ENV_VARS.buildPlatform === 'WEB') {
 			if (saveArtifactWebSuccess) {
-				teamsMessage += '<tr style="border-bottom: 1px solid grey"><td align="right"><b>Web:</b></td><td><a href="' + buildArtifacts.buildWebFinalUrl + '" download style="text-decoration:underline">' + buildArtifacts.buildWebFinalFilename + '</a></td></tr>'
+				if (ENV_VARS.buildEnv === 'PROD') {
+					teamsMessage += '<tr style="border-bottom: 1px solid grey"><td align="right"><b>URL:</b></td><td><a href="' + SP_CONFIG.webregBaseUrlProd + ENV_VARS.appVersion + '-' + finalBuildNumber + '/index.html" style="text-decoration:underline">/webreg-mobile/' + ENV_VARS.appVersion + '-' + finalBuildNumber + '/index.html</a></td></tr>'
+				} else if (ENV_VARS.buildEnv === 'QA') {
+					teamsMessage += '<tr style="border-bottom: 1px solid grey"><td align="right"><b>URL:</b></td><td><a href="' + SP_CONFIG.webregBaseUrlQa + ENV_VARS.appVersion + '-' + finalBuildNumber + '/index.html" style="text-decoration:underline">/webreg-mobile/' + ENV_VARS.appVersion + '-' + finalBuildNumber + '/index.html</a></td></tr>'
+				}
+				teamsMessage += '<tr style="border-bottom: 1px solid grey"><td align="right"><b>Archive:</b></td><td><a href="' + buildArtifacts.buildWebFinalUrl + '" download style="text-decoration:underline">' + buildArtifacts.buildWebFinalFilename + '</a></td></tr>'
 			} else {
-				teamsMessage += '<tr style="border-bottom: 1px solid grey"><td align="right"><b>Web:</b></td><td><span style="color:#d60000">N/A</span></td></tr>'
+				teamsMessage += '<tr style="border-bottom: 1px solid grey"><td align="right"><b>Archive:</b></td><td><span style="color:#d60000">N/A</span></td></tr>'
 			}
 		}
 
 		// Test plan
 		if (testPlanUrl && testPlanFilename) {
-			teamsMessage += '<tr style="border-bottom: 1px solid grey"><td align="right"><b>Testing:</b></td><td><a href="' + testPlanUrl + '" style="text-decoration:underline">' + testPlanFilename + '</a></td></tr>'
+			teamsMessage += '<tr style="border-bottom: 1px solid grey"><td align="right"><b>Test Plan:</b></td><td><a href="' + testPlanUrl + '" style="text-decoration:underline">' + testPlanFilename + '</a></td></tr>'
 		}
 
 		const successEmojiList = ['🥇','🏆','🎖','🎉','🎊','🚀','🛫','🏋','💪','👏','💯']

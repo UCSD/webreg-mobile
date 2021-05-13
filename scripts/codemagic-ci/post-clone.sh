@@ -43,9 +43,37 @@ else
     exit 1
 fi
 
+# 6. UPLOAD_CONFIG
+if [ -n "$UPLOAD_CONFIG" ]; then
+    echo "UPLOAD_CONFIG: Found"
+else
+    echo "Error: UPLOAD_CONFIG not found, exiting."
+    exit 1
+fi
+
+# 7. UPLOAD_CREDENTIALS
+if [ -n "$UPLOAD_CREDENTIALS" ]; then
+    echo "UPLOAD_CREDENTIALS: Found"
+else
+    echo "Error: UPLOAD_CREDENTIALS not found, exiting."
+    exit 1
+fi
+
 echo "Installing Node.js ..."
 curl "https://nodejs.org/dist/v14.16.0/node-v14.16.0.pkg" > "$HOME/Downloads/node-stable.pkg" && sudo installer -store -pkg "$HOME/Downloads/node-stable.pkg" -target "/"
 node --version
+
+echo "Installing awscli ..."
+sudo pip3 install awscli --upgrade
+
+echo "Creating ~/.aws directory"
+mkdir ~/.aws
+
+echo "Writing credentials from \$UPLOAD_CONFIG ..."
+echo $UPLOAD_CONFIG | base64 --decode > ~/.aws/config
+
+echo "Writing credentials from \$UPLOAD_CREDENTIALS ..."
+echo $UPLOAD_CREDENTIALS | base64 --decode > ~/.aws/credentials
 
 echo "Writing app-config.js from \$APP_CONFIG ..."
 echo $APP_CONFIG | base64 --decode > ./scripts/codemagic-ci/app-config.js
