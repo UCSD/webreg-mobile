@@ -17,7 +17,7 @@ elif [ "$FCI_BUILD_STEP_STATUS" == "failure" ]; then
     exit 1
 fi
 
-cd ./scripts/codemagic-ci
+cd ../scripts/codemagic-ci
 npm i
 
 ENV_VARS=$( jq -n \

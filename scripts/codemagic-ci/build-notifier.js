@@ -67,11 +67,11 @@ const buildNotify = async () => {
 
 		// PR or Branch
 		if (ENV_VARS.prNumber) {
-			teamsMessage += '<tr style="border-bottom: 1px solid grey"><td align="right"><b>PR:</b></td><td><a href="https://github.com/UCSD/campus-mobile/pull/' + ENV_VARS.prNumber + '" style="text-decoration:underline">' + ENV_VARS.prNumber + '</a></td></tr>'
+			teamsMessage += '<tr style="border-bottom: 1px solid grey"><td align="right"><b>PR:</b></td><td><a href="https://github.com/UCSD/webreg-mobile/pull/' + ENV_VARS.prNumber + '" style="text-decoration:underline">' + ENV_VARS.prNumber + '</a></td></tr>'
 			teamsMessage += '<tr style="border-bottom: 1px solid grey"><td align="right"><b>Author:</b></td><td>' + prAuthor + '</td></tr>'
 		} else {
 			teamsMessage += '<tr style="border-bottom: 1px solid grey"><td align="right"><b>Branch:</b></td><td>' + ENV_VARS.buildBranch + '</td></tr>'
-			teamsMessage += '<tr style="border-bottom: 1px solid grey"><td align="right"><b>Commit:</b></td><td><a href="https://github.com/UCSD/campus-mobile/commit/' + ENV_VARS.commitHash + '" style="text-decoration:underline">' + ENV_VARS.commitHash + '</a></td></tr>'
+			teamsMessage += '<tr style="border-bottom: 1px solid grey"><td align="right"><b>Commit:</b></td><td><a href="https://github.com/UCSD/webreg-mobile/commit/' + ENV_VARS.commitHash + '" style="text-decoration:underline">' + ENV_VARS.commitHash + '</a></td></tr>'
 		}
 
 		// Build Artifacts
@@ -292,7 +292,7 @@ const githubMeta = async () => {
 		console.log('Fetching GitHub metadata for PR ' + ENV_VARS.prNumber)
 		const ghController = new AbortController()
 		const ghTimeout = setTimeout(() => { ghController.abort() }, INTERNAL_TIMEOUT)
-		const ghResp = await fetch('https://api.github.com/repos/UCSD/campus-mobile/pulls/' + ENV_VARS.prNumber, { signal: ghController.signal })
+		const ghResp = await fetch('https://api.github.com/repos/UCSD/webreg-mobile/pulls/' + ENV_VARS.prNumber, { signal: ghController.signal })
 		const ghRespJson = await ghResp.json()
 		clearTimeout(ghTimeout)
 		return ghRespJson.user.login
