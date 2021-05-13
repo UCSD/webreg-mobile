@@ -20,7 +20,10 @@
 app-config*.js
 sp-config*.json
 env-vars*.json
+publish-config*.json
 node_modules/
+config
+credentials
 
 # Flutter/Dart/Pub related
 .flutter-plugins-dependencies
