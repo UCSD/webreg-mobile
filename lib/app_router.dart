@@ -7,7 +7,6 @@ import 'package:flutter/widgets.dart';
 
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
-    print('route' + settings.name);
     switch (settings.name) {
       case RoutePaths.Home:
         return MaterialPageRoute<void>(builder: (_) => BottomNavigation());
