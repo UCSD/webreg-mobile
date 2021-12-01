@@ -113,23 +113,23 @@ class Section {
     this.instructors,
   });
 
-  String sectionId;
-  TermCode termCode;
-  String sectionCode;
-  InstructionType instructionType;
-  SectionStatus sectionStatus;
-  String subtitle;
-  DateTime startDate;
-  DateTime endDate;
-  int enrolledQuantity;
-  int capacityQuantity;
-  bool stopEnrollmentFlag;
-  String printFlag;
-  String subterm;
-  InstructionType planCode;
-  List<RecurringMeeting> recurringMeetings;
-  List<dynamic> additionalMeetings;
-  List<Instructor> instructors;
+  String? sectionId;
+  TermCode? termCode;
+  String? sectionCode;
+  InstructionType? instructionType;
+  SectionStatus? sectionStatus;
+  String? subtitle;
+  DateTime? startDate;
+  DateTime? endDate;
+  int? enrolledQuantity;
+  int? capacityQuantity;
+  bool? stopEnrollmentFlag;
+  String? printFlag;
+  String? subterm;
+  InstructionType? planCode;
+  List<RecurringMeeting>? recurringMeetings;
+  List<dynamic>? additionalMeetings;
+  List<Instructor>? instructors;
 
   factory Section.fromJson(Map<String, dynamic> json) => Section(
         sectionId: json["sectionId"] == null ? null : json["sectionId"],
