@@ -10,43 +10,40 @@ class SearchBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MediaQuery.removePadding(
-      context: context,
-      removeBottom: true,
-      child: AppBar(
-        titleSpacing: 0.0,
-        centerTitle: true,
-        title: Container(
-          decoration: new BoxDecoration(
-            color: lightGray,
-            borderRadius: new BorderRadius.all(Radius.circular(100.0)),
-            border: Border.all(width: 1.0, color: Color(0xFF034263)),
-          ),
-          margin: EdgeInsets.symmetric(vertical: 10.0),
-          child: Search(),
-        ),
-        automaticallyImplyLeading: false,
-        leading: Center(
-          child:IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.white),
-            padding: EdgeInsets.symmetric(horizontal: 9),
-            alignment: Alignment.centerLeft,
-            iconSize: 25,
-            onPressed: () {
-              Navigator.pop(context);
-            }
-          ),
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.filter_list, color: Colors.white),
-            padding: EdgeInsets.symmetric(horizontal: 9),
-            alignment: Alignment.centerLeft,
-            iconSize: 25,
-            onPressed: this.setOpenFilters,
-          ),
-        ]
-      )
-    );
+        context: context,
+        removeBottom: true,
+        child: AppBar(
+            titleSpacing: 0.0,
+            centerTitle: true,
+            title: Container(
+              decoration: new BoxDecoration(
+                color: lightGray,
+                borderRadius: new BorderRadius.all(Radius.circular(100.0)),
+                border: Border.all(width: 1.0, color: Color(0xFF034263)),
+              ),
+              margin: EdgeInsets.symmetric(vertical: 10.0),
+              child: Search(),
+            ),
+            automaticallyImplyLeading: false,
+            leading: Center(
+              child: IconButton(
+                  icon: Icon(Icons.arrow_back, color: Colors.white),
+                  padding: EdgeInsets.symmetric(horizontal: 9),
+                  alignment: Alignment.centerLeft,
+                  iconSize: 25,
+                  onPressed: () {
+                    Navigator.pop(context);
+                  }),
+            ),
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(Icons.filter_list, color: Colors.white),
+                padding: EdgeInsets.symmetric(horizontal: 9),
+                alignment: Alignment.centerLeft,
+                iconSize: 25,
+                onPressed: this.setOpenFilters,
+              ),
+            ]));
   }
 }
 
@@ -65,7 +62,7 @@ class SearchBar extends StatelessWidget {
 //   List<bool> _selectedFilters = List<bool>.filled(3, false);
 
 //   AnimationController expandController;
-//   Animation<double> animation; 
+//   Animation<double> animation;
 
 //   void prepareAnimations() {
 //     expandController = AnimationController(
@@ -96,7 +93,7 @@ class SearchBar extends StatelessWidget {
 //   //       builder: (context) => Wrap(
 //   //         children: <Widget>[
 //   //           Container(
-//   //             color: ColorPrimary, 
+//   //             color: ColorPrimary,
 //   //             height: 100,
 //   //             child: ListView(
 //   //               children: <Widget>[
@@ -162,28 +159,35 @@ class TermDropdown extends StatefulWidget {
 }
 
 class _TermDropdownState extends State<TermDropdown> {
-  List<String> dropdownItems = ['FA19', 'WI20', 'SP20', 'FA20'];
-  String _dropdownVal = 'FA19';
+  List<String> dropdownItems = [
+    'Fall 2019',
+    'Winter 2020',
+    'Sring 2020',
+    'Fall 2020',
+    'Winter 2021'
+  ];
+  String _dropdownVal = 'Fall 2019';
 
   @override
   Widget build(BuildContext context) {
     return DropdownButton<String>(
-        underline: Container(
-          height: 0
-        ),
-        value: _dropdownVal,
-        icon: Icon(Icons.arrow_drop_down, color: Colors.black, size: 20),
-        onChanged: (String newVal) {
-          setState(() {
-            _dropdownVal = newVal;
-          });
-        },
-        items: dropdownItems.map<DropdownMenuItem<String>>((String val) {
-          return DropdownMenuItem<String>(
+      underline: Container(height: 0),
+      value: _dropdownVal,
+      icon: Icon(Icons.arrow_drop_down, color: Colors.black, size: 20),
+      onChanged: (String newVal) {
+        setState(() {
+          _dropdownVal = newVal;
+        });
+      },
+      items: dropdownItems.map<DropdownMenuItem<String>>((String val) {
+        return DropdownMenuItem<String>(
             value: val,
-            child: Text(val, style: TextStyle(color: darkGray, fontSize: 14, fontWeight: FontWeight.bold))
-          );
-        }).toList(),
+            child: Text(val,
+                style: TextStyle(
+                    color: darkGray,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold)));
+      }).toList(),
     );
   }
 }
@@ -200,56 +204,54 @@ class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 35,
-      child: Row(children: <Widget>[
-        Container(
-          margin: const EdgeInsets.only(left: 10.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              TermDropdown(),
-              Container(
-                width: 1.0,
-                color: darkGray,
-                margin: const EdgeInsets.only(right: 10.0),
-              )
-            ],
-          )
-        ),
-        Expanded(
-          child: TextField(
-            onChanged: (text) { 
-              // _searchText = text;
-              if(text.length > 0) {
-                _icon = GestureDetector(
-                  child: Icon(Icons.close, size: 20, color: darkGray),
-                  onTap: () {
-                    _searchText.clear();
+        height: 35,
+        child: Row(
+          children: <Widget>[
+            Container(
+                margin: const EdgeInsets.only(left: 10.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    TermDropdown(),
+                    Container(
+                      width: 1.0,
+                      color: darkGray,
+                      margin: const EdgeInsets.only(right: 10.0),
+                    )
+                  ],
+                )),
+            Expanded(
+              child: TextField(
+                onChanged: (text) {
+                  // _searchText = text;
+                  if (text.length > 0) {
+                    _icon = GestureDetector(
+                        child: Icon(Icons.close, size: 20, color: darkGray),
+                        onTap: () {
+                          _searchText.clear();
+                        });
+                  } else {
+                    _icon = Icon(Icons.search, size: 20, color: darkGray);
                   }
-                );
-              } else {
-                _icon = Icon(Icons.search, size: 20, color: darkGray);
-              }
-            },
-            controller: _searchText,
-            autofocus: true,
-            textAlignVertical: TextAlignVertical.center,
-            style: TextStyle(fontSize: 16),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.symmetric(vertical: 0),
-              hintText: 'Search',
-              isDense: true, 
+                },
+                controller: _searchText,
+                autofocus: true,
+                textAlignVertical: TextAlignVertical.center,
+                style: TextStyle(fontSize: 16),
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.symmetric(vertical: 0),
+                  hintText: 'Search',
+                  isDense: true,
+                ),
+              ),
             ),
-          ),
-        ),
-        Container(
-          margin: const EdgeInsets.only(right: 10.0),
-          child: _icon,
-        ),
-      ],
-      )
-    );
+            Container(
+              margin: const EdgeInsets.only(right: 10.0),
+              child: _icon,
+            ),
+          ],
+        ));
   }
 }

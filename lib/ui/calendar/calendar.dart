@@ -3,6 +3,7 @@ import 'package:webreg_mobile_flutter/app_constants.dart';
 import 'package:webreg_mobile_flutter/app_styles.dart';
 import 'package:webreg_mobile_flutter/ui/calendar/calendar_card.dart';
 import 'package:webreg_mobile_flutter/ui/common/build_info.dart';
+import 'package:webreg_mobile_flutter/ui/search/search_bar.dart';
 
 class Calendar extends StatelessWidget {
   Calendar(this.color);
@@ -108,6 +109,7 @@ class Calendar extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 10),
         child: Column(
           children: <Widget>[
+            TermDropdown(),
             // calendar header
             Container(
                 height: CalendarStyles.calendarHeaderHeight,
