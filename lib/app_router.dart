@@ -14,6 +14,7 @@ class Router {
         return MaterialPageRoute<void>(builder: (_) => SearchView());
       case RoutePaths.CourseListView:
         return MaterialPageRoute<void>(builder: (_) => CourseListView());
+      default RoutePat
     }
   }
 }
