@@ -1,9 +1,0 @@
-class StudentProfile{
-    static Map<String, List> termMap;
-    
-    StudentProfile(){
-        termMap = new Map();
-        termMap.putIfAbsent("FA19", )
-    }
-    )
-}
