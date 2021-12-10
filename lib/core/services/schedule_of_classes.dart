@@ -22,7 +22,7 @@ class ScheduleOfClassesService {
           .fetchData(baseEndpoint + "?" + query); //add parameters here
       if (_response != null) {
         final ScheduleOfClassesModel data =
-            scheduleOfClassesModelFromJson(_response);
+            classScheduleModelFromJson(_response);
         _classes = data as List<ScheduleOfClassesModel>;
       } else {
         /// parse data

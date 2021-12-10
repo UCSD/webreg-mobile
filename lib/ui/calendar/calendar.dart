@@ -189,6 +189,11 @@ class Calendar extends StatelessWidget {
                   'WLH 109', color),
             ])),
             BuildInfo(),
+            TextButton(
+                child: const Text('Search Detail Page'),
+                onPressed: () {
+                  Navigator.pushNamed(context, RoutePaths.SearchDetail);
+                })
           ],
         ));
   }

@@ -34,6 +34,9 @@ class ScheduleOfClassesProvider extends ChangeNotifier {
   /// SERVICES
   late ScheduleOfClassesService _scheduleOfClassesService;
 
+  ScheduleOfClassesService get scheduleOfClassesService =>
+      _scheduleOfClassesService;
+
   void fetchClasses() async {
     String SearchQuery = searchBarController.text;
     String TextQuery = createQuery(SearchQuery);

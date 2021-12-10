@@ -442,7 +442,9 @@ class CourseCard extends StatelessWidget {
             onPressed: () {},
           ),
           IconButton(
-              icon: Icon(Icons.delete, color: ColorPrimary), onPressed: () {}),
+            icon: Icon(Icons.delete, color: ColorPrimary),
+            onPressed: () {},
+          ),
           IconButton(
             icon: Icon(Icons.add_circle, color: ColorPrimary),
             onPressed: () {},
