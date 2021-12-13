@@ -7,26 +7,31 @@ class ScheduleOfClassesService {
   bool _isLoading = false;
   DateTime? _lastUpdated;
   String? _error;
-  List<ScheduleOfClassesModel> _classes = [];
+  ScheduleOfClassesModel? classes;
   final NetworkHelper _networkHelper = NetworkHelper();
-
+  final Map<String, String> headers = {
+    "accept": "application/json",
+  };
   final String baseEndpoint =
-      "https://api-qa.ucsd.edu:8243/get_schedule_of_classes/v1/";
+      "https://api-qa.ucsd.edu:8243/get_schedule_of_classes/v1/classes/search";
 
   Future<bool> fetchClasses(String query) async {
     _error = null;
     _isLoading = true;
     try {
+      await getNewToken();
       /// fetch data
       String? _response = await _networkHelper
-          .fetchData(baseEndpoint + "?" + query); //add parameters here
+          .authorizedFetch(baseEndpoint + '?' + query, headers);
+      print(_response);//addarameters here
       if (_response != null) {
         final ScheduleOfClassesModel data =
             classScheduleModelFromJson(_response);
-        _classes = data as List<ScheduleOfClassesModel>;
+        classes = data as ScheduleOfClassesModel;
+        print(classes!.courses.toString());
       } else {
         /// parse data
-        _classes = [];
+
 
         return false;
       }
@@ -76,5 +81,26 @@ class ScheduleOfClassesService {
 
   DateTime? get lastUpdated => _lastUpdated;
 
-  List<ScheduleOfClassesModel>? get classes => _classes;
+  ScheduleOfClassesModel? get _classes => classes;
+  Future<bool> getNewToken() async {
+    final String tokenEndpoint = "https://api-qa.ucsd.edu:8243/token";
+    final Map<String, String> tokenHeaders = {
+      "content-type": 'application/x-www-form-urlencoded',
+      "Authorization":
+      "Basic djJlNEpYa0NJUHZ5akFWT0VRXzRqZmZUdDkwYTp2emNBZGFzZWpmaWZiUDc2VUJjNDNNVDExclVh"
+    };
+    //TODO: Have subscription set up for webreg mobile. Investigate alternatives to Dio.
+    try {
+      // var response = await _networkHelper.authorizedPost(
+      //     tokenEndpoint, tokenHeaders, "grant_type=client_credentials");
+      // TODO(Peter): Insert your own authetication token for demo. Will be replaced by application credentials
+      headers["Authorization"] = "Bearer " + "";
+          //response["access_token"];
+
+      return true;
+    } catch (e) {
+      _error = e.toString();
+      return false;
+    }
+  }
 }

@@ -1,5 +1,9 @@
 import 'dart:convert';
 
+import 'dart:core';
+
+import 'dart:core';
+
 ScheduleOfClassesModel classScheduleModelFromJson(String str) =>
     ScheduleOfClassesModel.fromJson(json.decode(str));
 
@@ -17,8 +21,10 @@ class ScheduleOfClassesModel {
 
   factory ScheduleOfClassesModel.fromJson(Map<String, dynamic> json) =>
       ScheduleOfClassesModel(
-          metadata: Metadata.fromJson(json['metadata']), courses: json["data"]);
+          metadata: Metadata.fromJson(json['metadata']), courses:List<CourseData>.from( json["data"].map((x) => CourseData.fromJson(x))));
 
+  // List<ClassData>.from(
+  // json["data"].map((x) => ClassData.fromJson(x)))
   Map<String, dynamic> toJson() => {
         "metadata": metadata!.toJson(),
         "data": List<dynamic>.from(courses!.map((x) => x.toJson()))
@@ -134,11 +140,11 @@ class SectionData {
       subterm: json['subterm'] ?? '',
       planCode: json['planCode'] ?? '',
       recurringMeetings: List<MeetingData>.from(
-          json["recurringMeetings"].map((x) => SectionData.fromJson(x))),
+          json["recurringMeetings"].map((x) => MeetingData.fromJson(x))),
       additionalMeetings: List<MeetingData>.from(
-          json["additionalMeetings"].map((x) => SectionData.fromJson(x))),
+          json["additionalMeetings"].map((x) => MeetingData.fromJson(x))),
       instructors: List<Instructor>.from(
-          json["instructors"].map((x) => SectionData.fromJson(x))));
+          json["instructors"].map((x) => Instructor.fromJson(x))));
 
   Map<String, dynamic> toJson() => {
         'sectionId': sectionId,

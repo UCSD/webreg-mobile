@@ -12,7 +12,7 @@ class ScheduleOfClassesProvider extends ChangeNotifier {
     /// initialize services here
     _scheduleOfClassesService = ScheduleOfClassesService();
 
-    _scheduleOfClassesModels = [];
+    _scheduleOfClassesModels = ScheduleOfClassesModel();
   }
 
   /// STATES
@@ -22,7 +22,7 @@ class ScheduleOfClassesProvider extends ChangeNotifier {
   bool? _noResults;
 
   /// MODELS
-  List<ScheduleOfClassesModel> _scheduleOfClassesModels = [];
+  ScheduleOfClassesModel _scheduleOfClassesModels =  ScheduleOfClassesModel();
   String? searchQuery;
   String? term;
   TextEditingController _searchBarController = TextEditingController();
@@ -66,7 +66,7 @@ class ScheduleOfClassesProvider extends ChangeNotifier {
   bool? get isLoading => _isLoading;
   String? get error => _error;
   DateTime? get lastUpdated => _lastUpdated;
-  List<ScheduleOfClassesModel> get scheduleOfClassesModels =>
+  ScheduleOfClassesModel get scheduleOfClassesModels =>
       _scheduleOfClassesModels;
   //List<String> get searchHistory => _searchHistory;
   TextEditingController get searchBarController => _searchBarController;
