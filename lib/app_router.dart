@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:webreg_mobile_flutter/app_constants.dart';
+import 'package:webreg_mobile_flutter/core/models/schedule_of_classes.dart';
 import 'package:webreg_mobile_flutter/ui/list/course_list_view.dart';
 import 'package:webreg_mobile_flutter/ui/navigator/bottom.dart';
 import 'package:webreg_mobile_flutter/ui/search/search_detail.dart';
 import 'package:webreg_mobile_flutter/ui/search/search_view.dart';
+import 'package:webreg_mobile_flutter/core/models/schedule_of_classes.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class Router {
@@ -17,7 +19,11 @@ class Router {
       case RoutePaths.CourseListView:
         return MaterialPageRoute<void>(builder: (_) => CourseListView());
       case RoutePaths.SearchDetail:
-        return MaterialPageRoute<void>(builder: (_) => const SearchDetail());
+        final CourseData course = settings.arguments! as CourseData;
+        return MaterialPageRoute(builder: (_) {
+          return SearchDetail(data: course);
+        });
+
       default:
         return MaterialPageRoute<void>(builder: (_) => BottomNavigation());
     }

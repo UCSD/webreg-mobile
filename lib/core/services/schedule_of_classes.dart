@@ -20,10 +20,11 @@ class ScheduleOfClassesService {
     _isLoading = true;
     try {
       await getNewToken();
+
       /// fetch data
-      String? _response = await _networkHelper
-          .authorizedFetch(baseEndpoint + '?' + query, headers);
-      print(_response);//addarameters here
+      String? _response = await _networkHelper.authorizedFetch(
+          baseEndpoint + '?' + query, headers);
+      print(_response); //addarameters here
       if (_response != null) {
         final ScheduleOfClassesModel data =
             classScheduleModelFromJson(_response);
@@ -31,7 +32,6 @@ class ScheduleOfClassesService {
         print(classes!.courses.toString());
       } else {
         /// parse data
-
 
         return false;
       }
@@ -87,7 +87,7 @@ class ScheduleOfClassesService {
     final Map<String, String> tokenHeaders = {
       "content-type": 'application/x-www-form-urlencoded',
       "Authorization":
-      "Basic djJlNEpYa0NJUHZ5akFWT0VRXzRqZmZUdDkwYTp2emNBZGFzZWpmaWZiUDc2VUJjNDNNVDExclVh"
+          "Basic djJlNEpYa0NJUHZ5akFWT0VRXzRqZmZUdDkwYTp2emNBZGFzZWpmaWZiUDc2VUJjNDNNVDExclVh"
     };
     //TODO: Have subscription set up for webreg mobile. Investigate alternatives to Dio.
     try {
@@ -95,7 +95,7 @@ class ScheduleOfClassesService {
       //     tokenEndpoint, tokenHeaders, "grant_type=client_credentials");
       // TODO(Peter): Insert your own authetication token for demo. Will be replaced by application credentials
       headers["Authorization"] = "Bearer " + "";
-          //response["access_token"];
+      //response["access_token"];
 
       return true;
     } catch (e) {

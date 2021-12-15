@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:webreg_mobile_flutter/app_constants.dart';
 import 'package:webreg_mobile_flutter/app_styles.dart';
+import 'package:webreg_mobile_flutter/core/models/schedule_of_classes.dart';
+import 'package:webreg_mobile_flutter/core/providers/schedule_of_classes.dart';
 
 class SearchBar extends StatelessWidget {
   final VoidCallback setOpenFilters;
@@ -193,8 +195,7 @@ class Search extends StatefulWidget {
 
 class _SearchState extends State<Search> {
   Widget _icon = Icon(Icons.search, size: 20, color: darkGray);
-  final _searchText = TextEditingController();
-
+  ScheduleOfClassesProvider provider = ScheduleOfClassesProvider();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -218,18 +219,18 @@ class _SearchState extends State<Search> {
             Expanded(
               child: TextField(
                 onChanged: (text) {
-                  // _searchText = text;
+                  provider.searchBarController.text = text;
                   if (text.length > 0) {
                     _icon = GestureDetector(
                         child: Icon(Icons.close, size: 20, color: darkGray),
                         onTap: () {
-                          _searchText.clear();
+                          provider.searchBarController.clear();
                         });
                   } else {
                     _icon = Icon(Icons.search, size: 20, color: darkGray);
                   }
                 },
-                controller: _searchText,
+                controller: provider.searchBarController,
                 autofocus: true,
                 textAlignVertical: TextAlignVertical.center,
                 style: TextStyle(fontSize: 16),
