@@ -93,7 +93,7 @@ class ScheduleOfClassesService {
     try {
       // var response = await _networkHelper.authorizedPost(
       //     tokenEndpoint, tokenHeaders, "grant_type=client_credentials");
-      // TODO(Peter): Insert your own authetication token for demo. Will be replaced by application credentials
+      // TODO(Peter): Insert your own authenitcation token for demo. Will be replaced by application credentials
       headers["Authorization"] = "Bearer " + "";
       //response["access_token"];
 
