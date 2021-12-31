@@ -92,7 +92,6 @@ class Calendar extends StatelessWidget {
         .difference(DateTime.parse(prefix + start))
         .inMinutes
         .toDouble();
-    print(diff.toString());
     return diff;
   }
 

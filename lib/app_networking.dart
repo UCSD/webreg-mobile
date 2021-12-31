@@ -149,9 +149,7 @@ class NetworkHelper {
       }
     } on TimeoutException catch (e) {
       // Display an alert - i.e. no internet
-      print(e);
     } catch (err) {
-      print(err);
       return null;
     }
   }

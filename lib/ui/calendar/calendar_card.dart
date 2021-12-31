@@ -23,7 +23,6 @@ class _CalendarCardState extends State<CalendarCard> {
         .difference(DateTime.parse(prefix + start))
         .inMinutes
         .toDouble();
-    print(diff.toString());
     return diff;
   }
 

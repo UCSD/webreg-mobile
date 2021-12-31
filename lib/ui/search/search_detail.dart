@@ -1,6 +1,7 @@
-import 'dart:html';
-import 'package:intl/intl.dart';
+// ignore_for_file: always_specify_types
+
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:webreg_mobile_flutter/app_styles.dart';
 import 'package:webreg_mobile_flutter/core/models/schedule_of_classes.dart';
 
@@ -16,20 +17,20 @@ class SearchDetail extends StatelessWidget {
       appBar: AppBar(
           centerTitle: true,
           title: Text(
-              "${data.departmentCode} ${data.courseCode} \n${data.courseTitle}")),
+              '${data.departmentCode} ${data.courseCode} \n${data.courseTitle}')),
       body: Column(
-        children: [coursePrereqs(), courseDetails(data.sections![0])],
+        children: [coursePrereqs(), courseDetails()],
       ));
 
   Card coursePrereqs() {
     return Card(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5.0),
+          borderRadius: BorderRadius.circular(10.0),
         ),
-        child: Container(
+        child: const SizedBox(
             width: double.maxFinite,
-            height: 30,
-            child: const Center(
+            height: 50,
+            child: Center(
                 child: Text(
               'Course Prerequisites and Level Restrictions',
               style: TextStyle(
@@ -39,242 +40,290 @@ class SearchDetail extends StatelessWidget {
             ))));
   }
 
-  Widget courseDetails(SectionData section) {
-    List<MeetingData> meetings = section.recurringMeetings!;
-    MeetingData finalMeeting = section.additionalMeetings![0];
-    SectionData lectureSection = SectionData();
-    SectionData discussionSection = SectionData();
-    List<MeetingData> lectureSections = <MeetingData>[];
-    List<MeetingData> discussionSections = <MeetingData>[];
-    MeetingData finalSection;
-    for (SectionData sections in data.sections!) {
-      if (sections.instructionType == 'LE') {
-        lectureSection = sections;
+  Widget courseDetails() {
+    // Determine types of sections
+    final List<String> sectionTypes = <String>[];
+    final List<Card> sectionCards = <Card>[];
+    final List<SectionData> sectionObjects = <SectionData>[];
+    for (final SectionData section in data.sections!) {
+      if (section.instructionType != 'LE' || !sectionTypes.contains('LE')) {
+        sectionTypes.add(section.instructionType!);
+        sectionObjects.add(section);
       }
     }
-    for (SectionData sections in data.sections!) {
-      if (sections.instructionType == 'DI') {
-        discussionSection = sections;
-      }
+    sectionTypes.add('FI');
+    sectionObjects.add(SectionData());
+
+    //Build section cards for different instruction types
+    int sectionIndex = 0;
+    for (final String sectionType in sectionTypes.toList()) {
+      sectionCards
+          .add(buildSectionCard(sectionType, sectionObjects[sectionIndex]));
+      sectionIndex++;
     }
+    return Column(children: <Card>[...sectionCards]);
+  }
 
-    // Find all lecture sections
-    // for (MeetingData section in meetings) {
-    //   if (section.meetingType == 'LE') {
-    //     lectureSections.add(section);
-    //   } else if (section.meetingType == 'DI') {
-    //     discussionSections.add(section);
-    //   } else if (section.meetingType == 'FI') {
-    //     finalSection = section;
-    //   }
-    // }
+  Card buildSectionCard(String sectionType, SectionData sectionObject) {
+    switch (sectionType) {
+      case 'LE':
+        {
+          // Accumalate all lecture meetings in section
+          SectionData lectureObject = SectionData();
+          final List<MeetingData> lectureMeetings = <MeetingData>[];
+          for (final SectionData section in data.sections!) {
+            if (section.instructionType == 'LE') {
+              lectureMeetings.addAll(section.recurringMeetings!);
+              lectureObject = section;
+            }
+          }
 
-    String instructorName = "";
-    for (Instructor instructor in section.instructors!) {
-      if (instructor.primaryInstructor!) {
-        instructorName = instructor.instructorName!;
-      }
-    }
+          // Instructor name
+          String instructorName = '';
+          for (final Instructor instructor in lectureObject.instructors!) {
+            if (instructor.primaryInstructor!) {
+              instructorName = instructor.instructorName!;
+            }
+          }
 
-    // DAY Section
-    List<Widget> days = <Widget>[
-      const Text('M', style: TextStyle(color: darkGray)),
-      const Text('T', style: TextStyle(color: darkGray)),
-      const Text('W', style: TextStyle(color: darkGray)),
-      const Text('T', style: TextStyle(color: darkGray)),
-      const Text('F', style: TextStyle(color: darkGray))
-    ];
-    for (MeetingData meeting in meetings) {
-      if (meeting.dayCode == 'MO') {
-        days[0] = const Text('M', style: TextStyle(color: ColorSecondary));
-      } else if (meeting.dayCode == 'TU') {
-        days[1] = const Text('T', style: TextStyle(color: ColorSecondary));
-      } else if (meeting.dayCode == 'WE') {
-        days[2] = const Text('W', style: TextStyle(color: ColorSecondary));
-      } else if (meeting.dayCode == 'TH') {
-        days[3] = const Text('T', style: TextStyle(color: ColorSecondary));
-      } else if (meeting.dayCode == 'FR') {
-        days[4] = const Text('F', style: TextStyle(color: ColorSecondary));
-      }
-    }
+          // DAY Section
+          List<Widget> days = resetDays();
+          days = setDays(days, lectureMeetings);
 
-    // String startTime = "";
-    // String endTime = "";
-    // // Calculate time
-    // int start = int.parse(meetings[0].startTime!);
-    // if (start > 1200) {
-    //   int temp = start - 1200;
-    //   startTime = temp.toString().
-    // }
+          // Time parsing
+          const String prefix = '0000-01-01T';
+          String startTime = DateFormat.jm()
+              .format(DateTime.parse(prefix + lectureMeetings[0].startTime!));
+          String endTime = DateFormat.jm()
+              .format(DateTime.parse(prefix + lectureMeetings[0].endTime!));
+          startTime = startTime.toLowerCase().replaceAll(' ', '');
+          endTime = endTime.toLowerCase().replaceAll(' ', '');
 
-    // DateTime startTime = DateFormat.jm().parse(meetings[0].startTime!);
-    // DateTime endTime = DateFormat.jm().parse(meetings[0].endTime!);
-    Widget lectureCard = Card(
-        margin: EdgeInsets.all(2),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5.0),
-        ),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(instructorName, style: const TextStyle(color: ColorSecondary)),
-          Padding(padding: EdgeInsets.all(5)),
-          Row(children: [
-            Text(section.sectionCode!, style: const TextStyle(color: darkGray)),
-            const Padding(padding: EdgeInsets.all(10)),
-            const Text('LE'),
-            const Padding(padding: EdgeInsets.all(10)),
-            ...days,
-            const Padding(padding: EdgeInsets.all(10)),
-            Text(meetings[0].startTime! + ' - ' + meetings[0].endTime!),
-            const Padding(padding: EdgeInsets.all(10)),
-            Text(meetings[0].buildingCode!),
-            const Padding(padding: EdgeInsets.all(10)),
-            Text(meetings[0].roomCode!),
-          ]),
-        ]));
-    days = <Widget>[
-      const Text('M', style: TextStyle(color: darkGray)),
-      const Text('T', style: TextStyle(color: darkGray)),
-      const Text('W', style: TextStyle(color: darkGray)),
-      const Text('T', style: TextStyle(color: darkGray)),
-      const Text('F', style: TextStyle(color: darkGray))
-    ];
-    for (MeetingData meeting in meetings) {
-      if (meeting.dayCode == 'MO') {
-        days[0] = const Text('M', style: TextStyle(color: ColorSecondary));
-      } else if (meeting.dayCode == 'TU') {
-        days[1] = const Text('T', style: TextStyle(color: ColorSecondary));
-      } else if (meeting.dayCode == 'WE') {
-        days[2] = const Text('W', style: TextStyle(color: ColorSecondary));
-      } else if (meeting.dayCode == 'TH') {
-        days[3] = const Text('T', style: TextStyle(color: ColorSecondary));
-      } else if (meeting.dayCode == 'FR') {
-        days[4] = const Text('F', style: TextStyle(color: ColorSecondary));
-      }
-    }
-    Widget discussionCard = Card(
-        margin: EdgeInsets.all(2),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5.0),
-        ),
-        child: Row(children: [
-          Text(section.sectionCode!, style: const TextStyle(color: darkGray)),
-          const Padding(padding: EdgeInsets.all(10)),
-          const Text('DI'),
-          const Padding(padding: EdgeInsets.all(10)),
-          ...days,
-          const Padding(padding: EdgeInsets.all(10)),
-          Text(discussionSection.recurringMeetings![0].startTime! +
-              ' - ' +
-              discussionSection.recurringMeetings![0].endTime!),
-          const Padding(padding: EdgeInsets.all(10)),
-          Text(discussionSection.recurringMeetings![0].buildingCode!),
-          const Padding(padding: EdgeInsets.all(10)),
-          Text(discussionSection.recurringMeetings![0].roomCode!),
-        ]));
+          // Room Code and Number parsing
+          final String room = lectureMeetings[0].buildingCode! +
+              ' ' +
+              lectureMeetings[0].roomCode!.substring(1);
 
-    Widget finalCard = Card(
-      margin: EdgeInsets.all(2),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5.0),
-      ),
-      child: Row(
-        children: [
-          const Text(
-            "FINAL",
-            style: TextStyle(color: darkGray),
+          // Construct Card widget
+          return Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            margin: const EdgeInsets.only(
+                left: 10.0, right: 10.0, top: 2.0, bottom: 0.0),
+            child: SizedBox(
+              height: 50,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 0.0, right: 0.0, top: 5, bottom: 10),
+                    child: Text(
+                      instructorName,
+                      style: const TextStyle(color: ColorSecondary),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        lectureObject.sectionCode!,
+                        style: const TextStyle(color: darkGray),
+                      ),
+                      Text(sectionType),
+                      ...days,
+                      Text(startTime + ' - ' + endTime),
+                      Text(room)
+                    ],
+                  )
+                ],
+              ),
+            ),
+          );
+        }
+      case 'DI':
+        {
+          // Accumalate all discussion meetings in section
+          final SectionData discussionObject = sectionObject;
+          final List<MeetingData> discussionMeetings = <MeetingData>[];
+          discussionMeetings.addAll(discussionObject.recurringMeetings!);
+
+          // DAY Section
+          List<Widget> days = resetDays();
+          days = setDays(days, discussionMeetings);
+
+          // Time
+          const String prefix = '0000-01-01T';
+          String startTime = DateFormat.jm().format(
+              DateTime.parse(prefix + discussionMeetings[0].startTime!));
+          String endTime = DateFormat.jm()
+              .format(DateTime.parse(prefix + discussionMeetings[0].endTime!));
+          startTime = startTime.toLowerCase().replaceAll(' ', '');
+          endTime = endTime.toLowerCase().replaceAll(' ', '');
+
+          // Room parsing
+          final String room = discussionMeetings[0].buildingCode! +
+              ' ' +
+              discussionMeetings[0].roomCode!.substring(1);
+
+          return Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              margin: const EdgeInsets.only(
+                  left: 10.0, right: 10.0, top: 2.0, bottom: 0.0),
+              child: SizedBox(
+                height: 35,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                      discussionObject.sectionCode!,
+                      style: const TextStyle(color: darkGray),
+                    ),
+                    Text(sectionType),
+                    ...days,
+                    Text(startTime + ' - ' + endTime),
+                    Text(room)
+                  ],
+                ),
+              ));
+        }
+      case 'LA':
+        {
+          // Accumalate all lab meetings in section
+          final SectionData labObject = sectionObject;
+          final List<MeetingData> labMeetings = <MeetingData>[];
+          labMeetings.addAll(sectionObject.recurringMeetings!);
+
+          // DAY Section
+          List<Widget> days = resetDays();
+          days = setDays(days, labMeetings);
+
+          // Time
+          const String prefix = '0000-01-01T';
+          String startTime = DateFormat.jm()
+              .format(DateTime.parse(prefix + labMeetings[0].startTime!));
+          String endTime = DateFormat.jm()
+              .format(DateTime.parse(prefix + labMeetings[0].endTime!));
+          startTime = startTime.toLowerCase().replaceAll(' ', '');
+          endTime = endTime.toLowerCase().replaceAll(' ', '');
+
+          // Room parsing
+          final String room = labMeetings[0].buildingCode! +
+              ' ' +
+              labMeetings[0].roomCode!.substring(1);
+
+          // Construct Card widget
+          return Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            margin: const EdgeInsets.only(
+                left: 10.0, right: 10.0, top: 2.0, bottom: 0.0),
+            child: SizedBox(
+              height: 35,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    labObject.sectionCode!,
+                    style: const TextStyle(color: darkGray),
+                  ),
+                  Text(sectionType),
+                  ...days,
+                  Text(startTime + ' - ' + endTime),
+                  Text(room)
+                ],
+              ),
+            ),
+          );
+        }
+      case 'FI':
+        {
+          // Accumalate all lecture meetings in section
+          final List<MeetingData> finalMeetings = <MeetingData>[];
+          for (final SectionData section in data.sections!) {
+            if (section.instructionType == 'LE') {
+              finalMeetings.addAll(section.additionalMeetings!);
+            }
+          }
+
+          // Time
+          const String prefix = '0000-01-01T';
+          String startTime = DateFormat.jm()
+              .format(DateTime.parse(prefix + finalMeetings[0].startTime!));
+          startTime = startTime.toLowerCase().replaceAll(' ', '');
+          String endTime = DateFormat.jm()
+              .format(DateTime.parse(prefix + finalMeetings[0].endTime!));
+          endTime = endTime.toLowerCase().replaceAll(' ', '');
+
+          final String finalDate = DateFormat.MMMMd('en_US')
+              .format(DateTime.parse(finalMeetings[0].meetingDate!));
+
+          // Parse building code and room
+          final String room = ' ' +
+              finalMeetings[0].buildingCode! +
+              ' ' +
+              finalMeetings[0].roomCode!.substring(1);
+
+          // Construct Card widget
+          return Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              margin: const EdgeInsets.only(
+                  left: 10.0, right: 10.0, top: 2.0, bottom: 0.0),
+              child: SizedBox(
+                height: 35,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    const Text(
+                      'FINAL',
+                      style: TextStyle(color: darkGray),
+                    ),
+                    Text(finalDate + '  ' + startTime + ' - ' + endTime),
+                    Text(room)
+                  ],
+                ),
+              ));
+        }
+      default:
+        return const Card(
+          child: Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text('No data available.'),
           ),
-          const Padding(padding: EdgeInsets.all(10)),
-          Text(lectureSection.additionalMeetings![0].meetingDate!),
-          const Padding(padding: EdgeInsets.all(10)),
-          Text(lectureSection.additionalMeetings![0].startTime! +
-              ' - ' +
-              lectureSection.additionalMeetings![0].endTime!),
-          const Padding(padding: EdgeInsets.all(10)),
-          Text(lectureSection.additionalMeetings![0].buildingCode!),
-          const Padding(padding: EdgeInsets.all(10)),
-          Text(lectureSection.additionalMeetings![0].roomCode!),
-        ],
-      ),
-    );
-    return Column(
-      children: [lectureCard, discussionCard, finalCard],
-    );
-    // Row(children: [
-    //   Text("Enrolled: ${data.sections![0].enrolledQuantity}       "),
-    //   Text("Capacity: ${data.sections![0].capacityQuantity}"),
-    // ]),
+        );
+    }
+  }
 
-    // return Column(children: []);
-    // return Container(
-    //   height: 500,
-    //   child: ListView(
-    //     children: [
-    //       Text('Title of class: ${data.courseTitle}'),
-    //       Text(
-    //           'Instructors name: ${data.sections![0].instructors![0].instructorName}'),
-    //       Text(data.toJson().toString())
-    //     ],
-    //   ),
-    // );
+  List<Widget> resetDays() {
+    return <Widget>[
+      const Text('M', style: TextStyle(color: darkGray)),
+      const Text('T', style: TextStyle(color: darkGray)),
+      const Text('W', style: TextStyle(color: darkGray)),
+      const Text('T', style: TextStyle(color: darkGray)),
+      const Text('F', style: TextStyle(color: darkGray))
+    ];
+  }
+
+  List<Widget> setDays(List<Widget> days, List<MeetingData> meetings) {
+    for (final MeetingData meeting in meetings) {
+      if (meeting.dayCode == 'MO') {
+        days[0] = const Text('M', style: TextStyle(color: ColorSecondary));
+      } else if (meeting.dayCode == 'TU') {
+        days[1] = const Text('T', style: TextStyle(color: ColorSecondary));
+      } else if (meeting.dayCode == 'WE') {
+        days[2] = const Text('W', style: TextStyle(color: ColorSecondary));
+      } else if (meeting.dayCode == 'TH') {
+        days[3] = const Text('T', style: TextStyle(color: ColorSecondary));
+      } else if (meeting.dayCode == 'FR') {
+        days[4] = const Text('F', style: TextStyle(color: ColorSecondary));
+      }
+    }
+    return days;
   }
 }
-
-// Card(
-//           margin: EdgeInsets.all(10),
-//           shape: RoundedRectangleBorder(
-//             borderRadius: BorderRadius.circular(5.0),
-//           ),
-//           child:
-//               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-//             Text(
-//               '${data.sections![0].instructors![0].instructorName}',
-//               style: TextStyle(
-//                 color: ColorSecondary,
-//               ),
-//             ),
-//             Row(children: [
-//               Text(
-//                 data.sections![0].sectionCode!,
-//                 style: TextStyle(color: darkGray),
-//               ),
-//               Text(" LE "),
-//               Text(" " +
-//                   data.sections![0].recurringMeetings![0].dayCodeIsis! +
-//                   "     "),
-//               Text(" " +
-//                   data.sections![0].recurringMeetings![0].startTime! +
-//                   "-"),
-//               Text(data.sections![0].recurringMeetings![0].endTime! + "    "),
-//               Text(data.sections![0].recurringMeetings![0].buildingCode! + " "),
-//               Text(data.sections![0].recurringMeetings![0].roomCode! + " "),
-//             ]),
-//             Row(children: [
-//               Text("Enrolled: ${data.sections![0].enrolledQuantity}       "),
-//               Text("Capacity: ${data.sections![0].capacityQuantity}"),
-//             ]),
-// ]))
-
-// class _SearchDetailState extends State<SearchDetail> {
-//   late ScheduleOfClassesProvider classesProvider;
-//   @override
-//   Widget build(BuildContext context) {
-//     classesProvider = ScheduleOfClassesProvider();
-//     return Scaffold(
-//         appBar: AppBar(
-//           centerTitle: true,
-//           title: const Text('Class Details'),
-//         ),
-//         body: FutureBuilder(
-//             future: classesProvider.scheduleOfClassesService
-//                 .fetchClasses('departments=CSE&termCode=SP21&limit=5'),
-//             builder: (context, response) {
-//               if (response.hasData) {
-//                 return Text(classesProvider.scheduleOfClassesService.classes!
-//                     .toJson()
-//                     .toString());
-//               } else {
-//                 return const CircularProgressIndicator();
-//               }
-//             }));
-//   }
-// }
