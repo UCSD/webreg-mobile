@@ -19,7 +19,6 @@ class _CalendarCardState extends State<CalendarCard> {
 
   double getTimeDifference(String start, String end, String prefix) {
     double diff = DateTime.parse(prefix + end).difference(DateTime.parse(prefix + start)).inMinutes.toDouble();
-    print(diff.toString());
     return diff;
   }
   
@@ -43,7 +42,6 @@ class _CalendarCardState extends State<CalendarCard> {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.all(Radius.circular(2.0)),
-            // border: Border.all(width: 1, color: )
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.25),
