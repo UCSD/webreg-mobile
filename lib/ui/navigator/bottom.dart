@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:webreg_mobile_flutter/core/providers/user.dart';
 import 'package:webreg_mobile_flutter/ui/search/search_placeholder.dart';
 import 'package:webreg_mobile_flutter/ui/calendar/calendar.dart';
 import 'package:webreg_mobile_flutter/ui/list/course_list_view.dart';
@@ -12,6 +14,7 @@ class BottomNavigation extends StatefulWidget {
 
 class _BottomNavigationState extends State<BottomNavigation>
     with SingleTickerProviderStateMixin {
+  UserDataProvider userDataProvider = UserDataProvider();
   var currentTab = [
     Calendar(Colors.blue.shade200),
     CourseListView(),
@@ -26,9 +29,21 @@ class _BottomNavigationState extends State<BottomNavigation>
     color: ColorPrimary,
     fontSize: 16,
   );
+  // @override
+  // void didChangeDependencies() {
+  //   userDataProvider = Provider.of<UserDataProvider>(context);
+  // }
 
   @override
   Widget build(BuildContext context) {
+    String _token = '';
+    final currentUrl = Uri.base;
+    final fragments = currentUrl.fragment.split('&');
+    _token = fragments
+        .firstWhere((e) => e.startsWith('access_token='))
+        .substring('access_token='.length);
+    userDataProvider.setToken = _token;
+
     return Scaffold(
         appBar: AppBar(
             centerTitle: true,

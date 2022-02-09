@@ -17,10 +17,17 @@ class _SearchViewState extends State<SearchView> {
   late String searchString;
   late ScheduleOfClassesProvider classesProvider;
   bool showList = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    classesProvider = ScheduleOfClassesProvider();
+
+  }
+
   @override
   Widget build(BuildContext context) {
     const Widget _icon = Icon(Icons.search, size: 20, color: darkGray);
-    classesProvider = ScheduleOfClassesProvider();
     return Scaffold(
         appBar: AppBar(
             titleSpacing: 0.0,
@@ -102,8 +109,8 @@ class _SearchViewState extends State<SearchView> {
   Widget body(bool showList) {
     if (showList) {
       return FutureBuilder(
-        future: classesProvider.scheduleOfClassesService.fetchClasses(
-            'subjectCodes=${searchString.split(' ')[0]}&termCode=SP21'),
+        future: classesProvider.fetchClasses(
+            'subjectCodes=${searchString.split(' ')[0]}&termCode=SP22'),
         builder: (BuildContext context, AsyncSnapshot<Object?> response) {
           if (response.hasData) {
             return buildResultsList(context);

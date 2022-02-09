@@ -1,5 +1,6 @@
 import 'package:webreg_mobile_flutter/app_constants.dart';
 import 'package:webreg_mobile_flutter/core/models/schedule_of_classes.dart';
+import 'package:webreg_mobile_flutter/core/providers/user.dart';
 import 'package:webreg_mobile_flutter/core/services/schedule_of_classes.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +23,7 @@ class ScheduleOfClassesProvider extends ChangeNotifier {
   bool? _noResults;
 
   /// MODELS
-  ScheduleOfClassesModel _scheduleOfClassesModels =  ScheduleOfClassesModel();
+  ScheduleOfClassesModel _scheduleOfClassesModels = ScheduleOfClassesModel();
   String? searchQuery;
   String? term;
   TextEditingController _searchBarController = TextEditingController();
@@ -37,24 +38,18 @@ class ScheduleOfClassesProvider extends ChangeNotifier {
   ScheduleOfClassesService get scheduleOfClassesService =>
       _scheduleOfClassesService;
 
-  void fetchClasses() async {
-    String SearchQuery = searchBarController.text;
-    String TextQuery = createQuery(SearchQuery);
-    _isLoading = true;
-    _error = null;
-    notifyListeners();
+  late UserDataProvider _userDataProvider;
 
-    if (await _scheduleOfClassesService.fetchClasses(TextQuery)) {
-      _scheduleOfClassesModels = _scheduleOfClassesService.classes!;
-      _noResults = false;
+  set userDataProvider(UserDataProvider userDataProvider) {
+    _userDataProvider = userDataProvider;
+  }
 
-      /// add things to show classes on screen
-      ///
-      /// conditionals for search history here
-    } else {
-      _error = _scheduleOfClassesService.error;
-      _noResults = true;
-    }
+  Future<bool> fetchClasses(String query) async {
+    final Map<String, String> headers = <String, String>{
+      'Authorization': 'Bearer ${_userDataProvider.accessToken}'
+    };
+
+    return _scheduleOfClassesService.fetchClasses(headers, query);
   }
 
   String createQuery(String query) {
