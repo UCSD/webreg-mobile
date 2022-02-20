@@ -46,7 +46,8 @@ class SearchDetail extends StatelessWidget {
     final List<Card> sectionCards = <Card>[];
     final List<SectionData> sectionObjects = <SectionData>[];
     for (final SectionData section in data.sections!) {
-      if (section.instructionType != 'LE' || !sectionTypes.contains('LE')) {
+      if ((section.instructionType != 'LE' || !sectionTypes.contains('LE')) &&
+          section.sectionStatus != 'CA') {
         sectionTypes.add(section.instructionType!);
         sectionObjects.add(section);
       }
@@ -91,6 +92,8 @@ class SearchDetail extends StatelessWidget {
           days = setDays(days, lectureMeetings);
 
           // Time parsing
+          // Checking for classes that start have *** format instead of ****
+          correctTimeFormat(lectureMeetings[0]);
           const String prefix = '0000-01-01T';
           String startTime = DateFormat.jm()
               .format(DateTime.parse(prefix + lectureMeetings[0].startTime!));
@@ -154,6 +157,8 @@ class SearchDetail extends StatelessWidget {
           days = setDays(days, discussionMeetings);
 
           // Time
+          // Checking for classes that start have *** format instead of ****
+          correctTimeFormat(discussionMeetings[0]);
           const String prefix = '0000-01-01T';
           String startTime = DateFormat.jm().format(
               DateTime.parse(prefix + discussionMeetings[0].startTime!));
@@ -202,6 +207,8 @@ class SearchDetail extends StatelessWidget {
           days = setDays(days, labMeetings);
 
           // Time
+          // Checking for classes that start have *** format instead of ****
+          correctTimeFormat(labMeetings[0]);
           const String prefix = '0000-01-01T';
           String startTime = DateFormat.jm()
               .format(DateTime.parse(prefix + labMeetings[0].startTime!));
@@ -251,6 +258,8 @@ class SearchDetail extends StatelessWidget {
           }
 
           // Time
+          // Checking for classes that start have *** format instead of ****
+          correctTimeFormat(finalMeetings[0]);
           const String prefix = '0000-01-01T';
           String startTime = DateFormat.jm()
               .format(DateTime.parse(prefix + finalMeetings[0].startTime!));
@@ -325,5 +334,15 @@ class SearchDetail extends StatelessWidget {
       }
     }
     return days;
+  }
+
+  // Fix an incorrectly formatted time
+  void correctTimeFormat(MeetingData meeting) {
+    while (meeting.startTime!.length < 4) {
+      meeting.startTime = '0' + meeting.startTime!;
+    }
+    while (meeting.endTime!.length < 4) {
+      meeting.endTime = '0' + meeting.endTime!;
+    }
   }
 }
