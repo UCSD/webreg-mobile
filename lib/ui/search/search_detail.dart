@@ -1,5 +1,7 @@
 // ignore_for_file: always_specify_types
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:webreg_mobile_flutter/app_styles.dart';
@@ -9,8 +11,9 @@ import 'package:webreg_mobile_flutter/core/models/schedule_of_classes.dart';
 *  after the user has searched and selected a course.
 */
 class SearchDetail extends StatelessWidget {
-  const SearchDetail({Key? key, required this.data}) : super(key: key);
+  SearchDetail({Key? key, required this.data}) : super(key: key);
   final CourseData data;
+  Map<String, List<SectionData>> instructorSections = Map();
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -18,7 +21,7 @@ class SearchDetail extends StatelessWidget {
           centerTitle: true,
           title: Text(
               '${data.departmentCode} ${data.courseCode} \n${data.courseTitle}')),
-      body: Column(
+      body: ListView(
         children: [coursePrereqs(), courseDetails()],
       ));
 
@@ -42,26 +45,63 @@ class SearchDetail extends StatelessWidget {
 
   Widget courseDetails() {
     // Determine types of sections
-    final List<String> sectionTypes = <String>[];
+
     final List<Card> sectionCards = <Card>[];
-    final List<SectionData> sectionObjects = <SectionData>[];
+    // final List<String> sectionTypes = <String>[];
+    // final List<SectionData> sectionObjects = <SectionData>[];
+    instructorSections = new Map();
+
     for (final SectionData section in data.sections!) {
-      if ((section.instructionType != 'LE' || !sectionTypes.contains('LE')) &&
-          section.sectionStatus != 'CA') {
-        sectionTypes.add(section.instructionType!);
-        sectionObjects.add(section);
-      }
+      final String sectionLetter = section.sectionCode![0];
+      instructorSections.update(sectionLetter, (value) {
+        value.add(section);
+        return value;
+      }, ifAbsent: () {
+        List<SectionData> sectionList = <SectionData>[];
+        sectionList.add(section);
+        return sectionList;
+      });
     }
-    sectionTypes.add('FI');
-    sectionObjects.add(SectionData());
+
+    instructorSections.forEach((key, value) {
+      final List<String> sectionTypes = <String>[];
+      final List<SectionData> sectionObjects = <SectionData>[];
+      for (final SectionData section in value) {
+        if ((section.instructionType != 'LE' || !sectionTypes.contains('LE')) &&
+            section.sectionStatus != 'CA') {
+          sectionTypes.add(section.instructionType!);
+          sectionObjects.add(section);
+        }
+      }
+      sectionTypes.add('FI');
+      sectionObjects.add(SectionData());
+
+      int sectionIndex = 0;
+      for (final String sectionType in sectionTypes.toList()) {
+        sectionCards
+            .add(buildSectionCard(sectionType, sectionObjects[sectionIndex]));
+        sectionIndex++;
+      }
+    });
+
+    // print("\n${const JsonEncoder.withIndent(" ").convert(data)}\n");
+    // for (final SectionData section in data.sections!) {
+    //   if ((section.instructionType != 'LE' || !sectionTypes.contains('LE')) &&
+    //       section.sectionStatus != 'CA') {
+    //     sectionTypes.add(section.instructionType!);
+    //     sectionObjects.add(section);
+    //   }
+    // }
+    // sectionTypes.add('FI');
+    // sectionObjects.add(SectionData());
 
     //Build section cards for different instruction types
-    int sectionIndex = 0;
-    for (final String sectionType in sectionTypes.toList()) {
-      sectionCards
-          .add(buildSectionCard(sectionType, sectionObjects[sectionIndex]));
-      sectionIndex++;
-    }
+    // int sectionIndex = 0;
+    // for (final String sectionType in sectionTypes.toList()) {
+    //   sectionCards
+    //       .add(buildSectionCard(sectionType, sectionObjects[sectionIndex]));
+    //   sectionIndex++;
+    // }
     return Column(children: <Card>[...sectionCards]);
   }
 
@@ -72,7 +112,10 @@ class SearchDetail extends StatelessWidget {
           // Accumalate all lecture meetings in section
           SectionData lectureObject = SectionData();
           final List<MeetingData> lectureMeetings = <MeetingData>[];
-          for (final SectionData section in data.sections!) {
+          //instructorSections[sectionObject.sectionCode![0]];
+
+          for (final SectionData section
+              in instructorSections[sectionObject.sectionCode![0]]!) {
             if (section.instructionType == 'LE') {
               lectureMeetings.addAll(section.recurringMeetings!);
               lectureObject = section;
