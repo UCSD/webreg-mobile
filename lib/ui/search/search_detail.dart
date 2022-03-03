@@ -290,6 +290,58 @@ class SearchDetail extends StatelessWidget {
             ),
           );
         }
+      case 'TU':
+        {
+          // Accumalate all supplemental instruction meetings in section
+          final SectionData labObject = sectionObject;
+          final List<MeetingData> labMeetings = <MeetingData>[];
+          labMeetings.addAll(sectionObject.recurringMeetings!);
+
+          // DAY Section
+          List<Widget> days = resetDays();
+          days = setDays(days, labMeetings);
+
+          // Time
+          // Checking for classes that start have *** format instead of ****
+          correctTimeFormat(labMeetings[0]);
+          const String prefix = '0000-01-01T';
+          String startTime = DateFormat.jm()
+              .format(DateTime.parse(prefix + labMeetings[0].startTime!));
+          String endTime = DateFormat.jm()
+              .format(DateTime.parse(prefix + labMeetings[0].endTime!));
+          startTime = startTime.toLowerCase().replaceAll(' ', '');
+          endTime = endTime.toLowerCase().replaceAll(' ', '');
+
+          // Room parsing
+          final String room = labMeetings[0].buildingCode! +
+              ' ' +
+              labMeetings[0].roomCode!.substring(1);
+
+          // Construct Card widget
+          return Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            margin: const EdgeInsets.only(
+                left: 10.0, right: 10.0, top: 2.0, bottom: 0.0),
+            child: SizedBox(
+              height: 35,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    labObject.sectionCode!,
+                    style: const TextStyle(color: darkGray),
+                  ),
+                  Text(sectionType),
+                  ...days,
+                  Text(startTime + ' - ' + endTime),
+                  Text(room)
+                ],
+              ),
+            ),
+          );
+        }
       case 'FI':
         {
           // Accumalate all lecture meetings in section
