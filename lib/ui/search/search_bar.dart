@@ -161,12 +161,17 @@ class TermDropdown extends StatefulWidget {
 }
 
 class _TermDropdownState extends State<TermDropdown> {
-  List<String> dropdownItems = ['FA19', 'WI20', 'SP20', 'FA20'];
-  String _dropdownVal = 'FA19';
+  List<String> dropdownItems = ['SP21', 'FA21', 'WI22', 'SP22'];
+  String _dropdownVal = 'SP22';
+  late DropdownButton<String> dropdownButton;
+
+  get dropDownValue {
+    return _dropdownVal;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButton<String>(
+    dropdownButton = DropdownButton<String>(
       underline: Container(height: 0),
       value: _dropdownVal,
       icon: Icon(Icons.arrow_drop_down, color: Colors.black, size: 20),
@@ -185,6 +190,8 @@ class _TermDropdownState extends State<TermDropdown> {
                     fontWeight: FontWeight.bold)));
       }).toList(),
     );
+
+    return dropdownButton;
   }
 }
 

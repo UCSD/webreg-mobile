@@ -17,10 +17,18 @@ class _SearchViewState extends State<SearchView> {
   late String searchString;
   late ScheduleOfClassesProvider classesProvider;
   bool showList = false;
+  late TermDropdown termDropdown;
+  List<String> dropdownItems = ['SP21', 'FA21', 'WI22', 'SP22'];
+  String _dropdownVal = 'SP22';
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    classesProvider = ScheduleOfClassesProvider();
+  }
+
   @override
   Widget build(BuildContext context) {
-    const Widget _icon = Icon(Icons.search, size: 20, color: darkGray);
-    classesProvider = ScheduleOfClassesProvider();
     return Scaffold(
         appBar: AppBar(
             titleSpacing: 0.0,
@@ -42,7 +50,28 @@ class _SearchViewState extends State<SearchView> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
-                              TermDropdown(),
+                              DropdownButton<String>(
+                                underline: Container(height: 0),
+                                value: _dropdownVal,
+                                icon: const Icon(Icons.arrow_drop_down,
+                                    color: Colors.black, size: 20),
+                                onChanged: (String? newVal) {
+                                  setState(() {
+                                    _dropdownVal = newVal!;
+                                  });
+                                },
+                                items: dropdownItems
+                                    .map<DropdownMenuItem<String>>(
+                                        (String val) {
+                                  return DropdownMenuItem<String>(
+                                      value: val,
+                                      child: Text(val,
+                                          style: const TextStyle(
+                                              color: darkGray,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold)));
+                                }).toList(),
+                              ),
                               Container(
                                 width: 1.0,
                                 color: darkGray,
@@ -71,7 +100,8 @@ class _SearchViewState extends State<SearchView> {
                       ),
                       Container(
                         margin: const EdgeInsets.only(right: 10.0),
-                        child: _icon,
+                        child:
+                            const Icon(Icons.search, size: 20, color: darkGray),
                       ),
                     ],
                   )),
@@ -100,10 +130,60 @@ class _SearchViewState extends State<SearchView> {
   }
 
   Widget body(bool showList) {
+    bool validQuery = false;
+    String searchBuilder = '';
+    String termCode = _dropdownVal;
+
     if (showList) {
+      final List<String> words = searchString.split(' ');
+
+      switch (words.length) {
+        case 1:
+          {
+            //Verify that subject code could be valid
+            if (words[0].length > 4 || words[0].length < 3) {
+              validQuery = false;
+              break;
+            }
+            //Attempt to use the single query as a subject code, limit at 10 * #approx entries per course == 100
+            validQuery = true;
+            searchBuilder =
+                'subjectCodes=${words[0]}&termCode=$termCode&limit=100';
+          }
+          break;
+        case 2:
+          {
+            final String firstWord = words[0];
+            final String secondWord = words[1];
+            // Verify that the course and subject code could be valid
+            if ((firstWord.length > 4 || firstWord.length < 3) &&
+                (secondWord.length > 4 || secondWord.length < 3)) {
+              validQuery = false;
+              break;
+            }
+            validQuery = true;
+            searchBuilder =
+                'subjectCodes=$firstWord&courseCodes=$secondWord&termCode=$termCode&limit=100';
+          }
+          break;
+        default:
+          {
+            validQuery = false;
+          }
+      }
+
+      if (!validQuery) {
+        return const Center(
+            child: Text(
+          'Not a valid query. Please type in a valid course or subject code.',
+          style: TextStyle(color: darkGray, fontSize: 18),
+          textAlign: TextAlign.center,
+        ));
+      }
+
       return FutureBuilder(
-        future: classesProvider.scheduleOfClassesService.fetchClasses(
-            'subjectCodes=${searchString.split(' ')[0]}&termCode=SP21'),
+        future: classesProvider.scheduleOfClassesService
+            .fetchClasses(searchBuilder),
         builder: (BuildContext context, AsyncSnapshot<Object?> response) {
           if (response.hasData) {
             return buildResultsList(context);
@@ -128,6 +208,21 @@ class _SearchViewState extends State<SearchView> {
     /// add content into for loop here
     final ScheduleOfClassesModel model =
         classesProvider.scheduleOfClassesService.classes!;
+
+    // Check for non valid courses
+    if (model.courses!.isEmpty) {
+      return Column(
+        children: const [
+          Expanded(
+              child: Center(
+                  child: Text(
+            'Not a valid query. Please type in a valid course or subject code.',
+            style: TextStyle(color: darkGray, fontSize: 18),
+            textAlign: TextAlign.center,
+          )))
+        ],
+      );
+    }
     final List<Widget> contentList = [];
     for (final CourseData course in model.courses!) {
       contentList.add(ListTile(
@@ -141,7 +236,7 @@ class _SearchViewState extends State<SearchView> {
                 shape: BoxShape.circle,
               ),
               margin: const EdgeInsets.only(right: 10),
-              child: const Center(child: Text('4'))),
+              child: Center(child: Text(course.unitsInc.toString()))),
 
           // Course info
           Expanded(

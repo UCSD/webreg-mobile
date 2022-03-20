@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:webreg_mobile_flutter/app_networking.dart';
 import 'package:webreg_mobile_flutter/core/models/schedule_of_classes.dart';
 
