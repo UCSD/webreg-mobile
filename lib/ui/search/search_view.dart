@@ -50,27 +50,43 @@ class _SearchViewState extends State<SearchView> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
-                              DropdownButton<String>(
-                                underline: Container(height: 0),
-                                value: _dropdownVal,
-                                icon: const Icon(Icons.arrow_drop_down,
-                                    color: Colors.black, size: 20),
-                                onChanged: (String? newVal) {
-                                  setState(() {
-                                    _dropdownVal = newVal!;
-                                  });
+                              FutureBuilder(
+                                future: classesProvider.scheduleOfClassesService
+                                    .fetchTerms(),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<Object?> response) {
+                                  if (response.hasData) {
+                                    dropdownItems =
+                                        response.data as List<String>;
+                                    _dropdownVal =
+                                        dropdownItems[dropdownItems.length - 1];
+                                    return DropdownButton<String>(
+                                      underline: Container(height: 0),
+                                      value: _dropdownVal,
+                                      icon: const Icon(Icons.arrow_drop_down,
+                                          color: Colors.black, size: 20),
+                                      onChanged: (String? newVal) {
+                                        setState(() {
+                                          _dropdownVal = newVal!;
+                                        });
+                                      },
+                                      items: dropdownItems
+                                          .map<DropdownMenuItem<String>>(
+                                              (String val) {
+                                        return DropdownMenuItem<String>(
+                                            value: val,
+                                            child: Text(val,
+                                                style: const TextStyle(
+                                                    color: darkGray,
+                                                    fontSize: 14,
+                                                    fontWeight:
+                                                        FontWeight.bold)));
+                                      }).toList(),
+                                    );
+                                  } else {
+                                    return const CircularProgressIndicator();
+                                  }
                                 },
-                                items: dropdownItems
-                                    .map<DropdownMenuItem<String>>(
-                                        (String val) {
-                                  return DropdownMenuItem<String>(
-                                      value: val,
-                                      child: Text(val,
-                                          style: const TextStyle(
-                                              color: darkGray,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold)));
-                                }).toList(),
                               ),
                               Container(
                                 width: 1.0,
