@@ -1,7 +1,6 @@
+// ignore_for_file: always_specify_types
+
 import 'dart:convert';
-
-import 'dart:core';
-
 import 'dart:core';
 
 ScheduleOfClassesModel classScheduleModelFromJson(String str) =>
@@ -11,9 +10,6 @@ String classScheduleModelToJson(ScheduleOfClassesModel data) =>
     json.encode(data.toJson());
 
 class ScheduleOfClassesModel {
-  Metadata? metadata;
-  List<CourseData>? courses;
-
   ScheduleOfClassesModel({
     this.metadata,
     this.courses,
@@ -21,35 +17,28 @@ class ScheduleOfClassesModel {
 
   factory ScheduleOfClassesModel.fromJson(Map<String, dynamic> json) =>
       ScheduleOfClassesModel(
-          metadata: Metadata.fromJson(json['metadata']), courses:List<CourseData>.from( json["data"].map((x) => CourseData.fromJson(x))));
+          metadata: Metadata.fromJson(),
+          courses: List<CourseData>.from(
+              json['data'].map((x) => CourseData.fromJson(x))));
 
-  // List<ClassData>.from(
-  // json["data"].map((x) => ClassData.fromJson(x)))
+  Metadata? metadata;
+  List<CourseData>? courses;
+
   Map<String, dynamic> toJson() => {
-        "metadata": metadata!.toJson(),
-        "data": List<dynamic>.from(courses!.map((x) => x.toJson()))
+        'metadata': metadata!.toJson(),
+        'data': List<dynamic>.from(courses!.map((x) => x.toJson()))
       };
 }
 
 class Metadata {
   Metadata();
 
-  factory Metadata.fromJson(Map<String, dynamic>? json) => Metadata();
+  factory Metadata.fromJson() => Metadata();
 
   Map<String, dynamic> toJson() => {};
 }
 
 class CourseData {
-  String? subjectCode;
-  String? courseCode;
-  String? departmentCode;
-  String? courseTitle;
-  double? unitsMin;
-  double? unitsMax;
-  double? unitsInc;
-  String? academicLevel;
-  List<SectionData>? sections;
-
   CourseData(
       {this.subjectCode,
       this.courseCode,
@@ -66,12 +55,22 @@ class CourseData {
       courseCode: json['courseCode'] ?? '',
       departmentCode: json['departmentCode'] ?? '',
       courseTitle: json['courseTitle'] ?? '',
-      unitsMin: 0.0,
-      unitsMax: 0.0,
-      unitsInc: 0.0,
+      unitsMin: json['unitsMin'] ?? '',
+      unitsMax: json['unitsMax'] ?? '',
+      unitsInc: json['unitsInc'] ?? '',
       academicLevel: json['academicLevel'] ?? '',
       sections: List<SectionData>.from(
-          json["sections"].map((x) => SectionData.fromJson(x))));
+          json['sections'].map((x) => SectionData.fromJson(x))));
+
+  String? subjectCode;
+  String? courseCode;
+  String? departmentCode;
+  String? courseTitle;
+  double? unitsMin;
+  double? unitsMax;
+  double? unitsInc;
+  String? academicLevel;
+  List<SectionData>? sections;
 
   Map<String, dynamic> toJson() => {
         'subjectCode': subjectCode,
@@ -87,24 +86,6 @@ class CourseData {
 }
 
 class SectionData {
-  String? sectionId;
-  String? termCode;
-  String? sectionCode;
-  String? instructionType;
-  String? sectionStatus;
-  String? subtitle;
-  String? startDate;
-  String? endDate;
-  int? enrolledQuantity;
-  int? capacityQuantity;
-  bool? stopEnrollmentFlag;
-  String? printFlag;
-  String? subterm;
-  String? planCode;
-  List<MeetingData>? recurringMeetings;
-  List<MeetingData>? additionalMeetings;
-  List<Instructor>? instructors;
-
   SectionData(
       {this.sectionId,
       this.termCode,
@@ -140,11 +121,29 @@ class SectionData {
       subterm: json['subterm'] ?? '',
       planCode: json['planCode'] ?? '',
       recurringMeetings: List<MeetingData>.from(
-          json["recurringMeetings"].map((x) => MeetingData.fromJson(x))),
+          json['recurringMeetings'].map((x) => MeetingData.fromJson(x))),
       additionalMeetings: List<MeetingData>.from(
-          json["additionalMeetings"].map((x) => MeetingData.fromJson(x))),
+          json['additionalMeetings'].map((x) => MeetingData.fromJson(x))),
       instructors: List<Instructor>.from(
-          json["instructors"].map((x) => Instructor.fromJson(x))));
+          json['instructors'].map((x) => Instructor.fromJson(x))));
+
+  String? sectionId;
+  String? termCode;
+  String? sectionCode;
+  String? instructionType;
+  String? sectionStatus;
+  String? subtitle;
+  String? startDate;
+  String? endDate;
+  int? enrolledQuantity;
+  int? capacityQuantity;
+  bool? stopEnrollmentFlag;
+  String? printFlag;
+  String? subterm;
+  String? planCode;
+  List<MeetingData>? recurringMeetings;
+  List<MeetingData>? additionalMeetings;
+  List<Instructor>? instructors;
 
   Map<String, dynamic> toJson() => {
         'sectionId': sectionId,
@@ -170,15 +169,6 @@ class SectionData {
 }
 
 class MeetingData {
-  String? meetingType;
-  String? meetingDate;
-  String? dayCode;
-  String? dayCodeIsis;
-  String? startTime;
-  String? endTime;
-  String? buildingCode;
-  String? roomCode;
-
   MeetingData(
       {this.meetingType,
       this.meetingDate,
@@ -188,6 +178,7 @@ class MeetingData {
       this.endTime,
       this.buildingCode,
       this.roomCode});
+
   factory MeetingData.fromJson(Map<String, dynamic> json) => MeetingData(
       meetingType: json['meetingType'] ?? '',
       meetingDate: json['meetingDate'] ?? '',
@@ -197,6 +188,15 @@ class MeetingData {
       endTime: json['endTime'] ?? '',
       buildingCode: json['buildingCode'] ?? '',
       roomCode: json['roomCode'] ?? '');
+
+  String? meetingType;
+  String? meetingDate;
+  String? dayCode;
+  String? dayCodeIsis;
+  String? startTime;
+  String? endTime;
+  String? buildingCode;
+  String? roomCode;
 
   Map<String, dynamic> toJson() => {
         'meetingType': meetingType,
@@ -211,13 +211,6 @@ class MeetingData {
 }
 
 class Instructor {
-  String? pid;
-  String? instructorName;
-  bool? primaryInstructor;
-  String? instructorEmailAddress;
-  double? workLoadUnitQty;
-  double? percentOfLoad;
-
   Instructor(
       {this.pid,
       this.instructorName,
@@ -233,6 +226,13 @@ class Instructor {
       instructorEmailAddress: json['instructorEmailAddress'] ?? '',
       workLoadUnitQty: json['workLoadUnitQty'] ?? '',
       percentOfLoad: json['percentOfLoad'] ?? '');
+
+  String? pid;
+  String? instructorName;
+  bool? primaryInstructor;
+  String? instructorEmailAddress;
+  double? workLoadUnitQty;
+  double? percentOfLoad;
 
   Map<String, dynamic> toJson() => {
         'pid': pid,

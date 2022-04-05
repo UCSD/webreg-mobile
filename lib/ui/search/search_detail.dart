@@ -1,7 +1,3 @@
-// ignore_for_file: always_specify_types
-
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:webreg_mobile_flutter/app_styles.dart';
@@ -13,7 +9,8 @@ import 'package:webreg_mobile_flutter/core/models/schedule_of_classes.dart';
 class SearchDetail extends StatelessWidget {
   SearchDetail({Key? key, required this.data}) : super(key: key);
   final CourseData data;
-  Map<String, List<SectionData>> instructorSections = Map();
+  Map<String, List<SectionData>> instructorSections =
+      <String, List<SectionData>>{};
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -43,27 +40,24 @@ class SearchDetail extends StatelessWidget {
             ))));
   }
 
+  // Determine types of sections
   Widget courseDetails() {
-    // Determine types of sections
-
     final List<Card> sectionCards = <Card>[];
-    // final List<String> sectionTypes = <String>[];
-    // final List<SectionData> sectionObjects = <SectionData>[];
-    instructorSections = new Map();
+    instructorSections = <String, List<SectionData>>{};
 
     for (final SectionData section in data.sections!) {
       final String sectionLetter = section.sectionCode![0];
-      instructorSections.update(sectionLetter, (value) {
+      instructorSections.update(sectionLetter, (List<SectionData> value) {
         value.add(section);
         return value;
       }, ifAbsent: () {
-        List<SectionData> sectionList = <SectionData>[];
+        final List<SectionData> sectionList = <SectionData>[];
         sectionList.add(section);
         return sectionList;
       });
     }
 
-    instructorSections.forEach((key, value) {
+    instructorSections.forEach((String key, List<SectionData> value) {
       final List<String> sectionTypes = <String>[];
       final List<SectionData> sectionObjects = <SectionData>[];
       for (final SectionData section in value) {
@@ -84,24 +78,6 @@ class SearchDetail extends StatelessWidget {
       }
     });
 
-    // print("\n${const JsonEncoder.withIndent(" ").convert(data)}\n");
-    // for (final SectionData section in data.sections!) {
-    //   if ((section.instructionType != 'LE' || !sectionTypes.contains('LE')) &&
-    //       section.sectionStatus != 'CA') {
-    //     sectionTypes.add(section.instructionType!);
-    //     sectionObjects.add(section);
-    //   }
-    // }
-    // sectionTypes.add('FI');
-    // sectionObjects.add(SectionData());
-
-    //Build section cards for different instruction types
-    // int sectionIndex = 0;
-    // for (final String sectionType in sectionTypes.toList()) {
-    //   sectionCards
-    //       .add(buildSectionCard(sectionType, sectionObjects[sectionIndex]));
-    //   sectionIndex++;
-    // }
     return Column(children: <Card>[...sectionCards]);
   }
 
@@ -172,7 +148,7 @@ class SearchDetail extends StatelessWidget {
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
+                    children: <Widget>[
                       Text(
                         lectureObject.sectionCode!,
                         style: const TextStyle(color: darkGray),
@@ -225,7 +201,7 @@ class SearchDetail extends StatelessWidget {
                 height: 35,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
+                  children: <Widget>[
                     Text(
                       discussionObject.sectionCode!,
                       style: const TextStyle(color: darkGray),
@@ -276,7 +252,7 @@ class SearchDetail extends StatelessWidget {
               height: 35,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
+                children: <Widget>[
                   Text(
                     labObject.sectionCode!,
                     style: const TextStyle(color: darkGray),
@@ -328,7 +304,7 @@ class SearchDetail extends StatelessWidget {
               height: 35,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
+                children: <Widget>[
                   Text(
                     labObject.sectionCode!,
                     style: const TextStyle(color: darkGray),
@@ -383,7 +359,7 @@ class SearchDetail extends StatelessWidget {
                 height: 35,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
+                  children: <Text>[
                     const Text(
                       'FINAL',
                       style: TextStyle(color: darkGray),

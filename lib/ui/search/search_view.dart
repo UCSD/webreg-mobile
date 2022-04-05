@@ -1,10 +1,12 @@
 // ignore_for_file: use_key_in_widget_constructors, always_specify_types
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:webreg_mobile_flutter/app_constants.dart';
 import 'package:webreg_mobile_flutter/app_styles.dart';
 import 'package:webreg_mobile_flutter/core/models/schedule_of_classes.dart';
 import 'package:webreg_mobile_flutter/core/providers/schedule_of_classes.dart';
+import 'package:webreg_mobile_flutter/core/providers/user.dart';
 import 'package:webreg_mobile_flutter/ui/search/search_bar.dart';
 
 class SearchView extends StatefulWidget {
@@ -20,11 +22,15 @@ class _SearchViewState extends State<SearchView> {
   late TermDropdown termDropdown;
   List<String> dropdownItems = ['SP21', 'FA21', 'WI22', 'SP22'];
   String _dropdownVal = 'SP22';
+  bool firstRun = true;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    classesProvider = ScheduleOfClassesProvider();
+    classesProvider =
+        Provider.of<ScheduleOfClassesProvider>(context, listen: false);
+    classesProvider.userDataProvider =
+        Provider.of<UserDataProvider>(context, listen: false);
   }
 
   @override
@@ -55,11 +61,13 @@ class _SearchViewState extends State<SearchView> {
                                     .fetchTerms(),
                                 builder: (BuildContext context,
                                     AsyncSnapshot<Object?> response) {
-                                  if (response.hasData) {
-                                    dropdownItems =
-                                        response.data as List<String>;
-                                    _dropdownVal =
-                                        dropdownItems[dropdownItems.length - 1];
+                                  if (response.hasData || !firstRun) {
+                                    if (firstRun) {
+                                      dropdownItems =
+                                          response.data as List<String>;
+                                      _dropdownVal = dropdownItems[
+                                          dropdownItems.length - 1];
+                                    }
                                     return DropdownButton<String>(
                                       underline: Container(height: 0),
                                       value: _dropdownVal,
@@ -67,6 +75,7 @@ class _SearchViewState extends State<SearchView> {
                                           color: Colors.black, size: 20),
                                       onChanged: (String? newVal) {
                                         setState(() {
+                                          firstRun = false;
                                           _dropdownVal = newVal!;
                                         });
                                       },
@@ -148,7 +157,7 @@ class _SearchViewState extends State<SearchView> {
   Widget body(bool showList) {
     bool validQuery = false;
     String searchBuilder = '';
-    String termCode = _dropdownVal;
+    final String termCode = _dropdownVal;
 
     if (showList) {
       final List<String> words = searchString.split(' ');
@@ -198,8 +207,7 @@ class _SearchViewState extends State<SearchView> {
       }
 
       return FutureBuilder(
-        future: classesProvider.scheduleOfClassesService
-            .fetchClasses(searchBuilder),
+        future: classesProvider.fetchClasses(searchBuilder),
         builder: (BuildContext context, AsyncSnapshot<Object?> response) {
           if (response.hasData) {
             return buildResultsList(context);
@@ -252,7 +260,7 @@ class _SearchViewState extends State<SearchView> {
                 shape: BoxShape.circle,
               ),
               margin: const EdgeInsets.only(right: 10),
-              child: Center(child: Text(course.unitsInc.toString()))),
+              child: Center(child: Text(course.unitsMax.toString()))),
 
           // Course info
           Expanded(

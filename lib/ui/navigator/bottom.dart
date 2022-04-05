@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:webreg_mobile_flutter/ui/search/search_placeholder.dart';
+import 'package:provider/provider.dart';
+import 'package:webreg_mobile_flutter/app_styles.dart';
+import 'package:webreg_mobile_flutter/core/providers/user.dart';
 import 'package:webreg_mobile_flutter/ui/calendar/calendar.dart';
 import 'package:webreg_mobile_flutter/ui/list/course_list_view.dart';
-import 'package:webreg_mobile_flutter/app_constants.dart';
-import 'package:webreg_mobile_flutter/app_styles.dart';
+import 'package:webreg_mobile_flutter/ui/search/search_placeholder.dart';
 
 class BottomNavigation extends StatefulWidget {
+  const BottomNavigation({Key? key}) : super(key: key);
+
   @override
   _BottomNavigationState createState() => _BottomNavigationState();
 }
 
 class _BottomNavigationState extends State<BottomNavigation>
     with SingleTickerProviderStateMixin {
-  var currentTab = [
+  UserDataProvider userDataProvider = UserDataProvider();
+  List<StatelessWidget> currentTab = <StatelessWidget>[
     Calendar(Colors.blue.shade200),
     CourseListView(),
     Calendar(Colors.green.shade200),
@@ -21,18 +25,30 @@ class _BottomNavigationState extends State<BottomNavigation>
 
   static const TextStyle textStyles = TextStyle(fontSize: 16, color: darkGray);
   static const TextStyle activeStyles = TextStyle(
-    // decoration: TextDecoration.underline,
     fontWeight: FontWeight.bold,
     color: ColorPrimary,
     fontSize: 16,
   );
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    userDataProvider = Provider.of<UserDataProvider>(context, listen: false);
+  }
 
   @override
   Widget build(BuildContext context) {
+    String _token = '';
+    final Uri currentUrl = Uri.base;
+    final List<String> fragments = currentUrl.fragment.split('&');
+    _token = fragments
+        .firstWhere((String e) => e.startsWith('access_token='))
+        .substring('access_token='.length);
+    userDataProvider.setToken = _token;
+
     return Scaffold(
         appBar: AppBar(
             centerTitle: true,
-            title: Text("Webreg",
+            title: const Text('Webreg',
                 style: TextStyle(
                   fontWeight: FontWeight.normal,
                 )),
@@ -41,28 +57,27 @@ class _BottomNavigationState extends State<BottomNavigation>
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           currentIndex: currentIndex,
-          onTap: (index) {
+          onTap: (int index) {
             setState(() {
               currentIndex = index;
             });
           },
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Text("Calendar", style: textStyles),
-              activeIcon: Container(
-                  child: Column(children: [
-                Text("Calendar", style: activeStyles),
-              ])),
+              icon: const Text('Calendar', style: textStyles),
+              activeIcon: Column(children: const <Widget>[
+                Text('Calendar', style: activeStyles),
+              ]),
               label: '',
             ),
-            BottomNavigationBarItem(
-              icon: Text("List", style: textStyles),
-              activeIcon: Text("List", style: activeStyles),
+            const BottomNavigationBarItem(
+              icon: Text('List', style: textStyles),
+              activeIcon: Text('List', style: activeStyles),
               label: '',
             ),
-            BottomNavigationBarItem(
-              icon: Text("Finals", style: textStyles),
-              activeIcon: Text("Finals", style: activeStyles),
+            const BottomNavigationBarItem(
+              icon: Text('Finals', style: textStyles),
+              activeIcon: Text('Finals', style: activeStyles),
               label: '',
             ),
           ],
