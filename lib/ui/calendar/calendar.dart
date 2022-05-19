@@ -136,28 +136,28 @@ class _CalendarViewState extends State<Calendar> {
                         }
                         int sectionIndex = 0;
                         List<SectionData> lectureObjects = [];
-                        while (sectionTypes.contains('LE')) {
-                          // Extract lecture times from lecture object
-                          SectionData lectureObject = SectionData();
 
-                          for (final String sectionType
-                              in sectionTypes.toList()) {
-                            if (sectionType == 'LE') {
-                              lectureObject = sectionObjects[sectionIndex];
-                              break;
-                            }
-                            sectionCards.add(buildCalendarCard(
-                                sectionType, sectionObjects[sectionIndex]));
-                            sectionIndex++;
-                          }
-                          sectionTypes.removeAt(sectionIndex);
-                          sectionObjects.removeAt(sectionIndex);
+                        // Identify lecture objects
+                        while (sectionTypes.contains('LE')) {
+                          int lectureIndex = sectionTypes.indexOf('LE');
+                          SectionData lectureObject =
+                              sectionObjects.elementAt(lectureIndex);
                           lectureObjects.add(lectureObject);
+                          sectionTypes.removeAt(lectureIndex);
+                          sectionObjects.removeAt(lectureIndex);
                         }
 
-                        for (SectionData lecture in lectureObjects) {
+                        sectionIndex = 0;
+                        for (final String sectionType
+                            in sectionTypes.toList()) {
+                          sectionCards.add(buildCalendarCard(
+                              sectionType, sectionObjects[sectionIndex]));
+                          sectionIndex++;
+                        }
+
+                        for (final SectionData lecture in lectureObjects) {
                           int meetingIndex = 0;
-                          for (MeetingData meetingData
+                          for (final MeetingData meetingData
                               in lecture.recurringMeetings!.toList()) {
                             SectionData CopyOfLectureObject =
                                 SectionData.fromJson(lecture.toJson());
@@ -318,7 +318,7 @@ class _CalendarViewState extends State<Calendar> {
               sectionObject.recurringMeetings!.first.endTime!,
               prefix,
               dayMapping[sectionObject.recurringMeetings!.first.dayCode]!,
-              sectionType,
+              'DI',
               '${sectionObject.subjectCode} ${sectionObject.courseCode}',
               room,
               Colors.blue.shade200);
@@ -344,49 +344,20 @@ class _CalendarViewState extends State<Calendar> {
 
           // Construct Card widget
           return CalendarCard(
-              startTime,
-              endTime,
+              sectionObject.recurringMeetings!.first.startTime!,
+              sectionObject.recurringMeetings!.first.endTime!,
               prefix,
-              sectionObject.units!.toInt(),
-              sectionType,
-              "${sectionObject.subjectCode} ${sectionObject.courseCode}",
-              room,
-              Colors.blue.shade200);
-        }
-      case 'TU':
-        {
-          // Time parsing
-          // Checking for classes that start have *** format instead of ****
-          correctTimeFormat(sectionObject.recurringMeetings!.first);
-          const String prefix = '0000-01-01T';
-          String startTime = DateFormat.jm().format(DateTime.parse(
-              prefix + sectionObject.recurringMeetings!.first.startTime!));
-          String endTime = DateFormat.jm().format(DateTime.parse(
-              prefix + sectionObject.recurringMeetings!.first.endTime!));
-          startTime = startTime.toLowerCase().replaceAll(' ', '');
-          endTime = endTime.toLowerCase().replaceAll(' ', '');
-
-          // Room Code and Number parsing
-          final String room =
-              sectionObject.recurringMeetings!.first.buildingCode! +
-                  ' ' +
-                  sectionObject.recurringMeetings!.first.roomCode!.substring(1);
-
-          // Construct Card widget
-          return CalendarCard(
-              startTime,
-              endTime,
-              prefix,
-              sectionObject.units!.toInt(),
-              sectionType,
-              "${sectionObject.subjectCode} ${sectionObject.courseCode}",
+              dayMapping[sectionObject.recurringMeetings!.first.dayCode]!,
+              'LA',
+              '${sectionObject.subjectCode} ${sectionObject.courseCode}',
               room,
               Colors.blue.shade200);
         }
       case 'FI':
         {
           MeetingData finalMeeting = MeetingData();
-          for (MeetingData meetingData in sectionObject.additionalMeetings!) {
+          for (final MeetingData meetingData
+              in sectionObject.additionalMeetings!) {
             if (meetingData.meetingType == 'FI') {
               finalMeeting = meetingData;
             }
@@ -414,7 +385,7 @@ class _CalendarViewState extends State<Calendar> {
               finalMeeting.endTime!,
               prefix,
               dayMapping[sectionObject.recurringMeetings!.first.dayCode]!,
-              sectionType,
+              'FI',
               "${sectionObject.subjectCode} ${sectionObject.courseCode}",
               room,
               Colors.blue.shade200);
@@ -450,192 +421,3 @@ class _CalendarViewState extends State<Calendar> {
     }
   }
 }
-
-//   Calendar(this.color);
-
-//   final Color color;
-
-//   static const earliestClass = '08:00';
-
-
-//   static const dayOfWeek = [
-//     'Mon',
-//     'Tues',
-//     'Wed',
-//     'Thurs',
-//     'Fri',
-//     'Sat',
-//     'Sun',
-//   ];
-
-//   static const courses = [
-//     {
-//       'datePrefix': '2020-06-06T',
-//       'startTime': '09:00',
-//       'endTime': '09:50',
-//       'dayOfWeek': 1,
-//       'type': 'LE',
-//       'title': 'CSE 120',
-//       'location': 'PCYNH 112',
-//     },
-//     {
-//       'datePrefix': '2020-06-06T',
-//       'startTime': '09:00',
-//       'endTime': '09:50',
-//       'dayOfWeek': 3,
-//       'type': 'LE',
-//       'title': 'CSE 120',
-//       'location': 'PCYNH 112',
-//     },
-//     {
-//       'datePrefix': '2020-06-06T',
-//       'startTime': '09:00',
-//       'endTime': '09:50',
-//       'dayOfWeek': 5,
-//       'type': 'LE',
-//       'title': 'CSE 120',
-//       'location': 'PCYNH 112',
-//     },
-//     {
-//       'datePrefix': '2020-06-06T',
-//       'startTime': '14:00',
-//       'endTime': '15:20',
-//       'dayOfWeek': 1,
-//       'type': 'LE',
-//       'title': 'COGS 10',
-//       'location': 'WLH 110',
-//     },
-//     {
-//       'datePrefix': '2020-06-06T',
-//       'startTime': '10:00',
-//       'endTime': '10:50',
-//       'dayOfWeek': 1,
-//       'type': 'DI',
-//       'title': 'CSE 123',
-//       'location': 'PCYNH 112',
-//     },
-//   ];
-
-//   double getTimeDifference(String start, String end, String prefix) {
-//     double diff = DateTime.parse(prefix + end)
-//         .difference(DateTime.parse(prefix + start))
-//         .inMinutes
-//         .toDouble();
-//     return diff;
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-    // double calendarCardWidth = (MediaQuery.of(context).size.width -
-    //         CalendarStyles.calendarTimeWidth -
-    //         20) /
-    //     7;
-
-    // return Container(
-    //     color: Colors.white,
-    //     padding: EdgeInsets.symmetric(horizontal: 10),
-    //     child: Column(
-    //       children: <Widget>[
-    //         // calendar header
-    //         Container(
-    //             height: CalendarStyles.calendarHeaderHeight,
-    //             padding: EdgeInsets.only(top: 20, bottom: 15),
-    //             decoration: BoxDecoration(
-    //               border: Border(
-    //                 bottom: BorderSide(color: lightGray),
-    //               ),
-    //               color: Colors.white,
-    //               boxShadow: [
-    //                 BoxShadow(
-    //                   color: Colors.grey.withOpacity(0.05),
-    //                   spreadRadius: 1,
-    //                   blurRadius: 2,
-    //                   offset: Offset(0, 1), // changes position of shadow
-    //                 ),
-    //               ],
-    //             ),
-    //             child: Row(
-    //               children: <Widget>[
-    //                 SizedBox(
-    //                   width: CalendarStyles.calendarTimeWidth,
-    //                 ),
-    //                 Expanded(
-    //                     child: Row(
-    //                   children: dayOfWeek
-    //                       .map((day) => Expanded(
-    //                             flex: 1,
-    //                             child: Container(
-    //                                 child: Center(
-    //                                     child: Text(day,
-    //                                         style: TextStyle(
-    //                                             fontSize: 10,
-    //                                             letterSpacing: -0.1)))),
-    //                           ))
-    //                       .toList(),
-    //                 ))
-    //               ],
-    //             )),
-
-    //         Expanded(
-    //             child: Stack(children: <Widget>[
-    //           // calendar body
-    //           ListView.builder(
-    //               itemCount: times.length,
-    //               // padding: EdgeInsets.symmetric(vertical: 8),
-    //               itemBuilder: (BuildContext context, int index) {
-    //                 return Container(
-    //                     height: CalendarStyles.calendarRowHeight,
-    //                     margin: EdgeInsets.all(0),
-    //                     padding: EdgeInsets.all(0),
-    //                     decoration: BoxDecoration(
-    //                       border: Border(
-    //                         bottom: BorderSide(color: lightGray),
-    //                       ),
-    //                     ),
-    //                     child: Row(
-    //                         mainAxisAlignment: MainAxisAlignment.start,
-    //                         children: <Widget>[
-    //                           SizedBox(
-    //                               width: CalendarStyles.calendarTimeWidth,
-    //                               child: Center(
-    //                                 child: Text(times[index],
-    //                                     style: TextStyle(fontSize: 10)),
-    //                               ))
-    //                         ]));
-    //               }),
-
-    //               //Extract relevant data from profile and create calendar cards
-
-    //           FutureBuilder(
-    //             future: ,
-    //             builder: (BuildContext context,  AsyncSnapshot<Object?> response){
-    //               if(response.hasData){
-
-
-    //               }else{
-    //                 return CalendarCard('10:00', '10:50', '2020-06-06T', 0, 'LE', '',
-    //               '', color);
-    //               }
-
-    //             }),
-    //           ),
-
-    //           CalendarCard('10:00', '10:50', '2020-06-06T', 0, 'LE', 'CSE 110',
-    //               'Center 109', color),
-    //           CalendarCard('10:00', '10:50', '2020-06-06T', 2, 'LE', 'CSE 110',
-    //               'Center 109', color),
-    //           CalendarCard('10:00', '10:50', '2020-06-06T', 4, 'LE', 'CSE 110',
-    //               'Center 109', color),
-
-    //           CalendarCard('11:00', '12:20', '2020-06-06T', 1, 'DI', 'CSE 100',
-    //               'WLH 109', color),
-    //           CalendarCard('11:00', '12:20', '2020-06-06T', 3, 'DI', 'CSE 100',
-    //               'WLH 109', color),
-    //         ])),
-    //         BuildInfo(),
-    //       ],
-    //     ));
-//   }
-
-
-// }
