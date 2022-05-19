@@ -13,11 +13,13 @@ String profileModelToJson(ProfileModel data) => json.encode(data.toJson());
 class ProfileModel {
   ProfileModel({this.enrolledCourses});
 
-  factory ProfileModel.fromJson(Map<String, dynamic> json) => ProfileModel(
-      enrolledCourses: List<CourseData>.from(
-          json['enrolledCourses'].map((x) => CourseData.fromJson(x))));
+  factory ProfileModel.fromJson(Map<String, dynamic> json) {
+    return ProfileModel(
+        enrolledCourses: List<SectionData>.from(
+            json['enrolledCourses'].map((x) => SectionData.fromJson(x))));
+  }
 
-  List<CourseData>? enrolledCourses;
+  List<SectionData>? enrolledCourses;
 
   Map<String, dynamic> toJson() => {
         'enrolledCourses':

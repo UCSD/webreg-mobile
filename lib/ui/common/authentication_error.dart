@@ -4,7 +4,7 @@ import 'dart:html' as html;
 import 'package:flutter/material.dart';
 import '../../app_constants.dart';
 
-const String CLIENT_ID = '';
+const String CLIENT_ID = 'nSu0wUDFf4FBiWognBJRamy_kZIa';
 
 class AuthenticationError extends StatefulWidget {
   const AuthenticationError({Key? key}) : super(key: key);

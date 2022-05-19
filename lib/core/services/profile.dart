@@ -4,7 +4,7 @@ import 'package:webreg_mobile_flutter/core/models/profile.dart';
 class ProfileService {
   // TODO(p8gonzal): Note to not use this prototype. For development purposes only.
   final String profilePrototype =
-      'https://i4ghbvwuo9.execute-api.us-west-2.amazonaws.com/qa';
+      'https://i4ghbvwuo9.execute-api.us-west-2.amazonaws.com/qa/profile';
 
   bool _isLoading = false;
   DateTime? _lastUpdated;
@@ -18,9 +18,10 @@ class ProfileService {
     _isLoading = true;
 
     try {
+
       /// Fetch data
       final String? _response =
-          await _networkHelper.authorizedFetch(profilePrototype, headers);
+          await _networkHelper.fetchData(profilePrototype);
       if (_response != null) {
         /// Parse data
         profile = profileModelFromJson(_response);
@@ -32,6 +33,7 @@ class ProfileService {
       return true;
     } catch (e) {
       _error = e.toString();
+      print(_error);
       _isLoading = false;
       return false;
     }

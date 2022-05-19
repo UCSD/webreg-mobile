@@ -103,7 +103,11 @@ class SectionData {
       this.planCode,
       this.recurringMeetings,
       this.additionalMeetings,
-      this.instructors});
+      this.instructors,
+      //***********************// Only for prototpying purposes (p8gonzal)
+      this.units,
+      this.subjectCode,
+      this.courseCode});
 
   factory SectionData.fromJson(Map<String, dynamic> json) => SectionData(
       sectionId: json['sectionId'] ?? '',
@@ -125,7 +129,11 @@ class SectionData {
       additionalMeetings: List<MeetingData>.from(
           json['additionalMeetings'].map((x) => MeetingData.fromJson(x))),
       instructors: List<Instructor>.from(
-          json['instructors'].map((x) => Instructor.fromJson(x))));
+          json['instructors'].map((x) => Instructor.fromJson(x))),
+      //***********************// Only for prototpying purposes (p8gonzal)
+      units: json['units'] ?? 0,
+      subjectCode: json['subjectCode'] ?? '',
+      courseCode: json['courseCode'] ?? '');
 
   String? sectionId;
   String? termCode;
@@ -144,6 +152,10 @@ class SectionData {
   List<MeetingData>? recurringMeetings;
   List<MeetingData>? additionalMeetings;
   List<Instructor>? instructors;
+  //***********************// Only for prototpying purposes (p8gonzal)
+  double? units;
+  String? subjectCode;
+  String? courseCode;
 
   Map<String, dynamic> toJson() => {
         'sectionId': sectionId,
@@ -164,7 +176,11 @@ class SectionData {
             List<dynamic>.from(recurringMeetings!.map((x) => x.toJson())),
         'additionalMeetings':
             List<dynamic>.from(additionalMeetings!.map((x) => x.toJson())),
-        'instructors': List<dynamic>.from(instructors!.map((x) => x.toJson()))
+        'instructors': List<dynamic>.from(instructors!.map((x) => x.toJson())),
+        //***********************// Only for prototpying purposes (p8gonzal)
+        'units': units,
+        'subjectCode': subjectCode,
+        'courseCode': courseCode
       };
 }
 
@@ -224,8 +240,8 @@ class Instructor {
       instructorName: json['instructorName'] ?? '',
       primaryInstructor: json['primaryInstructor'] ?? false,
       instructorEmailAddress: json['instructorEmailAddress'] ?? '',
-      workLoadUnitQty: json['workLoadUnitQty'] ?? '',
-      percentOfLoad: json['percentOfLoad'] ?? '');
+      workLoadUnitQty: json['workLoadUnitQty'] ?? 1,
+      percentOfLoad: json['percentOfLoad'] ?? 100);
 
   String? pid;
   String? instructorName;

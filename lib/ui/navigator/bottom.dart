@@ -16,10 +16,14 @@ class BottomNavigation extends StatefulWidget {
 class _BottomNavigationState extends State<BottomNavigation>
     with SingleTickerProviderStateMixin {
   UserDataProvider userDataProvider = UserDataProvider();
-  List<StatelessWidget> currentTab = <StatelessWidget>[
-    Calendar(Colors.blue.shade200),
-    CourseListView(),
-    Calendar(Colors.green.shade200),
+  List<Widget> currentTab = <Widget>[
+    const Calendar(
+      'LECT_DISC',
+      calendarType: 'LECT_DISC',
+    ),
+    CourseListView(),         
+    // Finals Calendar
+    const Calendar('FINALS', calendarType: 'FINALS'),
   ];
   int currentIndex = 0;
 
