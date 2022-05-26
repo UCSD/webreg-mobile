@@ -9,6 +9,7 @@ import 'package:webreg_mobile_flutter/app_styles.dart';
 import 'package:webreg_mobile_flutter/app_constants.dart';
 import 'package:webreg_mobile_flutter/app_router.dart' as webregMobileRouter;
 import 'dart:js' as js;
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 void getParams() {
   var uri = Uri.dataFromString(window.location.href);
@@ -17,6 +18,7 @@ void getParams() {
 }
 
 void main() {
+  setUrlStrategy(PathUrlStrategy());
   runApp(MyApp());
 }
 
@@ -27,8 +29,7 @@ class MyApp extends StatelessWidget {
   void getParams() {
     var uri = Uri.dataFromString(window.location.href);
     Map<String, String> params = uri.queryParameters;
-    if(params['token'] != null)
-    _token = params['token'];
+    if (params['token'] != null) _token = params['token'];
   }
 
   // This widget is the root of your application.
@@ -36,7 +37,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final currentUri = Uri.base;
     getParams();
-
 
     return MultiProvider(
       providers: providers,
