@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -9,13 +8,10 @@ import 'package:webreg_mobile_flutter/core/models/schedule_of_classes.dart';
 import 'package:webreg_mobile_flutter/core/providers/profile.dart';
 import 'package:webreg_mobile_flutter/core/providers/user.dart';
 import 'package:webreg_mobile_flutter/ui/calendar/calendar_card.dart';
-import 'package:webreg_mobile_flutter/ui/common/build_info.dart';
 
 class Calendar extends StatefulWidget {
+  const Calendar({Key? key, required this.calendarType}) : super(key: key);
   final String calendarType;
-
-  const Calendar(String s, {Key? key, required this.calendarType})
-      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _CalendarViewState();
@@ -28,6 +24,7 @@ class _CalendarViewState extends State<Calendar> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    // Update the profile provider to access remote profile
     profileProvider = Provider.of<ProfileProvider>(context, listen: false);
     profileProvider.userDataProvider =
         Provider.of<UserDataProvider>(context, listen: false);
@@ -35,32 +32,33 @@ class _CalendarViewState extends State<Calendar> {
 
   @override
   Widget build(BuildContext context) {
+    // Import arguement of calendar type: Lectures/Discussion or Finals
     calendarType = widget.calendarType;
     return Container(
         color: Colors.white,
-        padding: EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Column(children: <Widget>[
-          // calendar header
+          // Calendar header
           Container(
               height: CalendarStyles.calendarHeaderHeight,
-              padding: EdgeInsets.only(top: 20, bottom: 15),
+              padding: const EdgeInsets.only(top: 20, bottom: 15),
               decoration: BoxDecoration(
-                border: Border(
+                border: const Border(
                   bottom: BorderSide(color: lightGray),
                 ),
                 color: Colors.white,
-                boxShadow: [
+                boxShadow: <BoxShadow>[
                   BoxShadow(
                     color: Colors.grey.withOpacity(0.05),
                     spreadRadius: 1,
                     blurRadius: 2,
-                    offset: Offset(0, 1), // changes position of shadow
+                    offset: const Offset(0, 1), // changes position of shadow
                   ),
                 ],
               ),
               child: Row(
                 children: <Widget>[
-                  SizedBox(
+                  const SizedBox(
                     width: CalendarStyles.calendarTimeWidth,
                   ),
                   Expanded(
@@ -68,12 +66,10 @@ class _CalendarViewState extends State<Calendar> {
                     children: dayOfWeek
                         .map((String day) => Expanded(
                               flex: 1,
-                              child: Container(
-                                  child: Center(
-                                      child: Text(day,
-                                          style: TextStyle(
-                                              fontSize: 10,
-                                              letterSpacing: -0.1)))),
+                              child: Center(
+                                  child: Text(day,
+                                      style: const TextStyle(
+                                          fontSize: 10, letterSpacing: -0.1))),
                             ))
                         .toList(),
                   ))
@@ -90,9 +86,9 @@ class _CalendarViewState extends State<Calendar> {
                   itemBuilder: (BuildContext context, int index) {
                     return Container(
                         height: CalendarStyles.calendarRowHeight,
-                        margin: EdgeInsets.all(0),
-                        padding: EdgeInsets.all(0),
-                        decoration: BoxDecoration(
+                        margin: const EdgeInsets.all(0),
+                        padding: const EdgeInsets.all(0),
+                        decoration: const BoxDecoration(
                           border: Border(
                             bottom: BorderSide(color: lightGray),
                           ),
@@ -104,49 +100,56 @@ class _CalendarViewState extends State<Calendar> {
                                   width: CalendarStyles.calendarTimeWidth,
                                   child: Center(
                                     child: Text(times[index],
-                                        style: TextStyle(fontSize: 10)),
+                                        style: const TextStyle(fontSize: 10)),
                                   ))
                             ]));
                   }),
 
-              //Extract relevant data from profile and create calendar cards
-
-              FutureBuilder(
+              //Extract relevant data from the profile and create calendar cards
+              FutureBuilder<bool>(
                   future: profileProvider.fetchProfile(),
                   builder:
                       (BuildContext context, AsyncSnapshot<Object?> response) {
+                    // When profile has not been fetched yet, returns a loading widget
                     if (response.hasData) {
                       final ProfileModel model =
                           profileProvider.profileService.profile!;
 
-                      List<SectionData>? courseList = model.enrolledCourses;
+                      final List<SectionData>? courseList =
+                          model.enrolledCourses;
 
-                      // Change for switching between Lectures/Discussion and Finals
+                      // For switching between Lectures/Discussion and Finals
                       if (calendarType == 'LECT_DISC') {
+                        // Lists to contain section objects and parallel list with section types
                         final List<CalendarCard> sectionCards =
                             <CalendarCard>[];
                         final List<String> sectionTypes = <String>[];
                         final List<SectionData> sectionObjects =
                             <SectionData>[];
+
+                        // Idenitify all section types that are active
                         for (final SectionData section in courseList!) {
                           if (section.sectionStatus != 'CA') {
                             sectionTypes.add(section.instructionType!);
                             sectionObjects.add(section);
                           }
                         }
-                        int sectionIndex = 0;
-                        List<SectionData> lectureObjects = [];
-
                         // Identify lecture objects
+                        int sectionIndex = 0;
+                        final List<SectionData> lectureObjects =
+                            <SectionData>[];
+
+                        // Isolate lecture objects because we need extrapolate days and times
                         while (sectionTypes.contains('LE')) {
-                          int lectureIndex = sectionTypes.indexOf('LE');
-                          SectionData lectureObject =
+                          final int lectureIndex = sectionTypes.indexOf('LE');
+                          final SectionData lectureObject =
                               sectionObjects.elementAt(lectureIndex);
                           lectureObjects.add(lectureObject);
                           sectionTypes.removeAt(lectureIndex);
                           sectionObjects.removeAt(lectureIndex);
                         }
 
+                        // Begin building calendar card for discussions/labs
                         sectionIndex = 0;
                         for (final String sectionType
                             in sectionTypes.toList()) {
@@ -155,24 +158,24 @@ class _CalendarViewState extends State<Calendar> {
                           sectionIndex++;
                         }
 
+                        // Create new section objects with the first meeting in {recurringMeetings} is the correct day and time
                         for (final SectionData lecture in lectureObjects) {
-                          int meetingIndex = 0;
-                          for (final MeetingData meetingData
-                              in lecture.recurringMeetings!.toList()) {
-                            SectionData CopyOfLectureObject =
+                          for (int meetingIndex = 0;
+                              meetingIndex < lecture.recurringMeetings!.length;
+                              meetingIndex++) {
+                            final SectionData copyOfLectureObject =
                                 SectionData.fromJson(lecture.toJson());
-                            CopyOfLectureObject.recurringMeetings = [];
-                            CopyOfLectureObject.recurringMeetings!
+                            copyOfLectureObject.recurringMeetings =
+                                <MeetingData>[];
+                            copyOfLectureObject.recurringMeetings!
                                 .add(lecture.recurringMeetings![meetingIndex]);
                             sectionTypes
-                                .add(CopyOfLectureObject.instructionType!);
-                            sectionObjects.add(CopyOfLectureObject);
-                            meetingIndex++;
+                                .add(copyOfLectureObject.instructionType!);
+                            sectionObjects.add(copyOfLectureObject);
                           }
                         }
-                        // sectionTypes.add('FI');
-                        // sectionObjects.add(SectionData());
 
+                        // Build remaining section cards
                         sectionIndex = 0;
                         for (final String sectionType
                             in sectionTypes.toList()) {
@@ -183,11 +186,14 @@ class _CalendarViewState extends State<Calendar> {
 
                         return Stack(children: <CalendarCard>[...sectionCards]);
                       } else {
+                        // Lists to contain section objects and parallel list with section types
                         final List<CalendarCard> sectionCards =
                             <CalendarCard>[];
                         final List<String> sectionTypes = <String>[];
                         final List<SectionData> sectionObjects =
                             <SectionData>[];
+
+                        // Idenitfy all lecture objects as those contain final data
                         for (final SectionData section in courseList!) {
                           if (section.instructionType == 'LE') {
                             sectionTypes.add('FI');
@@ -195,6 +201,7 @@ class _CalendarViewState extends State<Calendar> {
                           }
                         }
 
+                        // Build calendar cards from lecture objects, isolates final meeting data
                         int sectionIndex = 0;
                         for (final String sectionType
                             in sectionTypes.toList()) {
@@ -216,7 +223,7 @@ class _CalendarViewState extends State<Calendar> {
         ]));
   }
 
-  // Fix an incorrectly formatted time
+  /// @param meeting Meeting object to standardize start time and end time
   void correctTimeFormat(MeetingData meeting) {
     while (meeting.startTime!.length < 4) {
       meeting.startTime = '0' + meeting.startTime!;
@@ -226,7 +233,7 @@ class _CalendarViewState extends State<Calendar> {
     }
   }
 
-  static const List<String> dayOfWeek = [
+  static const List<String> dayOfWeek = <String>[
     'Mon',
     'Tues',
     'Wed',
@@ -236,7 +243,7 @@ class _CalendarViewState extends State<Calendar> {
     'Sun',
   ];
 
-  static const Map<String, int> dayMapping = {
+  static const Map<String, int> dayMapping = <String, int>{
     'MO': 0,
     'TU': 1,
     'WE': 2,
@@ -244,7 +251,7 @@ class _CalendarViewState extends State<Calendar> {
     'FR': 4
   };
 
-  static const List<String> times = [
+  static const List<String> times = <String>[
     '8am',
     '9am',
     '10am',
@@ -261,6 +268,9 @@ class _CalendarViewState extends State<Calendar> {
     '9pm',
     '10pm',
   ];
+
+  /// @param sectionType Type of section for calendar card we are creating: LE, DI, LA, FI ...
+  /// @param sectionObject Section object containing course info needed to create calendar card
   CalendarCard buildCalendarCard(
       String sectionType, SectionData sectionObject) {
     switch (sectionType) {
@@ -386,7 +396,7 @@ class _CalendarViewState extends State<Calendar> {
               prefix,
               dayMapping[sectionObject.recurringMeetings!.first.dayCode]!,
               'FI',
-              "${sectionObject.subjectCode} ${sectionObject.courseCode}",
+              '${sectionObject.subjectCode} ${sectionObject.courseCode}',
               room,
               Colors.blue.shade200);
         }
@@ -415,7 +425,7 @@ class _CalendarViewState extends State<Calendar> {
             prefix,
             sectionObject.units!.toInt(),
             sectionType,
-            "${sectionObject.subjectCode} ${sectionObject.courseCode}",
+            '${sectionObject.subjectCode} ${sectionObject.courseCode}',
             room,
             Colors.blue.shade200);
     }

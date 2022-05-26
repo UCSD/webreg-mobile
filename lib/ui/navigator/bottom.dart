@@ -18,12 +18,11 @@ class _BottomNavigationState extends State<BottomNavigation>
   UserDataProvider userDataProvider = UserDataProvider();
   List<Widget> currentTab = <Widget>[
     const Calendar(
-      'LECT_DISC',
       calendarType: 'LECT_DISC',
     ),
-    CourseListView(),         
+    CourseListView(),
     // Finals Calendar
-    const Calendar('FINALS', calendarType: 'FINALS'),
+    const Calendar(calendarType: 'FINALS'),
   ];
   int currentIndex = 0;
 
