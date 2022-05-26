@@ -19,8 +19,6 @@ const prodEnvReplacements = async (targetEnv) => {
 				envItem.QA.forEach((replacement, index) => {
 					if (replacement === '"##BUILD_ENV##"') {
 						data = data.replace(replacement, '"' + targetEnv + '"')
-					} else if (replacement === '<base href="/">') {
-						data = data.replace(replacement, '<base href="/webreg-mobile/' + appVersion + '-' + buildNumber + '/">')
 					} else if (replacement === 'version: 1.0.0+1') {
 						data = data.replace(replacement, 'version: ' + appVersion + '+' + buildNumber)
 					} else {
@@ -45,8 +43,6 @@ const qaEnvReplacements = async (targetEnv) => {
 				envItem.QA.forEach((replacement, index) => {
 					if (replacement === '"##BUILD_ENV##"') {
 						data = data.replace(replacement, '"' + targetEnv + '"')
-					} else if (replacement === '<base href="/">') {
-						data = data.replace(replacement, '<base href="/webreg-mobile/' + appVersion + '-' + buildNumber + '/">')
 					} else if (replacement === 'version: 1.0.0+1') {
 						data = data.replace(replacement, 'version: ' + appVersion + '+' + buildNumber)
 					} else {

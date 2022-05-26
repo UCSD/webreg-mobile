@@ -7,8 +7,12 @@ if [ "$FCI_BUILD_STEP_STATUS" == "success" ]; then
     echo "  Moving build/web ->  $APP_VERSION-$PROJECT_BUILD_NUMBER ..."
     cd build/
     mv web "$APP_VERSION-$PROJECT_BUILD_NUMBER"
+
+    echo "  Removing old build assets from S3 ..."
+    aws s3 rm s3://ucsd-its-sandbox-wts-charles/webreg-mobile --recursive
+
     echo "  Syncing build assets to S3 ..."
-    aws s3 sync $APP_VERSION-$PROJECT_BUILD_NUMBER/ s3://ucsd-its-sandbox-wts-charles/webreg-mobile/$APP_VERSION-$PROJECT_BUILD_NUMBER
+    aws s3 sync $APP_VERSION-$PROJECT_BUILD_NUMBER/ s3://ucsd-its-sandbox-wts-charles/webreg-mobile
 elif [ "$FCI_BUILD_STEP_STATUS" == "skipped" ]; then
     echo "Build skipped - exiting."
     exit 1
