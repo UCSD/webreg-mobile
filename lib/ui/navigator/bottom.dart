@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:webreg_mobile_flutter/app_styles.dart';
@@ -20,7 +22,7 @@ class _BottomNavigationState extends State<BottomNavigation>
     const Calendar(
       calendarType: 'LECT_DISC',
     ),
-    CourseListView(),
+    const CourseListView(),
     // Finals Calendar
     const Calendar(calendarType: 'FINALS'),
   ];
@@ -55,7 +57,7 @@ class _BottomNavigationState extends State<BottomNavigation>
                 style: TextStyle(
                   fontWeight: FontWeight.normal,
                 )),
-            actions: <Widget>[SearchPlaceholder()]),
+            actions: const <Widget>[SearchPlaceholder()]),
         body: currentTab[currentIndex],
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,

@@ -4,16 +4,16 @@ import 'dart:html' as html;
 import 'package:flutter/material.dart';
 import '../../app_constants.dart';
 
-const String CLIENT_ID = 'nSu0wUDFf4FBiWognBJRamy_kZIa';
+const String CLIENT_ID = '';
 
-class AuthenticationError extends StatefulWidget {
-  const AuthenticationError({Key? key}) : super(key: key);
+class AuthenticationSSO extends StatefulWidget {
+  const AuthenticationSSO({Key? key}) : super(key: key);
 
   @override
-  _AuthenticationErrorState createState() => _AuthenticationErrorState();
+  _AuthenticationSSOState createState() => _AuthenticationSSOState();
 }
 
-class _AuthenticationErrorState extends State<AuthenticationError> {
+class _AuthenticationSSOState extends State<AuthenticationSSO> {
   String _token = '';
   String clientId = CLIENT_ID;
   late html.WindowBase popUpWindow;

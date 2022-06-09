@@ -1,25 +1,26 @@
+// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:webreg_mobile_flutter/app_constants.dart';
-import 'package:webreg_mobile_flutter/app_styles.dart';
 import 'package:webreg_mobile_flutter/ui/calendar/bottom_course_card.dart';
 
 class CalendarCard extends StatefulWidget {
+  const CalendarCard(this.startTime, this.endTime, this.datePrefix,
+      this.dayOfWeek, this.type, this.title, this.location, this.color);
+
   final String startTime, endTime, datePrefix, type, title, location;
   final int dayOfWeek;
   final Color color;
-
-  const CalendarCard(this.startTime, this.endTime, this.datePrefix,
-      this.dayOfWeek, this.type, this.title, this.location, this.color);
 
   @override
   _CalendarCardState createState() => _CalendarCardState();
 }
 
 class _CalendarCardState extends State<CalendarCard> {
-  static const earliestClass = '08:00';
+  static const String earliestClass = '08:00';
 
   double getTimeDifference(String start, String end, String prefix) {
-    double diff = DateTime.parse(prefix + end)
+    final double diff = DateTime.parse(prefix + end)
         .difference(DateTime.parse(prefix + start))
         .inMinutes
         .toDouble();
@@ -28,11 +29,10 @@ class _CalendarCardState extends State<CalendarCard> {
 
   @override
   Widget build(BuildContext context) {
-    double calendarCardWidth = (MediaQuery.of(context).size.width -
+    final double calendarCardWidth = (MediaQuery.of(context).size.width -
             CalendarStyles.calendarTimeWidth -
             20) /
         7;
-    bool _showModal = false;
 
     return Positioned(
         top: getTimeDifference(
@@ -51,7 +51,7 @@ class _CalendarCardState extends State<CalendarCard> {
                   color: Colors.white,
                   borderRadius: BorderRadius.all(Radius.circular(2.0)),
                   // border: Border.all(width: 1, color: )
-                  boxShadow: [
+                  boxShadow: <BoxShadow>[
                     BoxShadow(
                       color: Colors.black.withOpacity(0.25),
                       spreadRadius: 0,
@@ -82,9 +82,7 @@ class _CalendarCardState extends State<CalendarCard> {
                       child: Center(
                         child: Text(widget.type,
                             style: TextStyle(
-                                fontSize: 8,
-                                fontWeight: FontWeight
-                                    .bold)), // TODO, replace with real data
+                                fontSize: 8, fontWeight: FontWeight.bold)),
                       )),
                   Expanded(
                       child: Column(

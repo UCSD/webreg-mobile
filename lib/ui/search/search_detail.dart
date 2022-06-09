@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:webreg_mobile_flutter/app_styles.dart';
@@ -19,7 +21,7 @@ class SearchDetail extends StatelessWidget {
           title: Text(
               '${data.departmentCode} ${data.courseCode} \n${data.courseTitle}')),
       body: ListView(
-        children: [coursePrereqs(), courseDetails()],
+        children: <Widget>[coursePrereqs(), courseDetails()],
       ));
 
   Card coursePrereqs() {
@@ -137,7 +139,7 @@ class SearchDetail extends StatelessWidget {
               height: 50,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.only(
                         left: 0.0, right: 0.0, top: 5, bottom: 10),

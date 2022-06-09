@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:webreg_mobile_flutter/core/models/profile.dart';
 import 'package:webreg_mobile_flutter/core/providers/user.dart';
 import 'package:webreg_mobile_flutter/core/services/profile.dart';
-import 'package:webreg_mobile_flutter/core/services/profile.dart';
 
 class ProfileProvider extends ChangeNotifier {
   ProfileProvider() {

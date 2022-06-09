@@ -4,6 +4,7 @@ import 'package:webreg_mobile_flutter/core/providers/profile.dart';
 import 'package:webreg_mobile_flutter/core/providers/schedule_of_classes.dart';
 import 'package:webreg_mobile_flutter/core/providers/user.dart';
 
+// ignore: always_specify_types
 List<SingleChildWidget> providers = [
   ChangeNotifierProvider<UserDataProvider>(
     create: (_) {

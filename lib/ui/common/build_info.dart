@@ -1,7 +1,11 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class BuildInfo extends StatefulWidget {
+  const BuildInfo({Key? key}) : super(key: key);
+
   @override
   _BuildInfoState createState() => _BuildInfoState();
 }
@@ -27,7 +31,7 @@ class _BuildInfoState extends State<BuildInfo> {
     });
   }
 
-  final String buildEnv = "##BUILD_ENV##";
+  final String buildEnv = '##BUILD_ENV##';
 
   @override
   Widget build(BuildContext context) {

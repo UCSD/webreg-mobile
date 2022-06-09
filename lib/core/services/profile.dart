@@ -6,8 +6,6 @@ class ProfileService {
   final String profilePrototype =
       'https://i4ghbvwuo9.execute-api.us-west-2.amazonaws.com/qa/profile';
 
-  bool _isLoading = false;
-  DateTime? _lastUpdated;
   String? _error;
   ProfileModel? profile;
 
@@ -15,7 +13,6 @@ class ProfileService {
 
   Future<bool> fetchProfile(Map<String, String> headers) async {
     _error = null;
-    _isLoading = true;
 
     try {
 
@@ -25,16 +22,13 @@ class ProfileService {
       if (_response != null) {
         /// Parse data
         profile = profileModelFromJson(_response);
-        _isLoading = false;
       } else {
-        _isLoading = false;
         return false;
       }
       return true;
     } catch (e) {
       _error = e.toString();
       print(_error);
-      _isLoading = false;
       return false;
     }
   }

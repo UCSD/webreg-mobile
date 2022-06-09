@@ -14,18 +14,6 @@ String authenticationModelToJson(AuthenticationModel data) =>
 
 @HiveType(typeId: 1)
 class AuthenticationModel extends HiveObject {
-  @HiveField(0)
-  String? accessToken;
-  // Deprecated reserved field number - DO NOT REMOVE
-  // @HiveField(1)
-  // String refreshToken;
-  @HiveField(2)
-  String? pid;
-  @HiveField(3)
-  String? ucsdaffiliation;
-  @HiveField(4)
-  int? expiration;
-
   AuthenticationModel({
     this.accessToken,
     this.pid,
@@ -42,7 +30,18 @@ class AuthenticationModel extends HiveObject {
     );
   }
 
-  Map<String, dynamic> toJson() => {
+  @HiveField(0)
+  String? accessToken;
+  // Deprecated reserved field number - DO NOT REMOVE
+  // @HiveField(1)
+  @HiveField(2)
+  String? pid;
+  @HiveField(3)
+  String? ucsdaffiliation;
+  @HiveField(4)
+  int? expiration;
+
+  Map<String, dynamic> toJson() => <String, Object?>{
         'access_token': accessToken,
         'pid': pid,
         'ucsdaffiliation': ucsdaffiliation ?? '',
