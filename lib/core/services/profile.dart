@@ -1,0 +1,35 @@
+import 'package:webreg_mobile_flutter/app_networking.dart';
+import 'package:webreg_mobile_flutter/core/models/profile.dart';
+
+class ProfileService {
+  // TODO(p8gonzal): Note to not use this prototype. For development purposes only.
+  final String profilePrototype =
+      'https://i4ghbvwuo9.execute-api.us-west-2.amazonaws.com/qa/profile';
+
+  String? _error;
+  ProfileModel? profile;
+
+  final NetworkHelper _networkHelper = const NetworkHelper();
+
+  Future<bool> fetchProfile(Map<String, String> headers) async {
+    _error = null;
+
+    try {
+
+      /// Fetch data
+      final String? _response =
+          await _networkHelper.fetchData(profilePrototype);
+      if (_response != null) {
+        /// Parse data
+        profile = profileModelFromJson(_response);
+      } else {
+        return false;
+      }
+      return true;
+    } catch (e) {
+      _error = e.toString();
+      print(_error);
+      return false;
+    }
+  }
+}

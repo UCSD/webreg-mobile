@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
 
 /// App Styles
-const headerStyle = TextStyle(fontSize: 35, fontWeight: FontWeight.w900);
-const subHeaderStyle = TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500);
+const TextStyle headerStyle =
+    TextStyle(fontSize: 35, fontWeight: FontWeight.w900);
+const TextStyle subHeaderStyle =
+    TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500);
 
 // Theme agnostic styles
-const agnosticDisabled = Color(0xFF8A8A8A);
+const Color agnosticDisabled = Color(0xFF8A8A8A);
 
 /// App Layout
 // Card Layout
-const cardMargin = 6.0;
-const cardPaddingInner = 8.0;
-const cardMinHeight = 60.0;
-const listTileInnerPadding = 8.0;
+const double cardMargin = 6.0;
+const double cardPaddingInner = 8.0;
+const double cardMinHeight = 60.0;
+const double listTileInnerPadding = 8.0;
 
 //Card Heights
-const cardContentMinHeight = 80.0;
-const cardContentMaxHeight = 568.0;
+const double cardContentMinHeight = 80.0;
+const double cardContentMaxHeight = 568.0;
 
-const webViewMinHeight = 20.0;
+const double webViewMinHeight = 20.0;
 
 /// App Theme
 const MaterialColor ColorPrimary = MaterialColor(
@@ -107,8 +109,8 @@ const Color lightTextFieldBorderColor = Color(0xFFFFFFFF);
 const Color lightAccentColor = Color(0xFFFFFFFF);
 const Color darkAccentColor = Color(0xFF333333);
 
-const debugHeader = TextStyle(color: lightTextColor, fontSize: 14.0);
-const debugRow = TextStyle(color: lightTextColor, fontSize: 12.0);
+const TextStyle debugHeader = TextStyle(color: lightTextColor, fontSize: 14.0);
+const TextStyle debugRow = TextStyle(color: lightTextColor, fontSize: 12.0);
 
 // Testing
 const Color c1 = Color.fromARGB(255, 255, 0, 0);
