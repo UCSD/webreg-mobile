@@ -23,6 +23,7 @@ class _AuthenticationSSOState extends State<AuthenticationSSO> {
     super.initState();
 
     final Uri currentUrl = Uri.base;
+    
     // If token is not present, open SSO popup
     if (!currentUrl.fragment.contains('access_token=')) {
       WidgetsBinding.instance!.addPostFrameCallback((_) {

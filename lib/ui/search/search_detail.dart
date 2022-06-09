@@ -24,6 +24,7 @@ class SearchDetail extends StatelessWidget {
         children: <Widget>[coursePrereqs(), courseDetails()],
       ));
 
+  // TODO(p8gonzal): Need an API with this specific data
   Card coursePrereqs() {
     return Card(
         shape: RoundedRectangleBorder(
@@ -47,6 +48,7 @@ class SearchDetail extends StatelessWidget {
     final List<Card> sectionCards = <Card>[];
     instructorSections = <String, List<SectionData>>{};
 
+    // Groups courses based on the professor
     for (final SectionData section in data.sections!) {
       final String sectionLetter = section.sectionCode![0];
       instructorSections.update(sectionLetter, (List<SectionData> value) {
@@ -59,9 +61,13 @@ class SearchDetail extends StatelessWidget {
       });
     }
 
+    // Collect all section types except for lecture sections
     instructorSections.forEach((String key, List<SectionData> value) {
       final List<String> sectionTypes = <String>[];
       final List<SectionData> sectionObjects = <SectionData>[];
+
+      // Ensure we only add one lecture object to the list of section data
+      // Fails when lecture has already been added
       for (final SectionData section in value) {
         if ((section.instructionType != 'LE' || !sectionTypes.contains('LE')) &&
             section.sectionStatus != 'CA') {
@@ -69,9 +75,11 @@ class SearchDetail extends StatelessWidget {
           sectionObjects.add(section);
         }
       }
+      // Add an empty final section model, will be filled by lecture model later
       sectionTypes.add('FI');
       sectionObjects.add(SectionData());
 
+      // Build section cards based off the list
       int sectionIndex = 0;
       for (final String sectionType in sectionTypes.toList()) {
         sectionCards

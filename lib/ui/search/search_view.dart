@@ -61,6 +61,8 @@ class _SearchViewState extends State<SearchView> {
                                     .fetchTerms(),
                                 builder: (BuildContext context,
                                     AsyncSnapshot<Object?> response) {
+                                  // Only call lambda upon first run to avoid unneccessary network load
+
                                   if (response.hasData || !firstRun) {
                                     if (firstRun) {
                                       dropdownItems =
@@ -68,6 +70,7 @@ class _SearchViewState extends State<SearchView> {
                                       _dropdownVal = dropdownItems[
                                           dropdownItems.length - 1];
                                     }
+                                    //Otherwise will use local reference
                                     return DropdownButton<String>(
                                       underline: Container(height: 0),
                                       value: _dropdownVal,
@@ -154,15 +157,18 @@ class _SearchViewState extends State<SearchView> {
         body: body(showList));
   }
 
+  //Body will change based on if search has been completed by the API or not
   Widget body(bool showList) {
     bool validQuery = false;
     String searchBuilder = '';
     final String termCode = _dropdownVal;
 
+    // Will be true when user has clicked into search bar
     if (showList) {
       final List<String> words = searchString.split(' ');
 
       switch (words.length) {
+        // This case is true when looking for course only (e.g. CSE)
         case 1:
           {
             //Verify that subject code could be valid
@@ -176,6 +182,7 @@ class _SearchViewState extends State<SearchView> {
                 'subjectCodes=${words[0]}&termCode=$termCode&limit=100';
           }
           break;
+        // This is the case when searching for specific course (e.g. CSE 110)
         case 2:
           {
             final String firstWord = words[0];
@@ -205,7 +212,7 @@ class _SearchViewState extends State<SearchView> {
           textAlign: TextAlign.center,
         ));
       }
-
+      // Will build results list when schedule of classes api has returned
       return FutureBuilder(
         future: classesProvider.fetchClasses(searchBuilder),
         builder: (BuildContext context, AsyncSnapshot<Object?> response) {
@@ -217,6 +224,7 @@ class _SearchViewState extends State<SearchView> {
         },
       );
     } else {
+      // When user has not clicked into search bar, hint is displayed
       return const Center(
           child: Text(
         'Search by course code\ne.g. ANTH 23',
@@ -226,6 +234,7 @@ class _SearchViewState extends State<SearchView> {
     }
   }
 
+  // Method builds results list once a model of the repsonse has been completed
   Widget buildResultsList(BuildContext context) {
     // List<CourseData> arguments = widget.args;
     // loops through and adds buttons for the user to click on
@@ -280,6 +289,7 @@ class _SearchViewState extends State<SearchView> {
           ))
         ]),
         onTap: () {
+          // Go to detail view for a specific course, passing in data model
           Navigator.pushNamed(context, RoutePaths.SearchDetail,
               arguments: course);
         },

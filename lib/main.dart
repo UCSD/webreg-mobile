@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
 
   late String? _token = '';
 
+  // Check if token is present in the UI, true when access from Campus Mobile
   void getParams() {
     final Uri uri = Uri.dataFromString(window.location.href);
     final Map<String, String> params = uri.queryParameters;
